@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/09 21:15:45 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:07:44 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	lexer_2(t_token **tokens, int *i, char *input, int *index)
 }
 
 
-int main()
+int main() ////////////// for test
 {
     char *input;
 	input = readline("minishell> ");
