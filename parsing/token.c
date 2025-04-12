@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/12 18:05:42 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/12 19:19:40 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,33 @@ void	ft_quote(t_token **tokens, char *input, int *i, int *index)
 {
 	char quote;
 	int start;
+	int s = 0;
+	int d = 0;
 
 	quote = input[(*i)++];
+	if (quote == '\'')
+		s++;
+	else
+		d++;
 	start = (*i);
 	while (input[(*i)] && input[(*i)] != quote)
 		(*i)++;
-	/// |< "test"test >| 
-	if (!(input[(*i)]) && input[(*i) - 1] != quote)
+	/// |< "test"test >|
+	while (input[(*i)] != (' ' && '\0'))
+	{
+		if (input[(*i)] == '\'')
+			s++;
+		else if (input[(*i)] == '"')
+			d++;
+		(*i)++;
+	}
+	 
+	if (!(input[(*i)]) && (input[(*i) - 1] != quote && (input[(*i) - 1] != quote)))
 		{
 			printf("quote error!");
 			exit(1);
 		}
+	// if (!(input[(*i)]))
 	if (quote == '"')
 		add_token(tokens, substr(input, start, (*i) - start), d_quote, (*index));
 	else
@@ -107,12 +123,12 @@ int main() ////////////// for test
 {
     char *input = readline("minishell> ");
 	t_token *tokens = malloc(sizeof(t_token));
-	tokens->original = strdup(input);
+	tokens->original = ft_strdup(input);
 	tokens = NULL;
     lexer_1(input, &tokens);
     while (tokens)
     {
-        printf("Token: %s => index : %d\n", tokens->content, tokens->index);
+        printf("Token: {%s}\n", tokens->content);
         tokens = tokens->next;
     }
 	printf ("\n---------------------\n");
