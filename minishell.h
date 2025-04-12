@@ -7,6 +7,8 @@
 #include <readline/readline.h>
 
 typedef enum e_token_type {
+	s_quote,  //  ''
+	d_quote,  //	""
     STRING,
     WORD,
     PIPE,
@@ -25,18 +27,18 @@ typedef struct s_token {
 	char *original;
     struct s_token *next;
 } t_token;
+// ------------------------------------
 
+//---------------{ tokenization functions }-----------------
+void	lexer_1(char *input, t_token **tokens);
+void	lexer_2(t_token **tokens, char *input, int *i, int *index);
+void	ft_word(t_token **tokens, char *input, int *i, int *index);
+void	ft_quote(t_token **tokens, char *input, int *i, int *index);
+//                **  token_tools  **
+void	add_token(t_token **lst, char *content, t_token_type type, int index);
+t_token	*new_token(char *content, t_token_type type);
+char	*substr(char *s, int start, int len);
 
-//---------------{ tokenization tools }-----------------
-
-t_token *new_token(char *content, t_token_type type);
-void add_token(t_token **lst, char *content, t_token_type type, int index);
-char *ft_substr(char *s, int start, int len);
-void qoute(t_token **tokens, int *i, char *input, int *index);
-void	ft_word(t_token **tokens, int *i, char *input, int *index);
-void	lexer_2(t_token **tokens, int *i, char *input, int *index);
-void syntax_error(char *input, t_token **tokens);
-void pipe_check(t_token **tokens);
 // ---------------general tools -----------------
 char	*ft_strdup(const char *s1);
 
