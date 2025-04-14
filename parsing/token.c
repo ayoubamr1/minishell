@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/14 14:03:51 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/14 20:24:01 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,36 +59,55 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index)
 		(*index)++;
 }
 
-void	syntax_error(t_token **tokens)
+static int	is_redirection(t_token *token)
 {
-	t_token *tmp;
-	t_token *tmp_2;
-	
-	tmp = *tokens;
-	
-
-	while (tmp)
-	{
-		
-		if ((tmp->index == 1 && tmp->type == PIPE) || ((tmp->index == tmp->max_in) && tmp->type == PIPE))
-		{
-			printf("inde => %d | max_index => %d | type => %d\n", tmp->index, tmp->max_in, tmp->type);
-			printf("syntax error pipe \n");
-			exit(1);
-		}		
-		if (tmp->next && (tmp->type == PIPE && tmp->next->type == PIPE))
-		{
-			printf("syntax error pipe \n");
-			exit(1);
-		}
-		tmp_2 = tmp;
-		tmp = tmp->next;
-	}
-	// if (tmp_2->type == PIPE)
-	
-	
+	return (token->type == REDIR_IN || token->type == REDIR_OUT
+		|| token->type == APPEND || token->type == HEREDOC);
 }
 
+static int	is_bad_redir_sequence(t_token *t)
+{
+	if (!t->next)
+		return (0);
+	if (t->type == REDIR_IN && (t->next->type == PIPE
+		|| is_redirection(t->next)))
+		return (1);
+	if (t->type == REDIR_OUT && (t->next->type == PIPE
+		|| is_redirection(t->next)))
+		return (1);
+	if (t->type == APPEND && (t->next->type == PIPE
+		|| is_redirection(t->next)))
+		return (1);
+	return (0);
+}
+
+static int	is_general_syntax_error(t_token *t)
+{
+	if ((t->index == 1 && t->type == PIPE)
+		|| (!t->next && t->type == PIPE)
+		|| (t->next && t->type == PIPE && t->next->type == PIPE)
+		|| is_bad_redir_sequence(t)
+		|| (t->type == HEREDOC && (!t->next || t->next->type != WORD))
+		|| (is_redirection(t) && (!t->next || t->next->type != WORD)))
+		return (1);
+	return (0);
+}
+
+void	syntax_error(t_token **tokens)
+{
+	t_token	*tmp;
+
+	tmp = *tokens;
+	while (tmp)
+	{
+		if (is_general_syntax_error(tmp))
+		{
+			printf("syntax error near unexpected token\n");
+			exit(258);
+		}
+		tmp = tmp->next;
+	}
+}
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
 {
@@ -97,6 +116,7 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 
 	if (input[*i] == '>')
 		{
+			// synatx();
 			add_token(tokens, strdup(">"), REDIR_OUT, *index);
 			((*i)++, (*index)++);
 		}
@@ -117,7 +137,20 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 		ft_word(tokens, input, i, index);
 }
 
-
+void	synatx(t_token **token, char *input, char c, int i, int status)
+{
+	if (status == 1)
+	{
+		if (input[i + 2] == c)
+			(printf("syntax error near unexpected token `>'"), exit(1));
+		else if (input[i + 2] == c)
+			(printf("syntax error near unexpected token `<'"), exit(1));
+	}
+	// else if (status == 2)
+	// {
+	// 	if ((input [i + 1] == ' ' && input [i + 2] == 'd') ||)
+	// }
+}
 void lexer_1(char *input, t_token **tokens)
 {
 	int i;
@@ -131,19 +164,19 @@ void lexer_1(char *input, t_token **tokens)
 			i++;
 		else if (input[i] == '>' && input[i + 1] == '>')
 		{
+			synatx(tokens, input, '>', i, 1);
 			add_token(tokens, strdup(">>"), APPEND, index);
 			(i += 2, index++);
 		}
 		else if (input[i] == '<' && input[i + 1] == '<')
 		{
+			synatx(tokens, input, '<', i, 1);
 			add_token(tokens, strdup("<<"), HEREDOC, index);
 			(i += 2, index++);
 		}
 		else
 			lexer_2(tokens, input, &i, &index);
 	}
-	(*tokens)->max_in = index;
-	// printf("[%d]\n", (*tokens)->max_in);
 	syntax_error(tokens);
 }
 
@@ -153,14 +186,16 @@ int main() ////////////// for test
 	{
 		
     char *input = readline("minishell> ");
+	if (!input)
+		exit(1);
 	t_token *tokens = malloc(sizeof(t_token));
-	// tokens->original = ft_strdup(input);
+	tokens->original = ft_strdup(input);
 	tokens = NULL;
     lexer_1(input, &tokens);
 	t_token *copy = tokens;
     while (copy)
     {
-        printf("Token: {%s} |=> inde => %d\n", copy->content, copy->index);
+        printf("Token: {%s} || {%d}\n", copy->content, copy->type);
         copy = copy->next;
     }
 	printf ("\n---------------------\n");

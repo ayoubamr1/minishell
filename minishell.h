@@ -23,7 +23,6 @@ typedef struct s_token {
     char *content;
     t_token_type type;
     int index;
-    int max_in; // max index
 	char *original;
     struct s_token *next;
 } t_token;

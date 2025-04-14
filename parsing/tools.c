@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/14 13:41:50 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/14 15:19:04 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	add_token(t_token **lst, char *content, t_token_type type, int index)
 
 	tok = new_token(content, type);
 	tok->index = index;
-	tok->max_in = index;
 	if (!*lst)
 		*lst = tok;
 	else
