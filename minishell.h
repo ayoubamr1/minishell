@@ -23,7 +23,7 @@ typedef struct s_token {
     char *content;
     t_token_type type;
     int index;
-    int ind;
+    int max_in; // max index
 	char *original;
     struct s_token *next;
 } t_token;
@@ -31,7 +31,8 @@ typedef struct s_token {
 
 //---------------{ tokenization functions }-----------------
 void	lexer_1(char *input, t_token **tokens);
-void	lexer_2(t_token **tokens, char *input, int *i, int *index);
+int main();
+void lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 void	ft_quote(t_token **tokens, char *input, int *i, int *index);
 //                **  token_tools  **

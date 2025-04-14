@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/12 19:19:40 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/14 14:03:51 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,14 @@ void	ft_quote(t_token **tokens, char *input, int *i, int *index)
 	start = (*i);
 	while (input[(*i)] && input[(*i)] != quote)
 		(*i)++;
-	/// |< "test"test >|
-	while (input[(*i)] != (' ' && '\0'))
-	{
-		if (input[(*i)] == '\'')
-			s++;
-		else if (input[(*i)] == '"')
-			d++;
+	// / |< "test"test >|
+	while (input[(*i)] && (input[(*i)] != ' '))
 		(*i)++;
-	}
-	 
-	if (!(input[(*i)]) && (input[(*i) - 1] != quote && (input[(*i) - 1] != quote)))
-		{
-			printf("quote error!");
-			exit(1);
-		}
+	// if (!(input[(*i)]) && (input[(*i) - 1] != quote && (input[(*i) - 1] != quote)))
+	// 	{
+	// 		printf("quote error!");
+	// 		exit(1);
+	// 	}
 	// if (!(input[(*i)]))
 	if (quote == '"')
 		add_token(tokens, substr(input, start, (*i) - start), d_quote, (*index));
@@ -66,6 +59,37 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index)
 		(*index)++;
 }
 
+void	syntax_error(t_token **tokens)
+{
+	t_token *tmp;
+	t_token *tmp_2;
+	
+	tmp = *tokens;
+	
+
+	while (tmp)
+	{
+		
+		if ((tmp->index == 1 && tmp->type == PIPE) || ((tmp->index == tmp->max_in) && tmp->type == PIPE))
+		{
+			printf("inde => %d | max_index => %d | type => %d\n", tmp->index, tmp->max_in, tmp->type);
+			printf("syntax error pipe \n");
+			exit(1);
+		}		
+		if (tmp->next && (tmp->type == PIPE && tmp->next->type == PIPE))
+		{
+			printf("syntax error pipe \n");
+			exit(1);
+		}
+		tmp_2 = tmp;
+		tmp = tmp->next;
+	}
+	// if (tmp_2->type == PIPE)
+	
+	
+}
+
+
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
 {
 	char quote;
@@ -78,7 +102,7 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 		}
 	else if (input[(*i)] == '|')
 	{
-		if (input[(*i) + 1 ] == '|')
+		// if (input[(*i) + 1 ] == '|')
 		add_token(tokens, strdup("|"), PIPE, (*index));
 		((*i)++, (*index)++);
 	}
@@ -92,6 +116,7 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 	else
 		ft_word(tokens, input, i, index);
 }
+
 
 void lexer_1(char *input, t_token **tokens)
 {
@@ -117,19 +142,26 @@ void lexer_1(char *input, t_token **tokens)
 		else
 			lexer_2(tokens, input, &i, &index);
 	}
+	(*tokens)->max_in = index;
+	// printf("[%d]\n", (*tokens)->max_in);
+	syntax_error(tokens);
 }
 
 int main() ////////////// for test
 {
+	while(1)
+	{
+		
     char *input = readline("minishell> ");
 	t_token *tokens = malloc(sizeof(t_token));
-	tokens->original = ft_strdup(input);
+	// tokens->original = ft_strdup(input);
 	tokens = NULL;
     lexer_1(input, &tokens);
-    while (tokens)
+	t_token *copy = tokens;
+    while (copy)
     {
-        printf("Token: {%s}\n", tokens->content);
-        tokens = tokens->next;
+        printf("Token: {%s} |=> inde => %d\n", copy->content, copy->index);
+        copy = copy->next;
     }
 	printf ("\n---------------------\n");
 	// print_tokens(tokens);
@@ -142,12 +174,13 @@ int main() ////////////// for test
 	// }
 	// echo 'hello "yool"' | grep hello > file.txt | ls
 	// printf ("\n---------------------\n");
-	t_token *copy = tokens;
-	while (copy)
-    {
-        printf("Token: %s\n", copy->content);
-        copy = copy->next;
-    }
+	// t_token *copy = tokens;
+	// while (copy)
+    // {
+    //     printf("Token: %s\n", copy->content);
+    //     copy = copy->next;
+    // }
+	}
 	// printf("%d\n", ft_lstsize(tokens));
     return 0;
 }

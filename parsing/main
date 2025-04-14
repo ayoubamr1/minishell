@@ -1,0 +1,30 @@
+#include "../minishell.h"
+
+
+void	quote
+
+
+
+int main() ////////////// for test
+{
+    char *input = readline("minishell> ");
+ 	t_token **tokens =  tokenize(input);
+    int  i = 0;
+	while (tokens[i])
+    {
+        printf("Token: {%s}\n", tokens[i]);
+		i++;
+    //     (*tokens) = (*tokens)->next;
+    }
+	printf ("\n---------------------\n");
+	// print_tokens(tokens);
+	// while (tokens)
+	// {
+	// printf ("\n1---------------------\n");
+	//     // printf("Token: {%s} ==>  Type: %d, index ==> [%d]\n", tokens->content, tokens->type, tokens->index);
+	//     printf("Token: {%s}\n", tokens->content);
+	//     tokens = tokens->next;
+	// }
+	// echo 'hello "yool"' | grep hello > file.txt | ls
+	// printf ("\n---------------------\n");
+}
