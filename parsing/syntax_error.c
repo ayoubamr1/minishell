@@ -12,7 +12,7 @@ void syntax_error(char *input, t_token **tokens)
 		if (input[i] == '|') // check | is first this is syntax error
 		{
 			printf("syntax error pipe\n");
-			exit (1);
+			ft_exit (tokens);
 		}
 	// }
 	// else ()
@@ -62,16 +62,16 @@ void pipe_check(t_token **tokens)
 	{
 		if (tmp->type == PIPE)
 		{
-			if (!tmp->next)
+			if (!tmp->next || (tmp->next->type == PIPE))
 			{
 				printf("syntax error: unexpected end after `|'\n");
-				exit(1);
+				ft_exit(tokens);
 			}
-			if (tmp->next->type == PIPE)
-			{
-				printf("syntax error: unexpected token `|'\n");
-				exit(1);
-			}
+			// if (tmp->next->type == PIPE)
+			// {
+			// 	printf("syntax error: unexpected token `|'\n");
+			// 	ft_exit(tokens);
+			// }
 		}
 		tmp = tmp->next;
 	}	

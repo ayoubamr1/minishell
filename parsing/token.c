@@ -6,44 +6,102 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/14 20:24:01 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:27:33 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-
-void	ft_quote(t_token **tokens, char *input, int *i, int *index)
+void	ft_lstclear(t_token **lst)
 {
-	char quote;
-	int start;
-	int s = 0;
-	int d = 0;
+	t_token	*n;
 
-	quote = input[(*i)++];
-	if (quote == '\'')
-		s++;
-	else
-		d++;
-	start = (*i);
-	while (input[(*i)] && input[(*i)] != quote)
+	if (!lst)
+		return ;
+	while (*lst)
+	{
+		n = (*lst)->next;
+		// free((*lst)->content);
+		free(*lst);
+		*lst = n;
+	}
+	*lst = NULL;
+}
+void	ft_exit(t_token **token)
+{
+	// t_token *copy;
+	// while (copy)
+	// {
+	// 	free(copy->content);
+	// 	copy = copy->next;	
+	// }
+	free((*token)->in_add);
+	free((*token)->original);
+	
+	
+	ft_lstclear(token);	
+	free(*token);
+}
+static char	*join_and_free(char *s1, char *s2)
+{
+	char	*res;
+
+	if (!s1 || !s2)
+		return (NULL);
+	res = ft_strjoin(s1, s2);
+	free(s1);
+	free(s2);
+	return (res);
+}
+
+static char	*parse_inside_quote(char *input, int *i, char quote)
+{
+	int		start;
+	char	*tmp;
+
+	start = *i;
+	while (input[*i] && input[*i] != quote)
 		(*i)++;
-	// / |< "test"test >|
-	while (input[(*i)] && (input[(*i)] != ' '))
+	tmp = substr(input, start, *i - start);
+	if (input[*i] == quote)
 		(*i)++;
-	// if (!(input[(*i)]) && (input[(*i) - 1] != quote && (input[(*i) - 1] != quote)))
-	// 	{
-	// 		printf("quote error!");
-	// 		exit(1);
-	// 	}
-	// if (!(input[(*i)]))
-	if (quote == '"')
-		add_token(tokens, substr(input, start, (*i) - start), d_quote, (*index));
-	else
-		add_token(tokens, substr(input, start, (*i) - start), s_quote, (*index));
-	if (input[(*i)] == quote)
+	return (tmp);
+}
+
+static char	*parse_unquoted_part(char *input, int *i)
+{
+	int		start;
+	char	*tmp;
+
+	start = *i;
+	while (input[*i] && input[*i] != '\'' && input[*i] != '"' &&
+		!isspace(input[*i]) && input[*i] != '|' &&
+		input[*i] != '<' && input[*i] != '>')
 		(*i)++;
-		(*index)++;
+	tmp = substr(input, start, *i - start);
+	return (tmp);
+}
+
+char	*parse_word_with_quotes(char *input, int *i)
+{
+	char	*final;
+	char	*tmp;
+	char	quote;
+
+	final = ft_strdup("");
+	while (input[*i] && !isspace(input[*i]) &&
+		input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+	{
+		if (input[*i] == '\'' || input[*i] == '"')
+		{
+			quote = input[(*i)++];
+			tmp = parse_inside_quote(input, i, quote);
+		}
+		else
+			tmp = parse_unquoted_part(input, i);
+		final = join_and_free(final, tmp);
+	}
+	return (final);
 }
 
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
@@ -103,7 +161,7 @@ void	syntax_error(t_token **tokens)
 		if (is_general_syntax_error(tmp))
 		{
 			printf("syntax error near unexpected token\n");
-			exit(258);
+			ft_exit(tokens);
 		}
 		tmp = tmp->next;
 	}
@@ -113,6 +171,7 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 {
 	char quote;
 	int start;
+	char *word;
 
 	if (input[*i] == '>')
 		{
@@ -132,9 +191,17 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 		((*i)++, index++);
 	}
 	else if (input[(*i)] == '"' || input[(*i)] == '\'')
-		ft_quote(tokens, input, i, index);
+	{
+		if (input[*i] == '\'' || input[*i] == '"')
+		{
+			word = parse_word_with_quotes(input, i);
+			add_token(tokens, word, STRING, (*index)++);
+			// free(word);
+		}
+	}
 	else
 		ft_word(tokens, input, i, index);
+		// ft_quote(tokens, input, i, index);
 }
 
 void	synatx(t_token **token, char *input, char c, int i, int status)
@@ -142,9 +209,9 @@ void	synatx(t_token **token, char *input, char c, int i, int status)
 	if (status == 1)
 	{
 		if (input[i + 2] == c)
-			(printf("syntax error near unexpected token `>'"), exit(1));
+			(printf("syntax error near unexpected token `>'"), ft_exit(token));
 		else if (input[i + 2] == c)
-			(printf("syntax error near unexpected token `<'"), exit(1));
+			(printf("syntax error near unexpected token `<'"), ft_exit(token));
 	}
 	// else if (status == 2)
 	// {
@@ -188,8 +255,10 @@ int main() ////////////// for test
     char *input = readline("minishell> ");
 	if (!input)
 		exit(1);
+	
 	t_token *tokens = malloc(sizeof(t_token));
 	tokens->original = ft_strdup(input);
+	tokens->content = input;
 	tokens = NULL;
     lexer_1(input, &tokens);
 	t_token *copy = tokens;
