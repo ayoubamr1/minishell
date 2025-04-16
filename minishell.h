@@ -36,9 +36,10 @@ int main();
 void lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 void	ft_quote(t_token **tokens, char *input, int *i, int *index);
-char	*parse_word_with_quotes(char *input, int *i);
+char	*parse_word_with_quotes(char *input, int *i, t_token **token);
 char	*ft_strjoin(char const *s1, char const *s2);
-static char	*join_and_free(char *s1, char *s2);
+// static char	*join_and_free(char *s1, char *s2);
+void	ft_exit(t_token **token);
 //                **  token_tools  **
 void	add_token(t_token **lst, char *content, t_token_type type, int index);
 t_token	*new_token(char *content, t_token_type type);

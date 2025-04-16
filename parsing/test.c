@@ -1,20 +1,20 @@
-#include "../minishell.h"
+
+
+void	lexer_1(t_token **tokens)
+{
+	printf("{%p} <> {%s}\n", tokens->original, tokens->original);
+}
 
 int main() ////////////// for test
 {
-	
-    // char *input = readline("minishell> ");
-	
-	// printf ("%s\n", input);
-	// free(input);
-	char *line;
-while (1) {
-    line = readline("> ");
-    if (!line) break;  // EOF or error
-    // if (*line) add_history(line);  // optional
-    // process line
-    free(line); // ✅ prevent memory leak
-}
+    char *input = readline("minishell> ");
+	if (!input)
+		exit(1);
+	t_token *tokens = malloc(sizeof(t_token));
+	tokens->original = ft_strdup(input);
+	tokens = NULL;
+	printf("{%p} <> {%s}\n", tokens->original, tokens->original);
 
+    lexer_1(input, &tokens);
     return 0;
 }

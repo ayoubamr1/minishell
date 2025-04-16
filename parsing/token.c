@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/16 10:10:15 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:19:23 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,30 @@
 
 void	ft_lstclear(t_token **lst)
 {
-	t_token	*n;
+	t_token	*tmp;
 
 	if (!lst)
 		return ;
 	while (*lst)
 	{
-		n = (*lst)->next;
-		// free((*lst)->content);
+		tmp = (*lst)->next;
+		free((*lst)->content);
 		free(*lst);
-		*lst = n;
+		*lst = tmp;
 	}
 	*lst = NULL;
 }
+
 void	ft_exit(t_token **token)
 {
-	// t_token *copy;
-	// while (copy)
-	// {
-	// 	free(copy->content);
-	// 	copy = copy->next;	
-	// }
-	free((*token)->in_add);
-	free((*token)->original);
-	
-	
+	// printf("***\n");
+	// printf("{%p} <> {%s}\n", (*token)->original, (*token)->original);
+	// free((*token)->in_add);
+	// free((*token)->original);
 	ft_lstclear(token);	
-	free(*token);
+	exit(1);
 }
-static char	*join_and_free(char *s1, char *s2)
+static char	*join_and_free(char *s1, char *s2, t_token **token)
 {
 	char	*res;
 
@@ -51,10 +46,12 @@ static char	*join_and_free(char *s1, char *s2)
 	res = ft_strjoin(s1, s2);
 	free(s1);
 	free(s2);
+	if (!res)
+		ft_exit(token);
 	return (res);
 }
 
-static char	*parse_inside_quote(char *input, int *i, char quote)
+static char	*parse_inside_quote(char *input, int *i, char quote, t_token **token)
 {
 	int		start;
 	char	*tmp;
@@ -63,12 +60,14 @@ static char	*parse_inside_quote(char *input, int *i, char quote)
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
 	tmp = substr(input, start, *i - start);
+	if (!tmp)
+		ft_exit(token);
 	if (input[*i] == quote)
 		(*i)++;
 	return (tmp);
 }
 
-static char	*parse_unquoted_part(char *input, int *i)
+static char	*parse_unquoted_part(char *input, int *i, t_token **token)
 {
 	int		start;
 	char	*tmp;
@@ -79,10 +78,12 @@ static char	*parse_unquoted_part(char *input, int *i)
 		input[*i] != '<' && input[*i] != '>')
 		(*i)++;
 	tmp = substr(input, start, *i - start);
+	if (!tmp)
+		ft_exit(token);
 	return (tmp);
 }
 
-char	*parse_word_with_quotes(char *input, int *i)
+char	*parse_word_with_quotes(char *input, int *i, t_token **token)
 {
 	char	*final;
 	char	*tmp;
@@ -95,11 +96,11 @@ char	*parse_word_with_quotes(char *input, int *i)
 		if (input[*i] == '\'' || input[*i] == '"')
 		{
 			quote = input[(*i)++];
-			tmp = parse_inside_quote(input, i, quote);
+			tmp = parse_inside_quote(input, i, quote, token);
 		}
 		else
-			tmp = parse_unquoted_part(input, i);
-		final = join_and_free(final, tmp);
+			tmp = parse_unquoted_part(input, i, token);
+		final = join_and_free(final, tmp, token);
 	}
 	return (final);
 }
@@ -141,6 +142,7 @@ static int	is_bad_redir_sequence(t_token *t)
 
 static int	is_general_syntax_error(t_token *t)
 {
+	printf("=>> {%p} <> {%s}\n", t->original, t->original);
 	if ((t->index == 1 && t->type == PIPE)
 		|| (!t->next && t->type == PIPE)
 		|| (t->next && t->type == PIPE && t->next->type == PIPE)
@@ -165,7 +167,7 @@ void	syntax_error(t_token **tokens)
 		}
 		tmp = tmp->next;
 	}
-	printf("\n*****\n");
+	// printf("\n*****\n");
 }
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
@@ -195,7 +197,7 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 	{
 		if (input[*i] == '\'' || input[*i] == '"')
 		{
-			word = parse_word_with_quotes(input, i);
+			word = parse_word_with_quotes(input, i, tokens);
 			add_token(tokens, word, STRING, (*index)++);
 			// free(word);
 		}
@@ -226,6 +228,10 @@ void lexer_1(char *input, t_token **tokens)
 
 	i = 0;
 	index = 1;
+	printf("**\n");
+	// printf("{%s}\n", (*tokens)->content);
+	if (*tokens)
+		// printf("{%s} - {%p} <> {%s}\n", (*tokens)->content,(*tokens)->original, (*tokens)->original);
 	while (input[i])
 	{
 		if (input[i] == ' ')
@@ -256,11 +262,12 @@ int main() ////////////// for test
     char *input = readline("minishell> ");
 	if (!input)
 		exit(1);
-	
 	t_token *tokens = malloc(sizeof(t_token));
+	// tokens = NULL;
 	tokens->original = ft_strdup(input);
-	tokens->content = input;
-	tokens = NULL;
+	// printf("{%p} <> {%s}\n", tokens->original, tokens->original);
+
+	// tokens->content = input;
     lexer_1(input, &tokens);
 	t_token *copy = tokens;
     while (copy)
