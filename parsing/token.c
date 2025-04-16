@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/16 15:19:23 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/16 15:55:42 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_exit(t_token **token)
 	// printf("{%p} <> {%s}\n", (*token)->original, (*token)->original);
 	// free((*token)->in_add);
 	// free((*token)->original);
+		printf("\n***s**\n");
 	ft_lstclear(token);	
 	exit(1);
 }
@@ -142,7 +143,7 @@ static int	is_bad_redir_sequence(t_token *t)
 
 static int	is_general_syntax_error(t_token *t)
 {
-	printf("=>> {%p} <> {%s}\n", t->original, t->original);
+	
 	if ((t->index == 1 && t->type == PIPE)
 		|| (!t->next && t->type == PIPE)
 		|| (t->next && t->type == PIPE && t->next->type == PIPE)
@@ -150,6 +151,7 @@ static int	is_general_syntax_error(t_token *t)
 		|| (t->type == HEREDOC && (!t->next || t->next->type != WORD))
 		|| (is_redirection(t) && (!t->next || t->next->type != WORD)))
 		return (1);
+			printf("=>> {%p} <> {%s}\n", t->original, t->original);
 	return (0);
 }
 
@@ -158,7 +160,7 @@ void	syntax_error(t_token **tokens)
 	t_token	*tmp;
 
 	tmp = *tokens;
-	while (tmp)
+	while (tmp->next != NULL && tmp)
 	{
 		if (is_general_syntax_error(tmp))
 		{
@@ -166,8 +168,8 @@ void	syntax_error(t_token **tokens)
 			ft_exit(tokens);
 		}
 		tmp = tmp->next;
+		
 	}
-	// printf("\n*****\n");
 }
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
@@ -263,9 +265,10 @@ int main() ////////////// for test
 	if (!input)
 		exit(1);
 	t_token *tokens = malloc(sizeof(t_token));
-	// tokens = NULL;
 	tokens->original = ft_strdup(input);
-	// printf("{%p} <> {%s}\n", tokens->original, tokens->original);
+	// tokens->content = NULL;
+	tokens->next = NULL;
+	printf("{%p} <> {%s}\n", tokens->original, tokens->original);
 
 	// tokens->content = input;
     lexer_1(input, &tokens);
