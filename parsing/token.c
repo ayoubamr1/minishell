@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/15 18:27:33 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/16 10:10:15 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ void	syntax_error(t_token **tokens)
 		}
 		tmp = tmp->next;
 	}
+	printf("\n*****\n");
 }
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
