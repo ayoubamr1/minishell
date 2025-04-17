@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/17 12:02:36 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/17 12:06:03 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -277,13 +277,12 @@ int	main(void)
 		input = readline("minishell> ");
 		printf("---\n");
 		if (!input)
-			exit(0); // Handle Ctrl+D gracefully
+			exit(0);
 
 		// tokens->in  = input;
 		tokens = NULL;
 		lexer_1(input, &tokens);
 
-			 // Store original input once
 		copy = tokens;
 		while (copy)
 		{
@@ -298,8 +297,3 @@ int	main(void)
 	}
 	return (0);
 }
-
-
-			// add_token(tokens, ft_substr(input, start, start + 1), APPEND, index);
-// 
-
