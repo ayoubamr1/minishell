@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/16 11:57:51 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/17 12:03:12 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	add_token(t_token **lst, char *content, t_token_type type, int index)
 	t_token	*tok;
 	t_token	*tmp;
 
-	if (!content)
-		ft_exit(lst);
 	tok = new_token(content, type);
 	tok->index = index;
 	if (!*lst)
