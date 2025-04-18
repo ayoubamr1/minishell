@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/17 12:03:12 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:17:51 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_token	*new_token(char *content, t_token_type type)
 	tok->content = content;
 	tok->type = type;
 	tok->next = (NULL);
+	printf("[%p]\n", content);
+	printf("[%p]\n", tok->content);
 	return (tok);
 }
 
@@ -29,7 +31,7 @@ void	add_token(t_token **lst, char *content, t_token_type type, int index)
 {
 	t_token	*tok;
 	t_token	*tmp;
-
+	printf("add =>[%p]\n", content);
 	tok = new_token(content, type);
 	tok->index = index;
 	if (!*lst)
@@ -41,6 +43,7 @@ void	add_token(t_token **lst, char *content, t_token_type type, int index)
 			tmp = tmp->next;
 		tmp->next = tok;
 	}
+	printf("**>%p\n", (*lst)->content);
 }
 
 char	*substr(char *s, int start, int len)
@@ -117,4 +120,22 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		str[i++] = s2[j++];
 	str[i] = '\0';
 	return (str);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	if (n == 0)
+		return (0);
+	i = 0;
+	while ((s1[i] && s2[i]) && (i < n))
+	{
+		if (s1[i] != s2[i])
+			return ((unsigned char) s1[i] - (unsigned char) s2[i]);
+		i++;
+	}
+	if (i == n)
+		return (0);
+	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
 }

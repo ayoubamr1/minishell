@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/17 12:06:03 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/18 17:23:57 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,12 @@ void	ft_lstclear(t_token **lst)
 	while (*lst)
 	{
 		n = (*lst)->next;
-		// free((*lst)->content);
+		free((*lst)->content);
 		free(*lst);
 		*lst = n;
 	}
 	*lst = NULL;
 }
-// void ft_lstclear(t_token **lst)
-// {
-// 	t_token *tmp;
-
-// 	while (*lst)
-// 	{
-// 		tmp = (*lst)->next;
-// 		free((*lst)->content);
-// 		free((*lst)->original); // Only if you strdup it
-// 		// free((*lst)->in_add);   // If allocated
-// 		free(*lst);
-// 		*lst = tmp;
-// 	}
-// }
 
 void	ft_exit(t_token **token)
 {
@@ -52,12 +38,12 @@ void	ft_exit(t_token **token)
 	// 	free(copy->content);
 	// 	copy = copy->next;	
 	// }
-	// free((*token)->in_add);
+	// free((*token)->original);
 	
 	printf("\n*********************\n");
 	ft_lstclear(token);	
 
-	// free(*token);
+	free(*token);
 	exit(1);
 }
 static char	*join_and_free(char *s1, char *s2)
@@ -72,7 +58,7 @@ static char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-static char	*parse_inside_quote(char *input, int *i, char quote)
+static char	*parse_inside_quote(char *input, int *i, char quote, t_token **token)
 {
 	int		start;
 	char	*tmp;
@@ -81,12 +67,14 @@ static char	*parse_inside_quote(char *input, int *i, char quote)
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
 	tmp = substr(input, start, *i - start);
+	if (!tmp)
+		(free(input), ft_exit(token));
 	if (input[*i] == quote)
 		(*i)++;
 	return (tmp);
 }
 
-static char	*parse_unquoted_part(char *input, int *i)
+static char	*parse_unquoted_part(char *input, int *i, t_token **token)
 {
 	int		start;
 	char	*tmp;
@@ -97,10 +85,12 @@ static char	*parse_unquoted_part(char *input, int *i)
 		input[*i] != '<' && input[*i] != '>')
 		(*i)++;
 	tmp = substr(input, start, *i - start);
+	if (!tmp)
+		(free(input), ft_exit(token));
 	return (tmp);
 }
 
-char	*parse_word_with_quotes(char *input, int *i)
+char	*parse_word_with_quotes(char *input, int *i, t_token **token)
 {
 	char	*final;
 	char	*tmp;
@@ -113,10 +103,10 @@ char	*parse_word_with_quotes(char *input, int *i)
 		if (input[*i] == '\'' || input[*i] == '"')
 		{
 			quote = input[(*i)++];
-			tmp = parse_inside_quote(input, i, quote);
+			tmp = parse_inside_quote(input, i, quote, token);
 		}
 		else
-			tmp = parse_unquoted_part(input, i);
+			tmp = parse_unquoted_part(input, i, token);
 		final = join_and_free(final, tmp);
 	}
 	return (final);
@@ -193,13 +183,11 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 
 	if (input[*i] == '>')
 		{
-			// synatx();
 			add_token(tokens, strdup(">"), REDIR_OUT, *index);
 			((*i)++, (*index)++);
 		}
 	else if (input[(*i)] == '|')
 	{
-		// if (input[(*i) + 1 ] == '|')
 		add_token(tokens, strdup("|"), PIPE, (*index));
 		((*i)++, (*index)++);
 	}
@@ -212,7 +200,7 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 	{
 		if (input[*i] == '\'' || input[*i] == '"')
 		{
-			word = parse_word_with_quotes(input, i);
+			word = parse_word_with_quotes(input, i, tokens);
 			add_token(tokens, word, STRING, (*index)++);
 			// free(word);
 		}
@@ -245,6 +233,8 @@ void lexer_1(char *input, t_token **tokens)
 	index = 1;
 	while (input[i])
 	{
+		printf("2 => %p\n", input);
+	
 		if (input[i] == ' ')
 			i++;
 		else if (input[i] == '>' && input[i + 1] == '>')
@@ -262,36 +252,36 @@ void lexer_1(char *input, t_token **tokens)
 		else
 			lexer_2(tokens, input, &i, &index);
 	}
-	// (*tokens)->original = ft_strdup(input);
 	syntax_error(tokens);
 }
 
 int	main(void)
 {
 	char	*input;
-	t_token	*tokens;
+	t_token	*tokens = malloc(sizeof(t_token));
 	t_token	*copy;
-
+	
+	tokens = NULL;
+	int i  = 0;
+	
 	while (1)
 	{
 		input = readline("minishell> ");
-		printf("---\n");
+		add_token(&tokens, ft_strdup(input), VOID, 0);
+		printf("1 => %p\n", input);
 		if (!input)
 			exit(0);
 
-		// tokens->in  = input;
-		tokens = NULL;
+		if (!ft_strncmp(input, "exit", ft_strlen("exit")))
+			(free(input), exit(1));
 		lexer_1(input, &tokens);
-
 		copy = tokens;
 		while (copy)
 		{
-			printf("Token: {%s} || Type: %d || Index: %d\n",
-				copy->content, copy->type, copy->index);
+			printf("Token:{%s}\n", copy->content);
 			copy = copy->next;
+			i++;
 		}
-		printf("---------------------\n");
-
 		free(input);
 		ft_lstclear(&tokens);
 	}

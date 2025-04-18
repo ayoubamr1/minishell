@@ -28,11 +28,11 @@ typedef struct s_token {
 	char *original;
     struct s_token *next;
 } t_token;
+
 // ------------------------------------
 
 //---------------{ tokenization functions }-----------------
 void	lexer_1(char *input, t_token **tokens);
-int main();
 void lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 void	ft_quote(t_token **tokens, char *input, int *i, int *index);
@@ -43,6 +43,8 @@ char	*substr(char *s, int start, int len);
 
 // ---------------general tools -----------------
 char	*ft_strdup(const char *s1);
+size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif
