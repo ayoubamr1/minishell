@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/18 17:17:51 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:38:22 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*new_token(char *content, t_token_type type)
 		return (NULL);
 	tok->content = content;
 	tok->type = type;
-	tok->next = (NULL);
+	tok->next = NULL;
 	printf("[%p]\n", content);
 	printf("[%p]\n", tok->content);
 	return (tok);

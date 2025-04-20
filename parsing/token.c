@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/18 17:23:57 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:46:49 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,32 +258,43 @@ void lexer_1(char *input, t_token **tokens)
 int	main(void)
 {
 	char	*input;
-	t_token	*tokens = malloc(sizeof(t_token));
+	t_token	*tokens = NULL;
+	char	*original = NULL;
 	t_token	*copy;
 	
-	tokens = NULL;
 	int i  = 0;
 	
 	while (1)
 	{
+		// tokens = malloc(sizeof(t_token));
+		// tokens->content = ft_strdup("hello");
+		// tokens->next = NULL;
+		// if malloc failed
+		
 		input = readline("minishell> ");
-		add_token(&tokens, ft_strdup(input), VOID, 0);
+		// add_token(&tokens, ft_strdup(input), VOID, 0);
 		printf("1 => %p\n", input);
 		if (!input)
 			exit(0);
-
+		
+		// write(1, "before creating original\n", ft_strlen("before creating original\n"));
+		// printf("address before = %p\n", tokens->original);
+		// tokens->original = ft_strdup(input);
+		// printf("address after = %p\n", tokens->original);
+		// printf("content of original = %s\n", tokens->original);
+		
 		if (!ft_strncmp(input, "exit", ft_strlen("exit")))
 			(free(input), exit(1));
 		lexer_1(input, &tokens);
-		copy = tokens;
-		while (copy)
-		{
-			printf("Token:{%s}\n", copy->content);
-			copy = copy->next;
-			i++;
-		}
+		// copy = tokens;
+		// while (copy)
+		// {
+		// 	printf("Token:{%s}\n", copy->content);
+		// 	copy = copy->next;
+		// 	i++;
+		// }
 		free(input);
-		ft_lstclear(&tokens);
+		// ft_lstclear(&tokens);
 	}
 	return (0);
 }
