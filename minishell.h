@@ -62,5 +62,6 @@ size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strncpy(char *dest, char *src, size_t n);
+int ft_isspace(int c);
 
 #endif
