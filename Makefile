@@ -2,7 +2,7 @@ NAME = mini
 
 CC = cc
 
-SRC = token/mini.c token/tools.c token/ft_malloc.c  token/token.c ../tools/tool_1.c #parsing/ft_malloc.c parsing/syntax_error.c tools/tool_1.c  builtins/cd.c  
+SRC = parsing/token/mini.c parsing/token/tools.c parsing/token/ft_malloc.c  parsing/token/token.c ../tools/tool_1.c #parsing/ft_malloc.c parsing/syntax_error.c tools/tool_1.c  builtins/cd.c  
 
 OBJ		= $(SRC:.c=.o)
 

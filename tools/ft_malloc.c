@@ -1,4 +1,4 @@
-#include "../../minishell.h"
+#include "../minishell.h"
 
 t_list	*new_node(void	*ptr)
 {

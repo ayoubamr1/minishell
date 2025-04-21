@@ -6,7 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <readline/readline.h>
-#include "parsing/gbc.h"
+#include "tools/gbc.h"
 
 typedef enum e_token_type {
 	s_quote,  //  ''
