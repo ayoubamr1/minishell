@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/20 22:49:38 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:24:35 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,28 +54,10 @@ char	*substr(char *s, int start, int len)
 	return (out);
 }
 
-size_t	ft_strlen(const char *s)
+
+int ft_isspace(int c)
 {
-	size_t	c;
-
-	c = 0;
-	while (s[c])
-		c++;
-	return (c);
+	if (c == ' ' || c == '\t' || c == '\n')
+    	return 1;
+	return 0;
 }
-
-char	*ft_strcpy(const char *str, char *dest)
-{
-	size_t	i;
-
-	i = 0;
-	while (str[i])
-	{
-		dest[i] = str[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-

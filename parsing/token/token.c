@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/20 22:39:05 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/21 15:27:00 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ void	ft_lstclear(t_token **lst)
 
 void	ft_exit(t_token **token)
 {
-	t_token *tmp;
-	
+	(void)**token;
 	ft_malloc(0, FREE);
 	exit(1);
 }
@@ -70,7 +69,7 @@ static char	*parse_unquoted_part(char *input, int *i, t_token **token)
 
 	start = *i;
 	while (input[*i] && input[*i] != '\'' && input[*i] != '"' &&
-		!isspace(input[*i]) && input[*i] != '|' &&
+		!ft_isspace(input[*i]) && input[*i] != '|' &&
 		input[*i] != '<' && input[*i] != '>')
 		(*i)++;
 	tmp = substr(input, start, *i - start);
@@ -86,7 +85,7 @@ char	*parse_word_with_quotes(char *input, int *i, t_token **token)
 	char	quote;
 
 	final = ft_strdup("");
-	while (input[*i] && !isspace(input[*i]) &&
+	while (input[*i] && !ft_isspace(input[*i]) &&
 		input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
 	{
 		if (input[*i] == '\'' || input[*i] == '"')
@@ -166,8 +165,6 @@ void	syntax_error(t_token **tokens)
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
 {
-	char quote;
-	int start;
 	char *word;
 
 	if (input[*i] == '>')
