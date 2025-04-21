@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/21 15:54:05 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/21 17:49:25 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_lstclear(t_token **lst)
 void	ft_exit(t_token **token)
 {
 	(void)**token;
-	ft_malloc(0, FREE);
+	// ft_malloc(0, FREE);
 	// exit(1);
 }
 static char	*join_and_free(char *s1, char *s2)

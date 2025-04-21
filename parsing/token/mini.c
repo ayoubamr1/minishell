@@ -16,11 +16,12 @@ int main()
 
         if (!ft_strncmp(input, "exit", ft_strlen("exit")))
         {
-            free(input);
+            // free(input);
             // ft_lstclear(&token);
             exit(1);
         }
-        	lexer_1(input, &token);
+		lexer_1(input, &token);
+		ft_commend();
 		sh = token;
 			while (sh)
 			{
@@ -30,6 +31,7 @@ int main()
 			}
 			
 
+		ft_malloc(0, FREE);
         free(input);
 		// ft_lstclear(&shell_list);
 	

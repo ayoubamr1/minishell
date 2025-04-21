@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include "tools/gbc.h"
+// #include "leaks.h"
 
 typedef enum e_token_type {
 	s_quote,  //  ''
