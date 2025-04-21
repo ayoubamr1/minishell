@@ -51,6 +51,7 @@ void	lexer_1(char *input, t_token **tokens);
 void lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 void	ft_quote(t_token **tokens, char *input, int *i, int *index);
+void	syntax_error(t_token **tokens);
 //                **  token_tools  **
 void	add_token(t_token **lst, char *content, t_token_type type, int index);
 t_token	*new_token(char *content, t_token_type type);
