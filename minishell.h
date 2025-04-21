@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include "tools/gbc.h"
 // #include "leaks.h"
 

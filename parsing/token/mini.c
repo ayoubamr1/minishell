@@ -8,9 +8,9 @@ int main()
 
     while (1)
     {
-        
 		token = NULL;
         input = readline("minishell> ");
+		add_history(input);
         if (!input)
             exit(0);
 
@@ -21,7 +21,7 @@ int main()
             exit(1);
         }
 		lexer_1(input, &token);
-		ft_commend();
+		// ft_commend();
 		sh = token;
 			while (sh)
 			{

@@ -52,7 +52,3 @@ void	syntax_error(t_token **tokens)
 	}
 }
 
-void	ft_commend(t_token **token, t_token **commend_list)
-{
-	
-}

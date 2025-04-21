@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/21 17:49:25 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/21 20:18:29 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void lexer_1(char *input, t_token **tokens)
 	index = 1;
 	while (input[i])
 	{
-		if (input[i] == ' ')
+		if (input[i] == ' ' || input[i] == '\t')
 			i++;
 		else if (input[i] == '>' && input[i + 1] == '>')
 		{
