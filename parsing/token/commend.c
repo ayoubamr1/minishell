@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/22 15:42:15 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:12:45 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,13 @@ void	ft_commend(t_token **token, t_token **commend_list)
 	{
 		if (tmp->type == WORD)
 		{
-			if ()
+			// if ()
 				add_token(commend_list, ft_strjoin(ft_strjoin(tmp->content, " "), tmp->next->content), VOID, 0);
 		}
+		else if ((tmp->type == REDIR_IN) || (tmp->type == REDIR_OUT))
+		{
+			
+		} 
 			tmp = tmp->next;
 	}
 }

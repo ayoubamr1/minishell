@@ -20,16 +20,24 @@ typedef enum e_token_type {
     REDIR_OUT,  // >
     APPEND,     // >>
     HEREDOC,   // << 
+    FILE_IN,   // << 
+    FILE_OUT,   // << 
 	VOID     
 } t_token_type;
 
-typedef struct s_gbc
+typedef struct s_cmd
 {
-	void *content;
-	struct s_gbc *next;
-}	t_gbc;
+	char			**args;
+	char 			*infile;
+	char 			*outfile;
+	int 			append; // 1 if >>
+	int 			heredoc; // 1 if <<
+	struct s_cmd	*next; // for piped commands
+} t_cmd;
 
-typedef struct s_token {
+
+typedef struct s_token
+{
     char *content;
     t_token_type type;
     int index;
@@ -40,8 +48,8 @@ typedef struct s_shell {
     char			*content;
     t_token_type 	type;
 	t_token 		*token;
-	void 			*save;
-	t_gbc 			*garbage_c;
+	// void 			*save;
+	// t_gbc 			*garbage_c;
 	char 			*original;
     struct s_shell 	*next;
 } t_shell;
