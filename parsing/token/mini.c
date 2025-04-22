@@ -29,9 +29,11 @@ int main()
 				// printf("==> %s\n", sh->content);
 				sh = sh->next;
 			}
+		syntax_error(&token);
+
 			
 
-		ft_malloc(0, FREE);
+		// ft_malloc(0, FREE);
         free(input);
 		// ft_lstclear(&shell_list);
 	
