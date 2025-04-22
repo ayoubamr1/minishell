@@ -4,6 +4,7 @@ int main()
 {
     char *input;
     t_token *token = NULL;
+    t_token *commend_list = NULL;
     t_token *sh = NULL;
 
     while (1)
@@ -21,7 +22,7 @@ int main()
             exit(1);
         }
 		lexer_1(input, &token);
-		// ft_commend();
+		// ft_commend(&token, &commend_list);
 		sh = token;
 			while (sh)
 			{
@@ -30,14 +31,9 @@ int main()
 				sh = sh->next;
 			}
 		syntax_error(&token);
-
-			
-
 		// ft_malloc(0, FREE);
         free(input);
 		// ft_lstclear(&shell_list);
-	
     }
-    
     return 0;
 }

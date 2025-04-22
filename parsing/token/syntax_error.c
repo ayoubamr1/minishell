@@ -45,10 +45,11 @@ void	syntax_error(t_token **tokens)
 		if (is_general_syntax_error(tmp))
 		{
 			printf("syntax error near unexpected token\n");
-			ft_malloc(0, FREE);
+			// ft_malloc(0, FREE);
 			return ;
 		}
 		tmp = tmp->next;
 	}
 }
+
 

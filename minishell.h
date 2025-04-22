@@ -59,6 +59,8 @@ void	add_token(t_token **lst, char *content, t_token_type type, int index);
 t_token	*new_token(char *content, t_token_type type);
 char	*substr(char *s, int start, int len);
 void	ft_lstclear(t_token **lst);
+void	syntax_error(t_token **tokens);
+void	ft_commend(t_token **token, t_token **commend_list);
 // ---------------general tools -----------------
 char	*ft_strdup(const char *s1);
 size_t	ft_strlen(const char *s);
