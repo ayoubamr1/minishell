@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/23 18:40:19 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/23 19:49:31 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	ft_commend(t_token **token, t_cmd **cmd_list)
 	t_cmd	*cmd_tmp = NULL;
 	int		pipe_count;
 	int		fd = 0;
-	// char **ss;
 
 	tmp = *token;
 	cmd_tmp = *cmd_list;
@@ -74,8 +73,7 @@ void	ft_commend(t_token **token, t_cmd **cmd_list)
 			else if (tmp && tmp->type == REDIR_IN)
 			{
 				tmp = tmp->next;
-				fd = open("tmp->content", O_RDWR, O_CREAT , O_TRUNC, 0777);
-				printf("fd_in =[%d]\n", fd);
+				fd = open(tmp->content, O_RDWR);
 				if (fd < 0)
 					perror(tmp->next->content);
 				cmd_tmp->in = fd;
@@ -84,21 +82,23 @@ void	ft_commend(t_token **token, t_cmd **cmd_list)
 			else if (tmp && tmp->type == REDIR_OUT)
 			{
 				tmp = tmp->next;
-				if (!tmp)
-					printf("m9awda\n");
-				fd = open(tmp->content,  O_RDWR, O_CREAT , O_TRUNC, 0777);
-				printf("fd_out =[%d]\n", fd);
+				// fd = open(tmp->content,  O_CREAT ,O_RDWR, O_TRUNC, 777);
+				fd = open(tmp->content, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+				printf("fd_in =[%d] <> file[%s]\n", fd, tmp->content);
+				// printf("fd_out =[%d]\n", fd);
 				
 				if (fd < 0)
 					perror(tmp->content);
 				cmd_tmp->out = fd;
 				tmp = tmp->next;
 			}		
-			printf("hello\n");
 		}
 		// tmp = tmp->next;
-				printf("*************\n");
 		pipe_count--;
+
+	
+// access();
+// execve();
 	}
 	// 	printf("***********\n");
 	// if (tmp && tmp->next && (tmp->next->content[0] == '-'))
@@ -122,3 +122,4 @@ void	ft_commend(t_token **token, t_cmd **cmd_list)
 	// }
 	return;
 }
+

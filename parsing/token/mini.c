@@ -23,9 +23,9 @@ int main()
         }
 		lexer_1(input, &token);
 		if (syntax_error(&token) == TRUE)
-			ft_commend(&token, &commend_list);
 
 
+		ft_commend(&token, &commend_list);
 		// syntax_error(&token);
 
 		t_cmd *cc = commend_list;
@@ -41,13 +41,13 @@ int main()
 			cc = cc->next;
 		}
 		
-		sh = token;
-			while (sh)
-			{
-				printf("index = %d\t content = %s\ttype = %d\n", sh->index, sh->content, sh->type);
-				// printf("==> %s\n", sh->content);
-				sh = sh->next;
-			}
+		// sh = token;
+		// 	while (sh)
+		// 	{
+		// 		printf("index = %d\t content = %s\ttype = %d\n", sh->index, sh->content, sh->type);
+		// 		// printf("==> %s\n", sh->content);
+		// 		sh = sh->next;
+		// 	}
 		// ft_malloc(0, FREE);
         free(input);
 		// ft_lstclear(&shell_list);
