@@ -35,10 +35,11 @@ static int	is_general_syntax_error(t_token *t)
 	return (0);
 }
 
-void	syntax_error(t_token **tokens)
+int	syntax_error(t_token **tokens)
 {
 	t_token	*tmp;
 
+	// handle  > .
 	tmp = *tokens;
 	while (tmp)
 	{
@@ -46,10 +47,9 @@ void	syntax_error(t_token **tokens)
 		{
 			printf("syntax error near unexpected token\n");
 			// ft_malloc(0, FREE);
-			return ;
+			return (FALSE);
 		}
 		tmp = tmp->next;
 	}
+	return (TRUE);
 }
-
-

@@ -2,11 +2,12 @@ NAME = mini
 
 CC = cc
 
-SRC = parsing/token/mini.c parsing/token/tools.c tools/ft_malloc.c parsing/token/syntax_error.c parsing/token/token.c tools/tool_1.c #parsing/ft_malloc.c  tools/tool_1.c  builtins/cd.c  
+SRC = parsing/token/mini.c parsing/token/tools.c tools/ft_malloc.c parsing/token/syntax_error.c parsing/token/token.c  \
+	 tools/tool_1.c parsing/token/commend.c #parsing/ft_malloc.c  tools/tool_1.c  builtins/cd.c  
 
 OBJ		= $(SRC:.c=.o)
 
-CFLAGS = #-g3 -fsanitize=address #`-Wall -Wextra -Werror #  
+CFLAGS = -g3 -fsanitize=address # -Wall -Wextra -Werror #` #  
 
 
 all : $(NAME)

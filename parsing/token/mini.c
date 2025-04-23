@@ -4,7 +4,7 @@ int main()
 {
     char *input;
     t_token *token = NULL;
-    t_token *commend_list = NULL;
+    t_cmd *commend_list = ft_malloc((size_t)(sizeof(t_cmd)), MALLOC);
     t_token *sh = NULL;
 
     while (1)
@@ -22,7 +22,25 @@ int main()
             exit(1);
         }
 		lexer_1(input, &token);
-		// ft_commend(&token, &commend_list);
+		if (syntax_error(&token) == TRUE)
+			ft_commend(&token, &commend_list);
+
+
+		// syntax_error(&token);
+
+		t_cmd *cc = commend_list;
+		while (cc)
+		{
+			int i = 0;
+			while(cc->args[i])
+			{
+				printf ("args[%s] ,", cc->args[i]);
+				i++;
+			}
+			printf("{infile[%s] outfile[%s] infd[%d] outfd[%d] }\n",cc->infile, cc->outfile, cc->in, cc->out);
+			cc = cc->next;
+		}
+		
 		sh = token;
 			while (sh)
 			{
@@ -30,7 +48,6 @@ int main()
 				// printf("==> %s\n", sh->content);
 				sh = sh->next;
 			}
-		syntax_error(&token);
 		// ft_malloc(0, FREE);
         free(input);
 		// ft_lstclear(&shell_list);

@@ -6,44 +6,119 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/22 19:12:45 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:40:19 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_commend(t_token **token, t_token **commend_list)
+static char **build_args(t_token **token)
 {
 	t_token *tmp;
-	int		p;
+	char	**args;
+	int		args_count;
+	int		i;
 
 	tmp = *token;
-	p = 1;
+	args_count = 0;
+	i = 0;
+	while(tmp)
+	{
+		if (tmp->type == WORD || tmp->type == STRING)
+			args_count++;
+		tmp = tmp->next;
+	}
+	args = ft_malloc((size_t)(sizeof(char *) * (args_count + 1)), MALLOC);
+	tmp = *token;
+	while (tmp &&  (tmp->type == WORD || tmp->type == STRING))
+	{
+			args[i] = ft_strdup(tmp->content);
+		tmp = tmp->next;
+		i++;
+	}
+	args[i] = NULL;
+	return(args);
+}
+void	ft_commend(t_token **token, t_cmd **cmd_list)
+{
+	t_token *tmp;
+	t_cmd	*cmd_tmp = NULL;
+	int		pipe_count;
+	int		fd = 0;
+	// char **ss;
+
+	tmp = *token;
+	cmd_tmp = *cmd_list;
+	pipe_count = 1;
 	while (tmp)
 	{
 		if (tmp->type == PIPE)
-			p++;
+			pipe_count++;
 		tmp = tmp->next;
 	}
 	tmp = *token;
-		printf("***********\n");
-	if (tmp && tmp->next && (tmp->next->content[0] == '-'))
+
+	//     	REDIR_IN,   // < check if find this file
+    // 		REDIR_OUT,  // > create file
+	while(pipe_count >= 1)
 	{
-		add_token(commend_list, ft_strjoin(ft_strjoin(tmp->content, " "), tmp->next->content), VOID, 0);
-		tmp = tmp->next->next;
-		printf("{%s}\n", (*commend_list)->content);
-	}
-	while (tmp && tmp->type != PIPE)
-	{
-		if (tmp->type == WORD)
+		while (tmp && tmp->type != PIPE)
 		{
-			// if ()
-				add_token(commend_list, ft_strjoin(ft_strjoin(tmp->content, " "), tmp->next->content), VOID, 0);
+			if (tmp->type == WORD || tmp->type == STRING)
+			{
+				cmd_tmp->args = build_args(token);
+				int i = 0;
+				while (tmp && (tmp->type == WORD || tmp->type == STRING))
+					tmp = tmp->next;
+			}
+			else if (tmp && tmp->type == REDIR_IN)
+			{
+				tmp = tmp->next;
+				fd = open("tmp->content", O_RDWR, O_CREAT , O_TRUNC, 0777);
+				printf("fd_in =[%d]\n", fd);
+				if (fd < 0)
+					perror(tmp->next->content);
+				cmd_tmp->in = fd;
+				tmp = tmp->next;
+			}
+			else if (tmp && tmp->type == REDIR_OUT)
+			{
+				tmp = tmp->next;
+				if (!tmp)
+					printf("m9awda\n");
+				fd = open(tmp->content,  O_RDWR, O_CREAT , O_TRUNC, 0777);
+				printf("fd_out =[%d]\n", fd);
+				
+				if (fd < 0)
+					perror(tmp->content);
+				cmd_tmp->out = fd;
+				tmp = tmp->next;
+			}		
+			printf("hello\n");
 		}
-		else if ((tmp->type == REDIR_IN) || (tmp->type == REDIR_OUT))
-		{
-			
-		} 
-			tmp = tmp->next;
+		// tmp = tmp->next;
+				printf("*************\n");
+		pipe_count--;
 	}
+	// 	printf("***********\n");
+	// if (tmp && tmp->next && (tmp->next->content[0] == '-'))
+	// {
+	// 	add_token(commend_list, ft_strjoin(ft_strjoin(tmp->content, " "), tmp->next->content), VOID, 0);
+	// 	tmp = tmp->next->next;
+	// 	printf("{%s}\n", (*commend_list)->content);
+	// }
+	// while (tmp && tmp->type != PIPE)
+	// {
+	// 	if (tmp->type == WORD)
+	// 	{
+	// 		// if ()
+	// 			add_token(commend_list, ft_strjoin(ft_strjoin(tmp->content, " "), tmp->next->content), VOID, 0);
+	// 	}
+	// 	else if ((tmp->type == REDIR_IN) || (tmp->type == REDIR_OUT))
+	// 	{
+			
+	// 	} 
+	// 		tmp = tmp->next;
+	// }
+	return;
 }
