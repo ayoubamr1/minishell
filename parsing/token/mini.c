@@ -24,27 +24,25 @@ int main()
 		lexer_1(input, &token);
 		if (syntax_error(&token) == TRUE)
 
-
 		ft_commend(&token, &commend_list);
-		// syntax_error(&token);
-
 		t_cmd *cc = commend_list;
 		while (cc)
 		{
 			int i = 0;
-			while(cc->args[i])
+			while(cc->args && cc->args[i])
 			{
-				printf ("args[%s] ,", cc->args[i]);
+				printf ("{args[%s] ,", cc->args[i]);
 				i++;
 			}
-			printf("{infile[%s] outfile[%s] infd[%d] outfd[%d] }\n",cc->infile, cc->outfile, cc->in, cc->out);
+			if (cc->args)
+				printf("infile[%s] outfile[%s] infd[%d] outfd[%d] }\n",cc->infile, cc->outfile, cc->in, cc->out);
 			cc = cc->next;
 		}
 		
 		// sh = token;
 		// 	while (sh)
 		// 	{
-		// 		printf("index = %d\t content = %s\ttype = %d\n", sh->index, sh->content, sh->type);
+		// 		printf("content = %s\n", sh->content);
 		// 		// printf("==> %s\n", sh->content);
 		// 		sh = sh->next;
 		// 	}

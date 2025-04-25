@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/22 21:36:08 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/25 09:52:46 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,71 @@ void	ft_exit(t_token **token)
 	// ft_malloc(0, FREE);
 	// exit(1);
 }
+// static char	*join_and_free(char *s1, char *s2)
+// {
+// 	char	*res;
+
+// 	if (!s1 || !s2)
+// 		return (NULL);
+// 	res = ft_strjoin(s1, s2);
+// 	// free(s1);
+// 	// free(s2);
+// 	return (res);
+// }
+
+// static char	*parse_inside_quote(char *input, int *i, char quote)
+// {
+// 	int		start;
+// 	char	*tmp;
+
+// 	start = *i;
+// 	while (input[*i] && input[*i] != quote)
+// 		(*i)++;
+// 	tmp = substr(input, start, *i - start);
+// 	// if (!tmp)
+// 	// 	(free(input), ft_exit(token));
+// 	if (input[*i] == quote)
+// 		(*i)++;
+// 	return (tmp);
+// }
+
+// static char	*parse_unquoted_part(char *input, int *i)
+// {
+// 	int		start;
+// 	char	*tmp;
+
+// 	start = *i;
+// 	while (input[*i] && input[*i] != '\'' && input[*i] != '"' &&
+// 		!ft_isspace(input[*i]) && input[*i] != '|' &&
+// 		input[*i] != '<' && input[*i] != '>')
+// 		(*i)++;
+// 	tmp = substr(input, start, *i - start);
+// 	// if (!tmp)
+// 	// 	(free(input), ft_exit(token));
+// 	return (tmp);
+// }
+
+// char	*parse_word_with_quotes(char *input, int *i)
+// {
+// 	char	*final;
+// 	char	*tmp;
+// 	char	quote;
+
+// 	final = ft_strdup("");
+// 	while (input[*i] && !ft_isspace(input[*i]) &&
+// 		input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+// 	{
+// 		if (input[*i] == '\'' || input[*i] == '"')
+// 		{
+// 			quote = input[(*i)++];
+// 			tmp = parse_inside_quote(input, i, quote);
+// 		}
+// 		else
+// 			tmp = parse_unquoted_part(input, i);
+// 		final = join_and_free(final, tmp);
+// 	}
+// 	return (final);
+// }
 static char	*join_and_free(char *s1, char *s2)
 {
 	char	*res;
@@ -41,8 +106,8 @@ static char	*join_and_free(char *s1, char *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	res = ft_strjoin(s1, s2);
-	// free(s1);
-	// free(s2);
+	free(s1);
+	free(s2);
 	return (res);
 }
 
@@ -55,8 +120,6 @@ static char	*parse_inside_quote(char *input, int *i, char quote)
 	while (input[*i] && input[*i] != quote)
 		(*i)++;
 	tmp = substr(input, start, *i - start);
-	// if (!tmp)
-	// 	(free(input), ft_exit(token));
 	if (input[*i] == quote)
 		(*i)++;
 	return (tmp);
@@ -73,8 +136,6 @@ static char	*parse_unquoted_part(char *input, int *i)
 		input[*i] != '<' && input[*i] != '>')
 		(*i)++;
 	tmp = substr(input, start, *i - start);
-	// if (!tmp)
-	// 	(free(input), ft_exit(token));
 	return (tmp);
 }
 
@@ -99,6 +160,7 @@ char	*parse_word_with_quotes(char *input, int *i)
 	}
 	return (final);
 }
+
 
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
 {

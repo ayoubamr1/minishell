@@ -1,8 +1,8 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#define TRUE  0
-#define FALSE 1
+#define TRUE  1
+#define FALSE 0
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,7 +38,7 @@ typedef struct s_cmd
 	int				out; //file fd
 	int 			append; // 1 if >>
 	int 			heredoc; // 1 if <<
-	int				is_pipe;
+	// int				is_pipe;
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 

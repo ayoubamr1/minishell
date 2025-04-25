@@ -1,13 +1,13 @@
 #include "../../minishell.h"
 
-t_cmd	*ft_lstnew(void *content)
+t_cmd	*ft_lstnew()
 {
 	t_cmd	*node;
 
 	node = malloc(sizeof(t_cmd));
 	if (!node)
 		return (NULL);
-	node->content = content;
+	// node->args = ;
 	node->next = NULL;
 	return (node);
 }
@@ -37,7 +37,7 @@ void	ft_lstclear(t_cmd **lst)
 	while (*lst)
 	{
 		n = (*lst)->next;
-		free((*lst)->content);
+		free((*lst)->args);
 		free(*lst);
 		*lst = n;
 	}
