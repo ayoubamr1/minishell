@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/25 12:50:27 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/25 13:02:24 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,6 @@ void	ft_commend(t_token **token, t_cmd **cmd_list)
 		tmp = tmp->next;
 	}
 	tmp = *token;
-
-	//     	REDIR_IN,   // < check if find this file
-    // 		REDIR_OUT,  // > create file
 	while(pipe_count >= 1)
 	{
 		if (tmp->type == PIPE)
@@ -172,6 +169,10 @@ void	ft_commend(t_token **token, t_cmd **cmd_list)
 					perror(tmp->content);
 				cmd_tmp->out = fd;
 				tmp = tmp->next;
+			}
+			else if (tmp && tmp->type == APPEND)
+			{
+				tmp = tmp->next;
 			}		
 		}
 		pipe_count--;
@@ -180,8 +181,6 @@ void	ft_commend(t_token **token, t_cmd **cmd_list)
 	}
 	return;
 }
-// access();
-// execve();
 
 
 	// 	printf("***********\n");

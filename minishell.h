@@ -51,7 +51,8 @@ typedef struct s_token
     struct s_token *next;
 } t_token;
 
-typedef struct s_shell {
+typedef struct s_shell
+{
     char			*content;
     t_token_type 	type;
 	t_token 		*token;
@@ -65,10 +66,10 @@ typedef struct s_shell {
 
 //---------------{ tokenization functions }-----------------
 void	lexer_1(char *input, t_token **tokens);
-void lexer_2(t_token **tokens, char *input, int *i, int *index);
+void 	lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 // void	ft_quote(t_token **tokens, char *input, int *i, int *index);
-int	syntax_error(t_token **tokens);
+int		syntax_error(t_token **tokens);
 void	ft_commend(t_token **token, t_cmd **cmd_list);
 
 
