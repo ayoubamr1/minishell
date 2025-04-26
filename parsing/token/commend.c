@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/25 13:02:24 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/26 15:44:30 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 static t_cmd *ft_lstnew(void)
 {
-	t_cmd *node = malloc(sizeof(t_cmd));
+	t_cmd *node = ft_malloc(sizeof(t_cmd), MALLOC);
 	if (!node)
 		return NULL;
 	node->args = NULL;
-	node->infile = NULL;
-	node->outfile = NULL;
+	node->file = NULL;
+	// node->outfile = NULL;
 	node->in = -1;
 	node->out = -1;
-	node->append = 0;
-	node->heredoc = 0;
+	// node->append = 0;
+	// node->heredoc = 0;
 	node->next = NULL;
 	return node;
 }
@@ -86,40 +86,86 @@ static void	ft_lstadd_back(t_cmd **lst, t_cmd *new)
 	return ;
 }
 
-
-
-static char **build_args(t_token **token)
+static size_t	ft_count_2d(char **arr)
 {
-	t_token *tmp;
-	char	**args;
-	int		args_count;
-	int		i;
+	size_t	i = 0;
 
-	tmp = *token;
-	args_count = 0;
+	while (arr && arr[i])
+		i++;
+	return (i);
+}
+
+char	**ft_strjoin2d(char **s1, char *s2)
+{
+	size_t	len1;
+	size_t	len2;
+	char	**new;
+	size_t	i;
+	size_t	j;
+
+	len1 = ft_count_2d(s1);
 	i = 0;
-	while(tmp)
+	j = 0;
+	if (!s1 && s2)
+		return (new = ft_malloc(2 * sizeof(char *), MALLOC), new[0] = ft_strdup(s2), new[1] = NULL, new); 
+	if (s1 && !s2)
+		return (s1);
+	new = ft_malloc(sizeof(char *) * (len1 + 2), MALLOC);
+	while (i < len1)
 	{
-		if (tmp->type == WORD || tmp->type == STRING)
-			args_count++;
-		tmp = tmp->next;
-	}
-	args = ft_malloc((size_t)(sizeof(char *) * (args_count + 1)), MALLOC);
-	tmp = *token;
-	while (tmp &&  (tmp->type == WORD || tmp->type == STRING))
-	{
-			args[i] = ft_strdup(tmp->content);
-		tmp = tmp->next;
+		new[i] = ft_strdup(s1[i]);
 		i++;
 	}
-	args[i] = NULL;
-	return(args);
+	new[i++] = ft_strdup(s2);
+	new[i] = NULL;
+	free2d (s1);
+	(free(s2), s2 = NULL);
+	return (new);
 }
+
+t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
+{
+	if (!start)
+		return NULL;
+	int fd;
+	while (start && start->type != PIPE)
+	{
+		if (start->type == WORD || start->type == STRING)
+		{
+			node_to_fill->args = ft_strjoin2d(node_to_fill->args, start->content);
+			start = start->next;
+		}
+		if (start && start->type == REDIR_IN)
+		{
+			start = start->next;
+			fd = open(start->content, O_RDONLY);
+			if (fd < 0)
+				perror(start->next->content);
+			node_to_fill->file = ft_strdup(start->content);
+			close(node_to_fill->in);
+			node_to_fill->in = fd;
+			start = start->next;
+		}
+		else if (start && start->type == REDIR_OUT)
+		{
+			start = start->next;
+			fd = open(start->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
+			if (fd < 0)
+				perror(start->content);
+			node_to_fill->file = ft_strdup(start->content);
+			close(node_to_fill->in);
+			node_to_fill->out = fd;
+			start = start->next;
+		}
+	}
+	return start;
+}
+
+
 void	ft_commend(t_token **token, t_cmd **cmd_list)
 {
 	t_token *tmp;
-	char *str  = malloc(sizeof("hello\n") + 1);
-	t_cmd	*cmd_tmp = NULL;
+	t_cmd	*cmd_tmp;
 	int		pipe_count;
 	int		fd = 0;
 
@@ -133,73 +179,19 @@ void	ft_commend(t_token **token, t_cmd **cmd_list)
 		tmp = tmp->next;
 	}
 	tmp = *token;
-	while(pipe_count >= 1)
+	printf("%d\n", pipe_count);
+	cmd_tmp = ft_lstnew();
+	ft_lstadd_back(cmd_list, cmd_tmp);
+	while(tmp)
 	{
-		if (tmp->type == PIPE)
+		tmp = store_cmd_node(cmd_tmp, tmp);
+		if (tmp && tmp->type == PIPE)
 		{
+			cmd_tmp = ft_lstnew();
+			ft_lstadd_back(cmd_list, cmd_tmp);
 			printf("FIND PIPE\n");
 			tmp = tmp->next;
 		}
-		while (tmp && tmp->type != PIPE)
-		{
-			if (tmp->type == WORD || tmp->type == STRING)
-			{
-				cmd_tmp = ft_lstnew();
-				ft_lstadd_back(cmd_list, cmd_tmp);
-				cmd_tmp->args = build_args(&tmp);
-				while (tmp && (tmp->type == WORD || tmp->type == STRING))
-					tmp = tmp->next;
-			}
-			else if (tmp && tmp->type == REDIR_IN)
-			{
-				tmp = tmp->next;
-				fd = open(tmp->content, O_RDWR);
-				cmd_tmp->infile = ft_strdup(tmp->content);
-				if (fd < 0)
-					perror(tmp->next->content);
-				cmd_tmp->in = fd;
-				tmp = tmp->next;
-			}
-			else if (tmp && tmp->type == REDIR_OUT)
-			{
-				tmp = tmp->next;
-				fd = open(tmp->content, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-				cmd_tmp->outfile = ft_strdup(tmp->content);
-				if (fd < 0)
-					perror(tmp->content);
-				cmd_tmp->out = fd;
-				tmp = tmp->next;
-			}
-			else if (tmp && tmp->type == APPEND)
-			{
-				tmp = tmp->next;
-			}		
-		}
-		pipe_count--;
-
-	
 	}
 	return;
 }
-
-
-	// 	printf("***********\n");
-	// if (tmp && tmp->next && (tmp->next->content[0] == '-'))
-	// {
-	// 	add_token(commend_list, ft_strjoin(ft_strjoin(tmp->content, " "), tmp->next->content), VOID, 0);
-	// 	tmp = tmp->next->next;
-	// 	printf("{%s}\n", (*commend_list)->content);
-	// }
-	// while (tmp && tmp->type != PIPE)
-	// {
-	// 	if (tmp->type == WORD)
-	// 	{
-	// 		// if ()
-	// 			add_token(commend_list, ft_strjoin(ft_strjoin(tmp->content, " "), tmp->next->content), VOID, 0);
-	// 	}
-	// 	else if ((tmp->type == REDIR_IN) || (tmp->type == REDIR_OUT))
-	// 	{
-			
-	// 	} 
-	// 		tmp = tmp->next;
-	// }
