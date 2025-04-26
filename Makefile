@@ -7,7 +7,8 @@ SRC = parsing/token/main.c parsing/token/tools.c tools/ft_malloc.c parsing/token
 
 OBJ		= $(SRC:.c=.o)
 
-CFLAGS = -g3 -fsanitize=address # -Wall -Wextra -Werror #` #  
+# CFLAGS = -g3 -fsanitize=address # -Wall -Wextra -Werror #` #  
+CFLAGS = -Wall -Wextra -Werror #` #  
 
 
 all : $(NAME)

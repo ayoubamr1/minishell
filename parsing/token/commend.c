@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 15:44:30 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/26 17:10:00 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ static t_cmd *ft_lstnew(void)
 	return node;
 }
 
-static int	ft_lstsize(t_cmd *lst)
-{
-	int		count;
-	t_cmd	*sin;
+// static int	ft_lstsize(t_cmd *lst)
+// {
+// 	int		count;
+// 	t_cmd	*sin;
 
-	sin = lst;
-	count = 0;
-	while (sin)
-	{
-		sin = sin->next;
-		count++;
-	}
-	return (count);
-}
+// 	sin = lst;
+// 	count = 0;
+// 	while (sin)
+// 	{
+// 		sin = sin->next;
+// 		count++;
+// 	}
+// 	return (count);
+// }
 
 // static void	ft_lstclear(t_cmd **lst)
 // {
@@ -98,10 +98,9 @@ static size_t	ft_count_2d(char **arr)
 char	**ft_strjoin2d(char **s1, char *s2)
 {
 	size_t	len1;
-	size_t	len2;
-	char	**new;
 	size_t	i;
 	size_t	j;
+	char	**new;
 
 	len1 = ft_count_2d(s1);
 	i = 0;
@@ -118,16 +117,30 @@ char	**ft_strjoin2d(char **s1, char *s2)
 	}
 	new[i++] = ft_strdup(s2);
 	new[i] = NULL;
-	free2d (s1);
-	(free(s2), s2 = NULL);
+	(free2d (s1), free(s2), s2 = NULL);
 	return (new);
 }
 
-t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
+static t_token	*handle_redir_in(t_cmd *node, t_token *start)
 {
+	int	fd;
+
+	start = start->next;
+	fd = open(start->content, O_RDONLY);
+	if (fd < 0)
+		perror(start->content);
+	node->file = ft_strdup(start->content);
+	close(node->in);
+	node->in = fd;
+	return (start->next);
+}
+
+static t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
+{
+	int	fd;
+	
 	if (!start)
-		return NULL;
-	int fd;
+		return (NULL);
 	while (start && start->type != PIPE)
 	{
 		if (start->type == WORD || start->type == STRING)
@@ -135,17 +148,8 @@ t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
 			node_to_fill->args = ft_strjoin2d(node_to_fill->args, start->content);
 			start = start->next;
 		}
-		if (start && start->type == REDIR_IN)
-		{
-			start = start->next;
-			fd = open(start->content, O_RDONLY);
-			if (fd < 0)
-				perror(start->next->content);
-			node_to_fill->file = ft_strdup(start->content);
-			close(node_to_fill->in);
-			node_to_fill->in = fd;
-			start = start->next;
-		}
+		else if (start && start->type == REDIR_IN)
+			start = handle_redir_in(node_to_fill, start);
 		else if (start && start->type == REDIR_OUT)
 		{
 			start = start->next;
@@ -154,44 +158,31 @@ t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
 				perror(start->content);
 			node_to_fill->file = ft_strdup(start->content);
 			close(node_to_fill->in);
-			node_to_fill->out = fd;
-			start = start->next;
+			(node_to_fill->out = fd, start = start->next);
 		}
 	}
-	return start;
+	return (start);
 }
 
-
-void	ft_commend(t_token **token, t_cmd **cmd_list)
+t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list)
 {
-	t_token *tmp;
+	t_token	*tmp;
+	t_cmd	*head;
 	t_cmd	*cmd_tmp;
-	int		pipe_count;
-	int		fd = 0;
 
 	tmp = *token;
-	cmd_tmp = *cmd_list;
-	pipe_count = 1;
-	while (tmp)
-	{
-		if (tmp->type == PIPE)
-			pipe_count++;
-		tmp = tmp->next;
-	}
-	tmp = *token;
-	printf("%d\n", pipe_count);
 	cmd_tmp = ft_lstnew();
+	head = cmd_tmp;
 	ft_lstadd_back(cmd_list, cmd_tmp);
-	while(tmp)
+	while (tmp)
 	{
 		tmp = store_cmd_node(cmd_tmp, tmp);
 		if (tmp && tmp->type == PIPE)
 		{
 			cmd_tmp = ft_lstnew();
 			ft_lstadd_back(cmd_list, cmd_tmp);
-			printf("FIND PIPE\n");
 			tmp = tmp->next;
 		}
 	}
-	return;
+	return (head);
 }

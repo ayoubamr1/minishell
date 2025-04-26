@@ -28,9 +28,12 @@ int main(int ac, char **av, char **env)
 			}
 			lexer_1(input, &token);
 			if (syntax_error(&token) == TRUE)
-				ft_commend(&token, &cmd_list);
+				cmd_list = ft_cmd(&token, &cmd_list);
+			
 			t_cmd *cc = cmd_list;
 			// t_env *env_list; 
+			(void)env;
+			(void)shell_list;
 
 			// shell_list->env = ft_env(shell_list->env, env);
 			// while (shell_list->env)
@@ -46,11 +49,12 @@ int main(int ac, char **av, char **env)
 					printf ("{args[%s] ,", cc->args[i]);
 					i++;
 				}
-				if (cc->args)
+				// if (cc->args)
 					printf("file[%s] infd[%d] outfd[%d] }\n",cc->file, cc->in, cc->out);
 				cc = cc->next;
 			}
 			
+			(void)sh;
 			// sh = token;
 			// 	while (sh)
 			// 	{

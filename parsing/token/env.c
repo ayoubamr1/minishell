@@ -10,20 +10,20 @@ static t_env	*ft_lstnew(char *content)
 	return (node);
 }
 
-static int	ft_lstsize(t_env *lst)
-{
-	int		count;
-	t_env	*sin;
+// static int	ft_lstsize(t_env *lst)
+// {
+// 	int		count;
+// 	t_env	*sin;
 
-	sin = lst;
-	count = 0;
-	while (sin)
-	{
-		sin = sin->next;
-		count++;
-	}
-	return (count);
-}
+// 	sin = lst;
+// 	count = 0;
+// 	while (sin)
+// 	{
+// 		sin = sin->next;
+// 		count++;
+// 	}
+// 	return (count);
+// }
 
 // static void	ft_lstclear(t_env **lst)
 // {
@@ -42,32 +42,32 @@ static int	ft_lstsize(t_env *lst)
 // 	*lst = NULL;
 // }
 
-static t_env	*ft_lstlast(t_env *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next != NULL)
-	{
-		lst = lst->next;
-	}
-	return (lst);
-}
+// static t_env	*ft_lstlast(t_env *lst)
+// {
+// 	if (!lst)
+// 		return (NULL);
+// 	while (lst->next != NULL)
+// 	{
+// 		lst = lst->next;
+// 	}
+// 	return (lst);
+// }
 
-static void	ft_lstadd_back(t_env **lst, t_env *new)
-{
-	t_env	*final;
+// static void	ft_lstadd_back(t_env **lst, t_env *new)
+// {
+// 	t_env	*final;
 
-	if (!new || !lst)
-		return ;
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	final = ft_lstlast(*lst);
-	final->next = new;
-	return ;
-}
+// 	if (!new || !lst)
+// 		return ;
+// 	if (*lst == NULL)
+// 	{
+// 		*lst = new;
+// 		return ;
+// 	}
+// 	final = ft_lstlast(*lst);
+// 	final->next = new;
+// 	return ;
+// }
 
 t_env *ft_env(t_env *env_list, char **env)
 {
