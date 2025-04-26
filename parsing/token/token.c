@@ -6,13 +6,13 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/25 09:52:46 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:07:13 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	ft_lstclear(t_token **lst)
+void	clear_token(t_token **lst)
 {
 	t_token	*n;
 
@@ -22,7 +22,9 @@ void	ft_lstclear(t_token **lst)
 	{
 		n = (*lst)->next;
 		free((*lst)->content);
+		(*lst)->content = NULL;
 		free(*lst);
+		*lst = NULL;
 		*lst = n;
 	}
 	*lst = NULL;

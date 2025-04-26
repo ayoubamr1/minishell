@@ -65,6 +65,7 @@ typedef struct s_shell
 	t_token 		*token;
 	t_env			*env;
 	char 			*original;
+	t_cmd			*cmd;
     struct s_shell 	*next;
 } t_shell;
 //---------------{ tokenization functions }-----------------
@@ -86,7 +87,7 @@ void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
 void	add_token(t_token **lst, char *content, t_token_type type, int index);
 t_token	*new_token(char *content, t_token_type type);
 char	*substr(char *s, int start, int len);
-void	ft_lstclear(t_token **lst);
+void	clear_token(t_token **lst);
 // void	syntax_error(t_token **tokens);
 t_env	*ft_env(t_env *env_list, char **env);
 // ---------------general tools -----------------
