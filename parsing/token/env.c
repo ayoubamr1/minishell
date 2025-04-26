@@ -1,6 +1,6 @@
 #include "../../minishell.h"
 
-static t_env	*ft_lstnew(char *content)
+static t_env	*ft_lstnew_env(char *content)
 {
 	t_env	*node;
 
@@ -75,11 +75,11 @@ t_env *ft_env(t_env *env_list, char **env)
 	int i;
 
 	i = 0;
-	env_list = ft_lstnew(ft_strdup(env[i++]));
+	env_list = ft_lstnew_env(ft_strdup(env[i++]));
 	tmp = env_list;
 	while (env[i])
 	{
-		tmp->next = ft_lstnew(ft_strdup(env[i]));;
+		tmp->next = ft_lstnew_env(ft_strdup(env[i]));;
 		tmp = tmp->next;
 		i++;
 	}
