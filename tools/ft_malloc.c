@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:05:51 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/22 12:51:05 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/26 21:24:21 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,63 @@ void	add_back(t_list	**head, t_list *new)
 		last_node(head)->next = new;
 }
 
-void	clear_all(t_list **head)
-{
-	t_list	*cur;
-	t_list	*tmp;
+// void	clear_all(t_list **head)
+// {
+// 	t_list	*cur;
+// 	t_list	*tmp;
 
-	if (!head || !*head)
-		return ;
-	cur = *head;
-	while (cur)
-	{
-		tmp = cur->next;
-		free(cur->ptr);
-		cur->ptr = NULL;
-		free(cur);
-		cur = tmp;
-	}
-	*head = NULL;
+// 	if (!head || !*head)
+// 		return ;
+// 	cur = *head;
+// 	while (cur)
+// 	{
+// 		tmp = cur->next;
+// 		free(cur->ptr);
+// 		cur->ptr = NULL;
+// 		free(cur);
+// 		cur = tmp;
+// 	}
+// 	*head = NULL;
+// }
+
+void clear_all(t_list **head)
+{
+    t_list *cur;
+    t_list *tmp;
+
+    if (!head)
+        return;
+    
+    cur = *head;
+    while (cur) {
+        tmp = cur->next;
+        if (cur->ptr) {
+            free(cur->ptr);
+            cur->ptr = NULL;  // Mark as freed
+        }
+        free(cur);
+        cur = tmp;
+    }
+    *head = NULL;  // Ensure the caller's pointer is set to NULL
+    head = NULL;  // Ensure the caller's pointer is set to NULL
+}
+static void check_list_integrity(t_list *head)
+{
+    t_list *current = head;
+    t_list *runner;
+    
+    while (current)
+    {
+        // Check for duplicates
+        runner = head;
+        while (runner != current)
+        {
+            if (runner->ptr == current->ptr)
+                printf("Warning: Duplicate pointer found in list: %p\n", runner->ptr);
+            runner = runner->next;
+        }
+        current = current->next;
+    }
 }
 static void	ft_bzero(void *s, size_t n)
 {
@@ -82,6 +122,7 @@ void	*ft_malloc(size_t size, t_call call)
 	t_list			*tmp;
 	void			*ptr;
 
+	
 	if (call == MALLOC)
 	{
 		ptr = malloc(size);
@@ -95,6 +136,9 @@ void	*ft_malloc(size_t size, t_call call)
 		return (ptr);
 	}
 	else if (call == FREE)
+	{
+		check_list_integrity(head);
 		clear_all(&head);
+	}
 	return (NULL);
 }

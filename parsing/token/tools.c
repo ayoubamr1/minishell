@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 17:33:16 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/26 21:44:19 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,6 @@ char	**ft_strjoin2d(char **s1, char *s2)
 	}
 	new[i++] = ft_strdup(s2);
 	new[i] = NULL;
-	(free2d (s1), free(s2), s2 = NULL);
+	// (free2d (s1), free(s2), s2 = NULL);
 	return (new);
 }

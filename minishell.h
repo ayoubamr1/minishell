@@ -41,7 +41,7 @@ typedef struct s_token
 //---------------{ cmd structure }-----------------
 typedef struct s_cmd
 {
-	char			**args; // commend
+	char			**cmd; // commend
         // char 			*infile; // file[\] name
 	char 			*file; // file name 
 	int				in; // file fd
@@ -67,6 +67,9 @@ typedef struct s_shell
 	t_cmd			*cmd;
     struct s_shell 	*next;
 } t_shell;
+
+void	minishell(t_shell *shell_list, char **env);
+
 //---------------{ tokenization functions }-----------------
 void	lexer_1(char *input, t_token **tokens);
 void 	lexer_2(t_token **tokens, char *input, int *i, int *index);
@@ -76,7 +79,7 @@ int		syntax_error(t_token **tokens);
 t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list);
 t_cmd	*ft_lstnew_cmd(void);
 // int		ft_lstsize_cmd(t_cmd *lst);
-// void	ft_clear_cmd(t_cmd **lst);
+void	clear_cmd(t_cmd **lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
 

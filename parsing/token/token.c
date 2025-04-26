@@ -6,12 +6,29 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 18:07:13 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/26 21:49:49 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+// void	clear_token(t_token **lst)
+// {
+// 	t_token	*n;
+
+// 	if (!lst)
+// 		return ;
+// 	while (*lst)
+// 	{
+// 		n = (*lst)->next;
+// 		free((*lst)->content);
+// 		(*lst)->content = NULL;
+// 		free(*lst);
+// 		*lst = NULL;
+// 		*lst = n;
+// 	}
+// 	*lst = NULL;
+// }
 void	clear_token(t_token **lst)
 {
 	t_token	*n;
@@ -21,21 +38,24 @@ void	clear_token(t_token **lst)
 	while (*lst)
 	{
 		n = (*lst)->next;
-		free((*lst)->content);
-		(*lst)->content = NULL;
+		if ((*lst)->content) // protect double free
+		{
+			free((*lst)->content);
+			(*lst)->content = NULL;
+		}
 		free(*lst);
 		*lst = NULL;
 		*lst = n;
 	}
-	*lst = NULL;
 }
 
-void	ft_exit(t_token **token)
-{
-	(void)**token;
-	// ft_malloc(0, FREE);
-	// exit(1);
-}
+
+// void	ft_exit(t_token **token)
+// {
+// 	(void)**token;
+// 	// ft_malloc(0, FREE);
+// 	// exit(1);
+// }
 // static char	*join_and_free(char *s1, char *s2)
 // {
 // 	char	*res;
@@ -110,6 +130,8 @@ static char	*join_and_free(char *s1, char *s2)
 	res = ft_strjoin(s1, s2);
 	free(s1);
 	free(s2);
+	s1 = NULL;
+	s2 = NULL;
 	return (res);
 }
 
