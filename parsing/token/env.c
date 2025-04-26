@@ -25,7 +25,7 @@ static t_env	*ft_lstnew_env(char *content)
 // 	return (count);
 // }
 
-// static void	ft_lstclear(t_env **lst)
+// static void	clear_env(t_env **lst)
 // {
 // 	t_env	*n;
 

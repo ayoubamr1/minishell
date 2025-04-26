@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 17:42:38 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/26 18:21:13 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
 		else if (start && start->type == APPEND)
 			start = handle_redir_append(node_to_fill, start);
 		// else if (start && start->type == HEREDOC)
-		// 	start = handle_heredoc(node_to_fill, start);
+		// 	start = handle_heredoc(node_to_fill, start); // nooe_to_fill == hi lirt3mare  && start hiya li radi takhod manha
 	}
 	return (start);
 }

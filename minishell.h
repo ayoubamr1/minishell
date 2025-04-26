@@ -46,7 +46,6 @@ typedef struct s_cmd
 	char 			*file; // file name 
 	int				in; // file fd
 	int				out; //file fd
-	// int 			append; // 1 if >>
 	// int 			heredoc; // 1 if <<
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
@@ -64,7 +63,7 @@ typedef struct s_shell
     t_token_type 	type;
 	t_token 		*token;
 	t_env			*env;
-	char 			*original;
+	// char 			*original;
 	t_cmd			*cmd;
     struct s_shell 	*next;
 } t_shell;
