@@ -100,3 +100,4 @@ char	*ft_strncpy(char *dest, char *src, size_t n)
 	}
 	return (dest);
 }
+

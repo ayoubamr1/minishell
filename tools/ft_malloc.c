@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:05:51 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/21 15:05:52 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/22 12:51:05 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,17 @@ void	clear_all(t_list **head)
 	}
 	*head = NULL;
 }
+static void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (n > i)
+	{
+		((char *)s)[i] = 0;
+		i++;
+	}
+}
 
 void	*ft_malloc(size_t size, t_call call)
 {
@@ -80,7 +91,7 @@ void	*ft_malloc(size_t size, t_call call)
 		if (!tmp)
 			(clear_all(&head), free(ptr), exit(1));
 		add_back(&head, tmp);
-		// ft_bzero(ptr, size);
+		ft_bzero(ptr, size);
 		return (ptr);
 	}
 	else if (call == FREE)
