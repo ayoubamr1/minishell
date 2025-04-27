@@ -114,71 +114,14 @@ static void	print_node(t_shell *shell_list, char **env)
 	}
 }
 
-// void	minishell(t_shell *shell_list, char **env)
-// {
-// 	char	*input;
-
-// 	// if (shell_list->token != NULL)
-// 	// 	clear_token(&shell_list->token);
-// 	// if (shell_list->cmd != NULL)
-// 	// 	clear_cmd(&shell_list->cmd);
-
-// 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
-// 	input = readline("minishell> ");
-// 	if (input[0])
-// 	{
-// 		add_history(input);
-// 		if (!ft_strncmp(input, "exit", ft_strlen("exit")))
-// 		{
-// 			free(input);
-// 			ft_malloc(0, FREE);
-// 			exit(0);
-// 		}
-		
-// 		lexer_1(input, &shell_list->token);
-// 		if (syntax_error(&shell_list->token) == TRUE)
-// 		{
-// 			shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
-// 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
-// 			print_node(shell_list, env);
-// 		}
-// 	}
-// 	free(input);
-// }
-// static void cclear_cmd(t_cmd **cmd)
-// {
-//     t_cmd *tmp;
-//     int i;
-
-//     while (*cmd)
-//     {
-//         tmp = (*cmd)->next;
-//         if ((*cmd)->cmd)
-//         {
-//             i = 0;
-//             while ((*cmd)->cmd[i])
-//             {
-//                 free((*cmd)->cmd[i]);
-//                 i++;
-//             }
-//             free((*cmd)->cmd);
-//         }
-//         if ((*cmd)->file)
-//             free((*cmd)->file);
-//         free(*cmd);
-//         *cmd = tmp;
-//     }
-//     *cmd = NULL;
-// }
 void	minishell(t_shell *shell_list, char **env)
 {
 	char	*input;
 
-	if (shell_list->token != NULL)
-		clear_token(&shell_list->token);
-	if (shell_list->cmd != NULL)
-		clear_cmd(&shell_list->cmd);
-
+	// if (shell_list->token != NULL)
+	// 	clear_token(&shell_list->token);
+	// if (shell_list->cmd != NULL)
+	// 	clear_cmd(&shell_list->cmd);
 	input = readline("minishell> ");
 	if (input[0])
 	{
@@ -199,12 +142,6 @@ void	minishell(t_shell *shell_list, char **env)
 	}
 	free(input);
 }
-
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <signal.h>
 
 static void	handle_sigint(int sig)
 {
