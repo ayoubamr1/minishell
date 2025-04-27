@@ -18,8 +18,8 @@
 
 typedef enum e_token_type
 {
-	s_quote,  //  ''
-	d_quote,  //	""
+	SI_QUOTE,  //  ''
+	// d_quote,  //	""
     STRING,
     WORD,
     PIPE,

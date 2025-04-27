@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 21:49:49 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/27 14:40:10 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,56 +135,100 @@ static char	*join_and_free(char *s1, char *s2)
 	return (res);
 }
 
-static char	*parse_inside_quote(char *input, int *i, char quote)
+// static char	*parse_inside_quote(char *input, int *i, char quote)
+// {
+// 	int		start;
+// 	char	*tmp;
+
+// 	start = *i;
+// 	while (input[*i] && input[*i] != quote)
+// 		(*i)++;
+// 	tmp = substr(input, start, *i - start);
+// 	if (input[*i] == quote)
+// 		(*i)++;
+// 	return (tmp);
+// }
+
+// static char	*parse_unquoted_part(char *input, int *i)
+// {
+// 	int		start;
+// 	char	*tmp;
+
+// 	start = *i;
+// 	while (input[*i] && input[*i] != '\'' && input[*i] != '"' &&
+// 		!ft_isspace(input[*i]) && input[*i] != '|' &&
+// 		input[*i] != '<' && input[*i] != '>')
+// 		(*i)++;
+// 	tmp = substr(input, start, *i - start);
+// 	return (tmp);
+// }
+
+// char	*parse_word_with_quotes(char *input, int *i)
+// {
+// 	char	*final;
+// 	char	*tmp;
+// 	char	quote;
+
+// 	final = ft_strdup("");
+// 	while (input[*i] && !ft_isspace(input[*i]) &&
+// 		input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+// 	{
+// 		if (input[*i] == '\'' || input[*i] == '"')
+// 		{
+// 			quote = input[(*i)++];
+// 			tmp = parse_inside_quote(input, i, quote);
+// 		}
+// 		else
+// 			tmp = parse_unquoted_part(input, i);
+// 		final = join_and_free(final, tmp);
+// 	}
+// 	return (final);
+// }
+
+void token_str(t_token **token, char *input, int *i, int *index)
 {
-	int		start;
-	char	*tmp;
+	int start;
+	char quote;
+	char *temp = ft_strdup(""); // temporary buffer for building the string
+	char *tmp_expand;
 
-	start = *i;
-	while (input[*i] && input[*i] != quote)
-		(*i)++;
-	tmp = substr(input, start, *i - start);
-	if (input[*i] == quote)
-		(*i)++;
-	return (tmp);
-}
-
-static char	*parse_unquoted_part(char *input, int *i)
-{
-	int		start;
-	char	*tmp;
-
-	start = *i;
-	while (input[*i] && input[*i] != '\'' && input[*i] != '"' &&
-		!ft_isspace(input[*i]) && input[*i] != '|' &&
-		input[*i] != '<' && input[*i] != '>')
-		(*i)++;
-	tmp = substr(input, start, *i - start);
-	return (tmp);
-}
-
-char	*parse_word_with_quotes(char *input, int *i)
-{
-	char	*final;
-	char	*tmp;
-	char	quote;
-
-	final = ft_strdup("");
-	while (input[*i] && !ft_isspace(input[*i]) &&
-		input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+	while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
 	{
-		if (input[*i] == '\'' || input[*i] == '"')
+		if (input[*i] == '"' || input[*i] == '\'')
 		{
-			quote = input[(*i)++];
-			tmp = parse_inside_quote(input, i, quote);
+			quote = input[*i];
+			(*i)++;
+			start = *i;
+			while (input[*i] && input[*i] != quote)
+			{
+				if (quote == '"' && input[*i] == '$') // Only expand inside "
+				{
+					// tmp_expand = expand_env(input, i); // Expand variable
+					temp = join_and_free(temp, tmp_expand);
+				}
+				else
+				{
+					temp = join_and_free(temp, substr(input, *i, 1));
+					(*i)++;
+				}
+			}
+			if (input[*i] == quote)
+				(*i)++; // Skip closing quote
 		}
 		else
-			tmp = parse_unquoted_part(input, i);
-		final = join_and_free(final, tmp);
+		{
+			start = *i;
+			while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+				(*i)++;
+			temp = join_and_free(temp, substr(input, start, (*i) - start));
+		}
 	}
-	return (final);
+	if (temp[0] != '\0')
+	{
+		add_token(token, temp, WORD, (*index));
+		(*index)++;
+	}
 }
-
 
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
 {
@@ -218,16 +262,16 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 		add_token(tokens, ft_strdup("<"), REDIR_IN, (*index));
 		((*i)++, index++);
 	}
-	else if (input[(*i)] == '"' || input[(*i)] == '\'')
-	{
-		if (input[*i] == '\'' || input[*i] == '"')
-		{
-			word = parse_word_with_quotes(input, i);
-			add_token(tokens, word, STRING, (*index)++);
-		}
-	}
 	else
 		ft_word(tokens, input, i, index);
+	// else if (input[(*i)] == '"' || input[(*i)] == '\'')
+	// {
+	// 	if (input[*i] == '\'' || input[*i] == '"')
+	// 	{
+	// 		word = parse_word_with_quotes(input, i);
+	// 		// add_token(tokens, word, STRING, (*index)++);
+	// 	}
+	// }
 }
 
 void lexer_1(char *input, t_token **tokens)
@@ -235,12 +279,18 @@ void lexer_1(char *input, t_token **tokens)
 	int i;
 	int index;
 
+
 	i = 0;
 	index = 1;
 	while (input[i])
 	{
 		if (input[i] == ' ' || input[i] == '\t')
 			i++;
+		else if (input[i] && input[i] != ' ' && input[i] != '|' &&
+			input[i] != '<' && input[i] != '>' ) 
+		{
+			token_str(tokens, input, &i, &index);
+		}
 		else if (input[i] == '>' && input[i + 1] == '>')
 		{
 			// synatx(tokens, input, '>', i, 1);
