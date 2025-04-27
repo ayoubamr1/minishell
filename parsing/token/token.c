@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/27 14:40:10 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/27 16:40:12 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,49 +185,209 @@ static char	*join_and_free(char *s1, char *s2)
 // 	return (final);
 // }
 
-void token_str(t_token **token, char *input, int *i, int *index)
-{
-	int start;
-	char quote;
-	char *temp = ft_strdup(""); // temporary buffer for building the string
-	char *tmp_expand;
+// void token_str(t_token **token, char *input, int *i, int *index)
+// {
+// 	int start;
+// 	char quote;
+// 	char *temp = ft_strdup(""); // temporary buffer for building the string
+// 	char *tmp_expand;
 
-	while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
-	{
-		if (input[*i] == '"' || input[*i] == '\'')
-		{
-			quote = input[*i];
-			(*i)++;
-			start = *i;
-			while (input[*i] && input[*i] != quote)
-			{
-				if (quote == '"' && input[*i] == '$') // Only expand inside "
-				{
-					// tmp_expand = expand_env(input, i); // Expand variable
-					temp = join_and_free(temp, tmp_expand);
-				}
-				else
-				{
-					temp = join_and_free(temp, substr(input, *i, 1));
-					(*i)++;
-				}
-			}
-			if (input[*i] == quote)
-				(*i)++; // Skip closing quote
-		}
-		else
-		{
-			start = *i;
-			while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
-				(*i)++;
-			temp = join_and_free(temp, substr(input, start, (*i) - start));
-		}
-	}
-	if (temp[0] != '\0')
-	{
-		add_token(token, temp, WORD, (*index));
-		(*index)++;
-	}
+// 	while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+// 	{
+// 		if (input[*i] == '"' || input[*i] == '\'')
+// 		{
+// 			quote = input[*i];
+// 			(*i)++;
+// 			start = *i;
+// 			while (input[*i] && input[*i] != quote)
+// 			{
+// 				if (quote == '"' && input[*i] == '$') // Only expand inside "
+// 				{
+// 					// tmp_expand = expand_env(input, i); // Expand variable
+// 					temp = join_and_free(temp, tmp_expand);
+// 				}
+// 				else
+// 				{
+// 					temp = join_and_free(temp, substr(input, *i, 1));
+// 					(*i)++;
+// 				}
+// 			}
+// 			if (input[*i] == quote)
+// 				(*i)++; // Skip closing quote
+// 		}
+// 		else
+// 		{
+// 			start = *i;
+// 			while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+// 				(*i)++;
+// 			temp = join_and_free(temp, substr(input, start, (*i) - start));
+// 		}
+// 	}
+// 	if (temp[0] != '\0')
+// 	{
+// 		add_token(token, temp, WORD, (*index));
+// 		(*index)++;
+// 	}
+// }
+// ----------------------------------------------------
+// void token_str(t_token **token, char *input, int *i, int *index)
+// {
+// 	int start;
+// 	char quote;
+// 	char *temp = ft_strdup(""); // Temporary buffer to collect characters
+
+// 	while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+// 	{
+// 		if (input[*i] == '"' || input[*i] == '\'')
+// 		{
+// 			quote = input[*i];
+// 			(*i)++;
+// 			while (input[*i] && input[*i] != quote)
+// 			{
+// 				temp = join_and_free(temp, substr(input, *i, 1));
+// 				(*i)++;
+// 			}
+// 			if (input[*i] == quote)
+// 				(*i)++;
+// 		}
+// 		else
+// 		{
+// 			start = *i;
+// 			while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+// 				(*i)++;
+// 			temp = join_and_free(temp, substr(input, start, (*i) - start));
+// 		}
+// 	}
+
+// 	if (temp[0] != '\0')
+// 	{
+// 		add_token(token, temp, WORD, (*index));
+// 		(*index)++;
+// 	}
+// 	else
+// 		free(temp);
+// }
+
+// void token_str(t_token **token, char *input, int *i, int *index)
+// {
+// 	int start;
+// 	char quote;
+// 	char *temp;
+
+// 	while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+// 	{
+// 		temp = ft_strdup(""); // Reset temp for each token
+
+// 		if (input[*i] == '"' || input[*i] == '\'')
+// 		{
+// 			quote = input[*i];
+// 			(*i)++;
+
+// 			while (input[*i] && input[*i] != quote)
+// 			{
+// 				temp = join_and_free(temp, substr(input, *i, 1));
+// 				(*i)++;
+// 			}
+
+// 			if (input[*i] == quote)
+// 				(*i)++;
+
+// 			// Save the string inside the quotes as a token
+// 			if (temp[0] != '\0')
+// 			{
+// 				add_token(token, temp, WORD, (*index));
+// 				(*index)++;
+// 			}
+// 			else
+// 				free(temp);
+// 		}
+// 		else
+// 		{
+// 			start = *i;
+// 			while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+// 				(*i)++;
+
+// 			temp = substr(input, start, (*i) - start);
+
+// 			// Save outside quotes token
+// 			if (temp && temp[0] != '\0')
+// 			{
+// 				add_token(token, temp, WORD, (*index));
+// 				(*index)++;
+// 			}
+// 			else
+// 				free(temp);
+// 		}
+// 	}
+// }
+// -------------
+
+void *token_str(t_token **token, char *input, int *i, int *index)
+{
+    int     start;
+    char    quote;
+    char    *temp;
+    
+    while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+    {
+        if (input[*i] == '\'' || input[*i] == '"')
+        {
+            quote = input[*i];
+            (*i)++; // Skip opening quote
+            start = *i;
+            
+            // Find the closing quote
+            while (input[*i] && input[*i] != quote)
+                (*i)++;
+                
+            if (!input[*i]) // Reached end of string without finding closing quote
+            {
+                printf("minishell: syntax error: unclosed quote [%c]\n", quote);
+                return (NULL);
+            }
+            
+            // Create token with the content between quotes
+            temp = substr(input, start, (*i) - start);
+            if (!temp)
+                return (NULL);
+                
+            (*i)++; // Skip closing quote
+            
+            // Add the token with appropriate type
+            if (temp[0] != '\0') // Handle empty quotes
+            {
+                if (quote == '\'')
+                    add_token(token, temp, SI_QUOTE, (*index));
+                else
+                    add_token(token, temp, WORD, (*index));
+                (*index)++;
+            }
+            else
+                free(temp);
+        }
+        else
+        {
+            start = *i;
+            // Collect characters until a special character or quote is found
+            while (input[*i] && input[*i] != ' ' && input[*i] != '|' &&
+                   input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+                (*i)++;
+                
+            // Create token with the collected characters
+            temp = substr(input, start, (*i) - start);
+            if (!temp)
+                return (NULL);
+                
+            if (temp[0] != '\0')
+            {
+                add_token(token, temp, WORD, (*index));
+                (*index)++;
+            }
+            else
+                free(temp);
+        }
+    }
+    return (NULL);
 }
 
 void	ft_word(t_token **tokens, char *input, int *i, int *index)

@@ -99,19 +99,19 @@ static void	print_node(t_shell *shell_list, char **env)
 
 	cc = shell_list->cmd;
 	(void)env;
-	while (cc)
-	{
-		int	i;
+	// while (cc)
+	// {
+	// 	int	i;
 
-		i = 0;
-		while (cc->cmd && cc->cmd[i])
-		{
-			printf("{cmd[%s] ,", cc->cmd[i]);
-			i++;
-		}
-		printf("file[%s] infd[%d] outfd[%d] }\n", cc->file, cc->in, cc->out);
-		cc = cc->next;
-	}
+	// 	i = 0;
+	// 	while (cc->cmd && cc->cmd[i])
+	// 	{
+	// 		printf("{cmd[%s] ,", cc->cmd[i]);
+	// 		i++;
+	// 	}
+	// 	printf("file[%s] infd[%d] outfd[%d] }\n", cc->file, cc->in, cc->out);
+	// 	cc = cc->next;
+	// }
 	t_token *sh = shell_list->token;
 
 	while (sh)
@@ -130,7 +130,7 @@ void	minishell(t_shell *shell_list, char **env)
 	// 	clear_token(&shell_list->token);
 	// if (shell_list->cmd != NULL)
 	// 	clear_cmd(&shell_list->cmd);
-	// shell_list = ft_malloc(sizeof(t_shell), MALLOC);
+	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	input = readline("minishell> ");
 	if (input[0])
 	{
