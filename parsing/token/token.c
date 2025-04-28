@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/27 16:40:12 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/28 16:59:12 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,74 +322,109 @@ static char	*join_and_free(char *s1, char *s2)
 // }
 // -------------
 
-void *token_str(t_token **token, char *input, int *i, int *index)
-{
-    int     start;
-    char    quote;
-    char    *temp;
+// void *token_str(t_token **token, char *input, int *i, int *index)
+// {
+//     int     start;
+//     char    quote;
+//     char    *temp;
     
-    while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
-    {
-        if (input[*i] == '\'' || input[*i] == '"')
-        {
-            quote = input[*i];
-            (*i)++; // Skip opening quote
-            start = *i;
+//     while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+//     {
+//         if (input[*i] == '\'' || input[*i] == '"')
+//         {
+//             quote = input[*i];
+//             (*i)++; // Skip opening quote
+//             start = *i;
             
-            // Find the closing quote
-            while (input[*i] && input[*i] != quote)
-                (*i)++;
+//             // Find the closing quote
+//             while (input[*i] && input[*i] != quote)
+//                 (*i)++;
                 
-            if (!input[*i]) // Reached end of string without finding closing quote
-            {
-                printf("minishell: syntax error: unclosed quote [%c]\n", quote);
-                return (NULL);
-            }
+//             if (!input[*i]) // Reached end of string without finding closing quote
+//             {
+//                 printf("minishell: syntax error: unclosed quote [%c]\n", quote);
+//                 return (NULL);
+//             }
             
-            // Create token with the content between quotes
-            temp = substr(input, start, (*i) - start);
-            if (!temp)
-                return (NULL);
+//             // Create token with the content between quotes
+//             temp = substr(input, start, (*i) - start);
+//             if (!temp)
+//                 return (NULL);
                 
-            (*i)++; // Skip closing quote
+//             (*i)++; // Skip closing quote
             
-            // Add the token with appropriate type
-            if (temp[0] != '\0') // Handle empty quotes
-            {
-                if (quote == '\'')
-                    add_token(token, temp, SI_QUOTE, (*index));
-                else
-                    add_token(token, temp, WORD, (*index));
-                (*index)++;
-            }
-            else
-                free(temp);
-        }
-        else
-        {
-            start = *i;
-            // Collect characters until a special character or quote is found
-            while (input[*i] && input[*i] != ' ' && input[*i] != '|' &&
-                   input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
-                (*i)++;
+//             // Add the token with appropriate type
+//             if (temp[0] != '\0') // Handle empty quotes
+//             {
+//                 if (quote == '\'')
+//                     add_token(token, temp, SI_QUOTE, (*index));
+//                 else
+//                     add_token(token, temp, WORD, (*index));
+//                 (*index)++;
+//             }
+//             else
+//                 free(temp);
+//         }
+//         else
+//         {
+//             start = *i;
+//             // Collect characters until a special character or quote is found
+//             while (input[*i] && input[*i] != ' ' && input[*i] != '|' &&
+//                    input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+//                 (*i)++;
                 
-            // Create token with the collected characters
-            temp = substr(input, start, (*i) - start);
-            if (!temp)
-                return (NULL);
+//             // Create token with the collected characters
+//             temp = substr(input, start, (*i) - start);
+//             if (!temp)
+//                 return (NULL);
                 
-            if (temp[0] != '\0')
-            {
-                add_token(token, temp, WORD, (*index));
-                (*index)++;
-            }
-            else
-                free(temp);
-        }
-    }
-    return (NULL);
-}
+//             if (temp[0] != '\0')
+//             {
+//                 add_token(token, temp, WORD, (*index));
+//                 (*index)++;
+//             }
+//             else
+//                 free(temp);
+//         }
+//     }
+//     return (NULL);
+// }
+void	token_str(t_token **token, char *input, int *i, int *index)
+{
+	char quote; 
+	int start;
+	int s;
 
+	start = *i;
+	while (input[*i] && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+		(*i)++;
+	if (input[*i] == '"' || input[*i] == '\'')
+	{
+		s = 1;
+		quote = input[*i];
+		(*i)++;
+		while (input[*i])
+		{
+			if (input[*i] == quote)
+			{
+				s++;
+				(*i)++;
+				break;
+			}
+			(*i)++;
+		}
+		while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+			(*i)++;
+		if (quote == '\'')
+			add_token(token, substr(input, start, (*i) - start), SI_QUOTE, (*index));
+		else
+			add_token(token, substr(input, start, (*i) - start), WORD, (*index));
+		return ;
+	}
+		add_token(token, substr(input, start, (*i) - start), WORD, (*index));
+    return ;
+	
+}
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
 {
 	int start;
@@ -453,13 +488,11 @@ void lexer_1(char *input, t_token **tokens)
 		}
 		else if (input[i] == '>' && input[i + 1] == '>')
 		{
-			// synatx(tokens, input, '>', i, 1);
 			add_token(tokens, ft_strdup(">>"), APPEND, index);
 			(i += 2, index++);
 		}
 		else if (input[i] == '<' && input[i + 1] == '<')
 		{
-			// synatx(tokens, input, '<', i, 1);
 			add_token(tokens, ft_strdup("<<"), HEREDOC, index);
 			(i += 2, index++);
 		}

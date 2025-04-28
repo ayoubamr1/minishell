@@ -83,7 +83,7 @@ t_cmd	*ft_lstnew_cmd(void);
 void	clear_cmd(t_cmd **lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
-
+void	token_str(t_token **token, char *input, int *i, int *index);
 // void	ft_quote(t_token **tokens, char *input, int *i, int *index);
 
 //                **  token_tools  **
