@@ -98,5 +98,7 @@ char	*ft_strncpy(char *dest, char *src, size_t n);
 int 	ft_isspace(int c);
 void 	free2d(char **str);
 char	**ft_strjoin2d(char **s1, char *s2);
+int     ft_isspace(int c);
+char	**ft_split(const char *str, char c);
 
 #endif

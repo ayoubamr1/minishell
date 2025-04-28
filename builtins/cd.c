@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/04/21 15:03:37 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/04/22 11:58:17 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,6 @@ int	my_cd(char **str)
 	char	*target_dir;
 	
 	target_dir = str[1];
-	// get the currect working directory
-	cwd = getcwd(NULL, 0);
-	if (!cwd)
-	{
-		perror("getcwd");
-		return (1);
-	}
 	if (target_dir == NULL)
 	{
 		target_dir = getenv("HOME");
@@ -34,17 +27,25 @@ int	my_cd(char **str)
 			return (1);
 		}
 	}
+	// get the currect working directory
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		perror("getcwd");
+		return (1);
+	}
 	// change directory
 	if (chdir(target_dir) != 0)
 	{
 		perror("cd");
 		return (1);
 	}
-	if (setenv("PWD", target_dir, 1) != 0)
-	{
-		perror("setenv");
-		return (1);
-	}
+	// it still update PWD in my environment variable
+	// if (setenv("PWD", target_dir, 1) != 0)
+	// {
+	// 	perror("setenv");
+	// 	return (1);
+	// }
 }
 
 int main ()
