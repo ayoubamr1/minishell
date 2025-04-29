@@ -66,6 +66,7 @@ typedef struct s_shell
 	t_env			*env;
 	// char 			*original;
 	t_cmd			*cmd;
+	int exit_status; 
     struct s_shell 	*next;
 } t_shell;
 
@@ -104,5 +105,8 @@ char	*ft_strncpy(char *dest, char *src, size_t n);
 int 	ft_isspace(int c);
 void 	free2d(char **str);
 char	**ft_strjoin2d(char **s1, char *s2);
+// char	*ft_itoa(int n);
+int	ft_isalnum(int c);
+int	ft_isalpha(int c);
 
 #endif

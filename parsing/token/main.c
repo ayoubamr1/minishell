@@ -145,6 +145,7 @@ void	minishell(t_shell *shell_list, char **env)
 		if (syntax_error(&shell_list->token) == TRUE)
 		{
 			shell_list->env = ft_env(shell_list->env, env);
+			
 			ft_expand(shell_list);
 			// ft_expand(&shell_list);
 			shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
