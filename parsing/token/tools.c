@@ -72,12 +72,10 @@ char	**ft_strjoin2d(char **s1, char *s2)
 {
 	size_t	len1;
 	size_t	i;
-	size_t	j;
 	char	**new;
 
 	len1 = ft_count_2d(s1);
 	i = 0;
-	j = 0;
 	if (!s1 && s2)
 		return (new = ft_malloc(2 * sizeof(char *), MALLOC), new[0] = ft_strdup(s2), new[1] = NULL, new); 
 	if (s1 && !s2)
@@ -90,6 +88,5 @@ char	**ft_strjoin2d(char **s1, char *s2)
 	}
 	new[i++] = ft_strdup(s2);
 	new[i] = NULL;
-	// (free2d (s1), free(s2), s2 = NULL);
 	return (new);
 }

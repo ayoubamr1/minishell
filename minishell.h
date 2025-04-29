@@ -85,7 +85,7 @@ void	ft_expand(t_shell	*shell_list);
 
 //---------------{ expand functions }-----------------
 char	*id_itoa(int n);
-char *remove_quotes(const char *str);
+char	*remove_quotes(char *str);
 
 
 

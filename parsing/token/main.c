@@ -95,9 +95,9 @@ static void	ft_null(t_shell *shell)
 
 static void	print_node(t_shell *shell_list, char **env)
 {
-	t_cmd	*cc;
+	// t_cmd	*cc;
 
-	cc = shell_list->cmd;
+	// cc = shell_list->cmd;
 	(void)env;
 	// while (cc)
 	// {

@@ -102,7 +102,7 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index)
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
 {
-	char *word;
+	// char *word;
 
 	if (input[*i] == '>')
 		{
