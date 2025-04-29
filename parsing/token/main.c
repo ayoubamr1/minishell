@@ -132,7 +132,7 @@ void	minishell(t_shell *shell_list, char **env)
 	// 	clear_cmd(&shell_list->cmd);
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	input = readline("minishell> ");
-	if (input[0])
+	if (input)
 	{
 		add_history(input);
 		if (!ft_strncmp(input, "exit", ft_strlen("exit")))
@@ -145,7 +145,7 @@ void	minishell(t_shell *shell_list, char **env)
 		if (syntax_error(&shell_list->token) == TRUE)
 		{
 			shell_list->env = ft_env(shell_list->env, env);
-			
+
 			ft_expand(shell_list);
 			// ft_expand(&shell_list);
 			shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);

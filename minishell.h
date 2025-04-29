@@ -80,6 +80,21 @@ int		syntax_error(t_token **tokens);
 //---------------{ cmd functions }-----------------
 void	ft_expand(t_shell	*shell_list);
 
+
+
+
+//---------------{ expand functions }-----------------
+char	*id_itoa(int n);
+char *remove_quotes(const char *str);
+
+
+
+
+
+
+
+
+
 t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list);
 t_cmd	*ft_lstnew_cmd(void);
 // int		ft_lstsize_cmd(t_cmd *lst);
@@ -99,7 +114,7 @@ t_env	*ft_env(t_env *env_list, char **env);
 // ---------------general tools -----------------
 char	*ft_strdup(const char *s1);	
 size_t	ft_strlen(const char *s);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strncpy(char *dest, char *src, size_t n);
 int 	ft_isspace(int c);

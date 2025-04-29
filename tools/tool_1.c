@@ -36,14 +36,13 @@ char	*ft_strdup(const char *s1)
 	return (ft_strcpy(s1, dest));
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	size_t	i;
 	size_t	j;
 	char	*str;
 
-	i = 0;
-	j = 0;
+	(1) && (i = 0, j = 0);
 	if (!s1 && !s2)
 		return (NULL);
 	if (s1 && !s2)
@@ -62,6 +61,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s2[j])
 		str[i++] = s2[j++];
 	str[i] = '\0';
+	(free(s1), free(s2), s1 = NULL, s2 = NULL);
 	return (str);
 }
 
