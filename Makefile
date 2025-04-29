@@ -2,8 +2,20 @@ NAME = mini
 
 CC = cc
 
-SRC = parsing/token/main.c parsing/token/tools.c tools/ft_malloc.c parsing/token/syntax_error.c parsing/token/token.c  \
-	 tools/tool_1.c tools/tool_2.c parsing/token/cmd.c parsing/token/env.c parsing/token/cmd_tool.c parsing/expand/expand.c #parsing/ft_malloc.c  tools/tool_1.c  builtins/cd.c  
+SRC = 	parsing/token/main.c \
+		parsing/token/tools.c \
+		parsing/token/syntax_error.c \ 
+		parsing/token/token.c  \
+		parsing/token/env.c \
+		parsing/cmd/cmd.c \
+		parsing/cmd/tools_1.c \
+		parsing/expand/expand.c \
+		parsing/expand/tools_1.c \
+		parsing/expand/tools_2.c \
+		tools/ft_malloc.c \
+	 	tools/tool_1.c \
+		tools/tool_2.c \
+
 
 OBJ		= $(SRC:.c=.o)
 
