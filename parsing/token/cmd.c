@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 19:39:11 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:18:31 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
 		return (NULL);
 	while (start && start->type != PIPE)
 	{
-		if (start->type == WORD || start->type == STRING)
+		if (start->type == WORD || start->type == SI_QUOTE)
 		{
 			node_to_fill->cmd = ft_strjoin2d(node_to_fill->cmd, start->content);
 			start = start->next;

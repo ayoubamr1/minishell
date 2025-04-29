@@ -144,7 +144,8 @@ void	minishell(t_shell *shell_list, char **env)
 		lexer_1(input, &shell_list->token);
 		if (syntax_error(&shell_list->token) == TRUE)
 		{
-			// shell_list->env = ft_env(shell_list->env, env);
+			shell_list->env = ft_env(shell_list->env, env);
+			ft_expand(shell_list);
 			// ft_expand(&shell_list);
 			shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
@@ -154,16 +155,16 @@ void	minishell(t_shell *shell_list, char **env)
 	free(input);
 }
 
-static void	handle_sigint(int sig)
-{
-	if (sig == SIGINT)
-	{
-		write(STDOUT_FILENO, "\n", 1);      // Move to a new line
-		rl_on_new_line();                  // Notify readline about the new line
-		rl_replace_line("", 0);           // Clear the current input line
-		rl_redisplay();                  // Redisplay the prompt
-	}
-}
+// static void	handle_sigint(int sig)
+// {
+// 	if (sig == SIGINT)
+// 	{
+// 		write(STDOUT_FILENO, "\n", 1);      // Move to a new line
+// 		rl_on_new_line();                  // Notify readline about the new line
+// 		rl_replace_line("", 0);           // Clear the current input line
+// 		rl_redisplay();                  // Redisplay the prompt
+// 	}
+// }
 int	main(int ac, char **av, char **env)
 {
 	t_shell	*shell_list;

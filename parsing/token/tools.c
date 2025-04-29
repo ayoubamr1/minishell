@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 21:44:19 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/28 18:21:56 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ char	*substr(char *s, int start, int len)
 	out[len] = 0;
 	return (out);
 }
-
 
 int ft_isspace(int c)
 {

@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/28 16:59:12 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/29 12:54:19 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -389,12 +389,11 @@ static char	*join_and_free(char *s1, char *s2)
 //     }
 //     return (NULL);
 // }
-void	token_str(t_token **token, char *input, int *i, int *index)
+void	*token_str(t_token **token, char *input, int *i, int *index)
 {
 	char quote; 
 	int start;
 	int s;
-
 	start = *i;
 	while (input[*i] && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
 		(*i)++;
@@ -415,14 +414,20 @@ void	token_str(t_token **token, char *input, int *i, int *index)
 		}
 		while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
 			(*i)++;
-		if (quote == '\'')
-			add_token(token, substr(input, start, (*i) - start), SI_QUOTE, (*index));
-		else
+		if (s != 2)
+		{
+			printf("exit error\n");
+			exit(1);
+		}				
+		if (quote == '"')
 			add_token(token, substr(input, start, (*i) - start), WORD, (*index));
-		return ;
+		else 
+			add_token(token, substr(input, start, (*i) - start), SI_QUOTE, (*index));
+		printf("%s\n", substr(input, start, (*i) - start));
+		return NULL;
 	}
 		add_token(token, substr(input, start, (*i) - start), WORD, (*index));
-    return ;
+    return NULL;
 	
 }
 void	ft_word(t_token **tokens, char *input, int *i, int *index)

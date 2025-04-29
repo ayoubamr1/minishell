@@ -77,13 +77,15 @@ void 	lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
 //---------------{ cmd functions }-----------------
+void	ft_expand(t_shell	*shell_list);
+
 t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list);
 t_cmd	*ft_lstnew_cmd(void);
 // int		ft_lstsize_cmd(t_cmd *lst);
 void	clear_cmd(t_cmd **lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
-void	token_str(t_token **token, char *input, int *i, int *index);
+void	*token_str(t_token **token, char *input, int *i, int *index);
 // void	ft_quote(t_token **tokens, char *input, int *i, int *index);
 
 //                **  token_tools  **
