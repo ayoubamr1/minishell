@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/29 18:37:26 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:47:50 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,15 @@ static char	*expand_pid(char *res)
 	return (tmp);
 }
 
-static char *cher_env(char *key, t_env *env)
+static char	*cher_env(char *key, t_env *env)
 {
-	t_env *tmp;
-	char *search;
-	size_t key_len;
+	t_env	*tmp;
+	char	*search;
+	size_t	key_len;
 
 	tmp = env;
 	search = ft_strjoin(key, ft_strdup("="));
 	key_len = strlen(key);
-
 	while (tmp)
 	{
 		if (!strncmp(search, tmp->content, key_len + 1))
@@ -95,15 +94,17 @@ static char	*ft_expand_token(char *str, t_env *env)
 	return (res);
 }
 
-void ft_expand(t_shell *shell)
+void	ft_expand(t_shell *shell)
 {
-	t_token *tok = shell->token;
+	t_token	*tok;
+	char	*expanded;
 
+	tok = shell->token;
 	while (tok)
 	{
 		if (tok->type == WORD)
 		{
-			char *expanded = ft_expand_token(tok->content, shell->env);
+			expanded = ft_expand_token(tok->content, shell->env);
 			free(tok->content);
 			tok->content = remove_quotes(expanded);
 		}
