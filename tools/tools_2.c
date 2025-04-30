@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tool_2.c                                           :+:      :+:    :+:   */
+/*   tools_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:17:27 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 14:17:42 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:52:51 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,23 @@ void free2d(char **str)
 	free(str);
 	str = NULL;
 	return ;
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	char	tp;
+	int		i;
+
+	i = 0;
+	tp = (char) c;
+	while (s[i])
+	{
+		if (s[i] == tp)
+			return ((char *) &s[i]);
+		else
+			i++;
+	}
+	if (s[i] == tp)
+		return ((char *) &s[i]);
+	return (NULL);
 }

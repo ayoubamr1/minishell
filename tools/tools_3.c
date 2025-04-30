@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools_2.c                                          :+:      :+:    :+:   */
+/*   tools_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:06:29 by ayameur           #+#    #+#             */
-/*   Updated: 2025/04/22 16:06:44 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/04/29 12:34:10 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,24 @@ char	**ft_split(const char *str, char c)
 	}
 	s[word] = NULL;
 	return (s);
+}
+
+int	ft_isalnum(int c)
+{
+	return (ft_isdigit(c) || ft_isalpha(c));
+}
+
+int	ft_isalpha(int c)
+{
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
+int	ft_isdigit(int c)
+{
+	return ((c >= '0' && c <= '9'));
+}
+
+void	ft_putchar(char c)
+{
+	write (1, &c, 1);
 }

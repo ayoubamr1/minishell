@@ -100,5 +100,14 @@ void 	free2d(char **str);
 char	**ft_strjoin2d(char **s1, char *s2);
 int     ft_isspace(int c);
 char	**ft_split(const char *str, char c);
+int     ft_isalnum(int c);
+void	ft_putchar(char c);
+int     ft_isdigit(int c);
+int     ft_isalpha(int c);
+char	*ft_strchr(const char *s, int c);
 
+
+//           BUILTINS
+void	export(char	*input, t_shell *main_struct);
+void	add_env(t_shell *main, char *new_var);
 #endif
