@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 17:33:16 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/28 17:43:32 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ char	**ft_strjoin2d(char **s1, char *s2)
 {
 	size_t	len1;
 	size_t	i;
-	size_t	j;
+	// size_t	j;
 	char	**new;
 
 	len1 = ft_count_2d(s1);
 	i = 0;
-	j = 0;
+	// j = 0;
 	if (!s1 && s2)
 		return (new = ft_malloc(2 * sizeof(char *), MALLOC), new[0] = ft_strdup(s2), new[1] = NULL, new); 
 	if (s1 && !s2)
