@@ -21,7 +21,7 @@ void	clear_token(t_token **lst)
 	while (*lst)
 	{
 		n = (*lst)->next;
-		if ((*lst)->content) // protect double free
+		if ((*lst)->content)
 		{
 			free((*lst)->content);
 			(*lst)->content = NULL;
@@ -31,61 +31,6 @@ void	clear_token(t_token **lst)
 		*lst = n;
 	}
 }
-
-
-// void *token_str(t_token **token, char *input, int *i, int *index)
-// {
-//     char quote;
-//     int start;
-//     int found_closing_quote = 0;
-
-//     start = *i;
-
-//     // Read until we find a quote or operator
-//     while (input[*i] && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
-//         (*i)++;
-
-//     if (input[*i] == '"' || input[*i] == '\'')
-//     {
-//         quote = input[*i];
-//         (*i)++;  // skip opening quote
-
-//         while (input[*i])
-//         {
-//             if (input[*i] == quote)
-//             {
-//                 found_closing_quote = 1;
-//                 (*i)++;  // skip closing quote
-//                 break;
-//             }
-//             (*i)++;
-//         }
-
-//         // if quote not closed
-//         if (!found_closing_quote)
-//         {
-//             printf("Syntax error: unclosed quote\n");
-//             return NULL;
-//         }
-
-//         // Read after quote until next special char
-//         while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
-//             (*i)++;
-
-//         char *value = substr(input, start, *i - start);
-//         if (quote == '"')
-//             add_token(token, value, WORD, (*index));
-//         else
-//             add_token(token, value, SI_QUOTE, (*index));
-//         (*index)++;
-//         return NULL;
-//     }
-
-//     char *value = substr(input, start, *i - start);
-//     add_token(token, value, WORD, (*index));
-//     (*index)++;
-//     return NULL;
-// }
 
 static int	is_special_char(char c)
 {
@@ -124,9 +69,17 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 		(*i)++;
 	value = substr(input, start, *i - start);
 
-	if(value[0] == quote && value[1] == quote && !value[2])
-		return;
 	printf(">>[%s]\n", value);
+	printf(">>[%s]\n", str);
+	if(value[0] == quote && value[1] == quote && !value[2])
+	{
+		if (quote == '\'')
+			add_token(token, str, SI_QUOTE, *index);
+		else
+			add_token(token, value, WORD, *index);
+		return;
+	}
+
 	if(value)
 	{
 
