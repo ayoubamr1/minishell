@@ -33,58 +33,119 @@ void	clear_token(t_token **lst)
 }
 
 
-void *token_str(t_token **token, char *input, int *i, int *index)
+// void *token_str(t_token **token, char *input, int *i, int *index)
+// {
+//     char quote;
+//     int start;
+//     int found_closing_quote = 0;
+
+//     start = *i;
+
+//     // Read until we find a quote or operator
+//     while (input[*i] && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+//         (*i)++;
+
+//     if (input[*i] == '"' || input[*i] == '\'')
+//     {
+//         quote = input[*i];
+//         (*i)++;  // skip opening quote
+
+//         while (input[*i])
+//         {
+//             if (input[*i] == quote)
+//             {
+//                 found_closing_quote = 1;
+//                 (*i)++;  // skip closing quote
+//                 break;
+//             }
+//             (*i)++;
+//         }
+
+//         // if quote not closed
+//         if (!found_closing_quote)
+//         {
+//             printf("Syntax error: unclosed quote\n");
+//             return NULL;
+//         }
+
+//         // Read after quote until next special char
+//         while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
+//             (*i)++;
+
+//         char *value = substr(input, start, *i - start);
+//         if (quote == '"')
+//             add_token(token, value, WORD, (*index));
+//         else
+//             add_token(token, value, SI_QUOTE, (*index));
+//         (*index)++;
+//         return NULL;
+//     }
+
+//     char *value = substr(input, start, *i - start);
+//     add_token(token, value, WORD, (*index));
+//     (*index)++;
+//     return NULL;
+// }
+
+static int	is_special_char(char c)
 {
-    char quote;
-    int start;
-    int found_closing_quote = 0;
+	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'');
+}
 
-    start = *i;
+static int	skip_quote_block(char *input, int *i, char quote)
+{
+	while (input[*i])
+	{
+		if (input[*i] == quote)
+		{
+			(*i)++;
+			return (1);
+		}
+		(*i)++;
+	}
+	return (0);
+}
 
-    // Read until we find a quote or operator
-    while (input[*i] && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
-        (*i)++;
+static void	handle_quoted_token(t_token **token, char *input, int *i, int *index, char *str)
+{
+	int		start;
+	char	quote;
+	char	*value;
 
-    if (input[*i] == '"' || input[*i] == '\'')
-    {
-        quote = input[*i];
-        (*i)++;  // skip opening quote
+	start = *i;
+	quote = input[*i];
+	(*i)++;
+	if (!skip_quote_block(input, i, quote))
+	{
+		printf("Syntax error: unclosed quote\n");
+		return ;
+	}
+	while (input[*i] && !is_special_char(input[*i]) && input[*i] != ' ')
+		(*i)++;
+	value = substr(input, start, *i - start);
+	if (quote == '\'')
+		add_token(token, ft_strjoin(str, value), SI_QUOTE, *index);
+	else
+		add_token(token, ft_strjoin(str, value), WORD, *index);
+}
+void	*token_str(t_token **token, char *input, int *i, int *index)
+{
+	int		start;
+	char	*value;
 
-        while (input[*i])
-        {
-            if (input[*i] == quote)
-            {
-                found_closing_quote = 1;
-                (*i)++;  // skip closing quote
-                break;
-            }
-            (*i)++;
-        }
-
-        // if quote not closed
-        if (!found_closing_quote)
-        {
-            printf("Syntax error: unclosed quote\n");
-            return NULL;
-        }
-
-        // Read after quote until next special char
-        while (input[*i] && input[*i] != ' ' && input[*i] != '|' && input[*i] != '<' && input[*i] != '>' && input[*i] != '"' && input[*i] != '\'')
-            (*i)++;
-
-        char *value = substr(input, start, *i - start);
-        if (quote == '"')
-            add_token(token, value, WORD, (*index));
-        else
-            add_token(token, value, SI_QUOTE, (*index));
-        (*index)++;
-        return NULL;
-    }
-
-    char *value = substr(input, start, *i - start);
-    add_token(token, value, WORD, (*index));
-    (*index)++;
-    return NULL;
+	start = *i;
+	while (input[*i] && !is_special_char(input[*i]))
+		(*i)++;
+	if (input[*i] == '"' || input[*i] == '\'')
+	{
+		value = substr(input, start, *i - start);
+		handle_quoted_token(token, input, i, index, value);
+		return (NULL);
+	}
+	value = substr(input, start, *i - start);
+	add_token(token, value, WORD, *index);
+	(*index)++;
+	return (NULL);
 }
 
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
