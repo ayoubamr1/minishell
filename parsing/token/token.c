@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 18:07:13 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/29 18:30:57 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,148 +21,93 @@ void	clear_token(t_token **lst)
 	while (*lst)
 	{
 		n = (*lst)->next;
-		free((*lst)->content);
-		(*lst)->content = NULL;
+		if ((*lst)->content)
+		{
+			free((*lst)->content);
+			(*lst)->content = NULL;
+		}
 		free(*lst);
 		*lst = NULL;
 		*lst = n;
 	}
-	*lst = NULL;
 }
 
-void	ft_exit(t_token **token)
+static int	is_special_char(char c)
 {
-	(void)**token;
-	// ft_malloc(0, FREE);
-	// exit(1);
-}
-// static char	*join_and_free(char *s1, char *s2)
-// {
-// 	char	*res;
-
-// 	if (!s1 || !s2)
-// 		return (NULL);
-// 	res = ft_strjoin(s1, s2);
-// 	// free(s1);
-// 	// free(s2);
-// 	return (res);
-// }
-
-// static char	*parse_inside_quote(char *input, int *i, char quote)
-// {
-// 	int		start;
-// 	char	*tmp;
-
-// 	start = *i;
-// 	while (input[*i] && input[*i] != quote)
-// 		(*i)++;
-// 	tmp = substr(input, start, *i - start);
-// 	// if (!tmp)
-// 	// 	(free(input), ft_exit(token));
-// 	if (input[*i] == quote)
-// 		(*i)++;
-// 	return (tmp);
-// }
-
-// static char	*parse_unquoted_part(char *input, int *i)
-// {
-// 	int		start;
-// 	char	*tmp;
-
-// 	start = *i;
-// 	while (input[*i] && input[*i] != '\'' && input[*i] != '"' &&
-// 		!ft_isspace(input[*i]) && input[*i] != '|' &&
-// 		input[*i] != '<' && input[*i] != '>')
-// 		(*i)++;
-// 	tmp = substr(input, start, *i - start);
-// 	// if (!tmp)
-// 	// 	(free(input), ft_exit(token));
-// 	return (tmp);
-// }
-
-// char	*parse_word_with_quotes(char *input, int *i)
-// {
-// 	char	*final;
-// 	char	*tmp;
-// 	char	quote;
-
-// 	final = ft_strdup("");
-// 	while (input[*i] && !ft_isspace(input[*i]) &&
-// 		input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
-// 	{
-// 		if (input[*i] == '\'' || input[*i] == '"')
-// 		{
-// 			quote = input[(*i)++];
-// 			tmp = parse_inside_quote(input, i, quote);
-// 		}
-// 		else
-// 			tmp = parse_unquoted_part(input, i);
-// 		final = join_and_free(final, tmp);
-// 	}
-// 	return (final);
-// }
-static char	*join_and_free(char *s1, char *s2)
-{
-	char	*res;
-
-	if (!s1 || !s2)
-		return (NULL);
-	res = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (res);
+	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'');
 }
 
-static char	*parse_inside_quote(char *input, int *i, char quote)
+static int	skip_quote_block(char *input, int *i, char quote)
 {
-	int		start;
-	char	*tmp;
-
-	start = *i;
-	while (input[*i] && input[*i] != quote)
-		(*i)++;
-	tmp = substr(input, start, *i - start);
-	if (input[*i] == quote)
-		(*i)++;
-	return (tmp);
-}
-
-static char	*parse_unquoted_part(char *input, int *i)
-{
-	int		start;
-	char	*tmp;
-
-	start = *i;
-	while (input[*i] && input[*i] != '\'' && input[*i] != '"' &&
-		!ft_isspace(input[*i]) && input[*i] != '|' &&
-		input[*i] != '<' && input[*i] != '>')
-		(*i)++;
-	tmp = substr(input, start, *i - start);
-	return (tmp);
-}
-
-char	*parse_word_with_quotes(char *input, int *i)
-{
-	char	*final;
-	char	*tmp;
-	char	quote;
-
-	final = ft_strdup("");
-	while (input[*i] && !ft_isspace(input[*i]) &&
-		input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+	while (input[*i])
 	{
-		if (input[*i] == '\'' || input[*i] == '"')
+		if (input[*i] == quote)
 		{
-			quote = input[(*i)++];
-			tmp = parse_inside_quote(input, i, quote);
+			(*i)++;
+			return (1);
 		}
-		else
-			tmp = parse_unquoted_part(input, i);
-		final = join_and_free(final, tmp);
+		(*i)++;
 	}
-	return (final);
+	return (0);
 }
 
+static void	handle_quoted_token(t_token **token, char *input, int *i, int *index, char *str)
+{
+	int		start;
+	char	quote;
+	char	*value;
+
+	start = *i;
+	quote = input[*i];
+	(*i)++;
+	if (!skip_quote_block(input, i, quote))
+	{
+		printf("Syntax error: unclosed quote\n");
+		return ;
+	}
+	while (input[*i] && !is_special_char(input[*i]) && input[*i] != ' ')
+		(*i)++;
+	value = substr(input, start, *i - start);
+
+	printf(">>[%s]\n", value);
+	printf(">>[%s]\n", str);
+	if(value[0] == quote && value[1] == quote && !value[2])
+	{
+		if (quote == '\'')
+			add_token(token, str, SI_QUOTE, *index);
+		else
+			add_token(token, value, WORD, *index);
+		return;
+	}
+
+	if(value)
+	{
+
+		if (quote == '\'')
+			add_token(token, ft_strjoin(str, value), SI_QUOTE, *index);
+		else
+			add_token(token, ft_strjoin(str, value), WORD, *index);
+	}
+}
+void	*token_str(t_token **token, char *input, int *i, int *index)
+{
+	int		start;
+	char	*value;
+
+	start = *i;
+	while (input[*i] && !is_special_char(input[*i]))
+		(*i)++;
+	if (input[*i] == '"' || input[*i] == '\'')
+	{
+		value = substr(input, start, *i - start);
+		handle_quoted_token(token, input, i, index, value);
+		return (NULL);
+	}
+	value = substr(input, start, *i - start);
+	add_token(token, value, WORD, *index);
+	(*index)++;
+	return (NULL);
+}
 
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
 {
@@ -179,7 +124,7 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index)
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
 {
-	char *word;
+	// char *word;
 
 	if (input[*i] == '>')
 		{
@@ -196,16 +141,16 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 		add_token(tokens, ft_strdup("<"), REDIR_IN, (*index));
 		((*i)++, index++);
 	}
-	else if (input[(*i)] == '"' || input[(*i)] == '\'')
-	{
-		if (input[*i] == '\'' || input[*i] == '"')
-		{
-			word = parse_word_with_quotes(input, i);
-			add_token(tokens, word, STRING, (*index)++);
-		}
-	}
 	else
 		ft_word(tokens, input, i, index);
+	// else if (input[(*i)] == '"' || input[(*i)] == '\'')
+	// {
+	// 	if (input[*i] == '\'' || input[*i] == '"')
+	// 	{
+	// 		word = parse_word_with_quotes(input, i);
+	// 		// add_token(tokens, word, STRING, (*index)++);
+	// 	}
+	// }
 }
 
 void lexer_1(char *input, t_token **tokens)
@@ -213,21 +158,25 @@ void lexer_1(char *input, t_token **tokens)
 	int i;
 	int index;
 
+
 	i = 0;
 	index = 1;
 	while (input[i])
 	{
 		if (input[i] == ' ' || input[i] == '\t')
 			i++;
+		else if (input[i] && input[i] != ' ' && input[i] != '|' &&
+			input[i] != '<' && input[i] != '>' ) 
+		{
+			token_str(tokens, input, &i, &index);
+		}
 		else if (input[i] == '>' && input[i + 1] == '>')
 		{
-			// synatx(tokens, input, '>', i, 1);
 			add_token(tokens, ft_strdup(">>"), APPEND, index);
 			(i += 2, index++);
 		}
 		else if (input[i] == '<' && input[i + 1] == '<')
 		{
-			// synatx(tokens, input, '<', i, 1);
 			add_token(tokens, ft_strdup("<<"), HEREDOC, index);
 			(i += 2, index++);
 		}

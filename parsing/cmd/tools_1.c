@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:31:55 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/26 18:25:18 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/04/26 21:40:29 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_cmd *ft_lstnew_cmd(void)
 	t_cmd *node = ft_malloc(sizeof(t_cmd), MALLOC);
 	if (!node)
 		return NULL;
-	node->args = NULL;
+	node->cmd = NULL;
 	node->file = NULL;
 	// node->outfile = NULL;
 	node->in = -1;
@@ -43,7 +43,7 @@ t_cmd *ft_lstnew_cmd(void)
 // 	return (count);
 // }
 
-// void	ft_clear_cmd(t_cmd **lst)
+// void	clear_cmd(t_cmd **lst)
 // {
 // 	t_cmd	*n;
 
@@ -52,12 +52,35 @@ t_cmd *ft_lstnew_cmd(void)
 // 	while (*lst)
 // 	{
 // 		n = (*lst)->next;
-// 		free((*lst)->args);
-// 		free(*lst);
+// 		free2d((*lst)->cmd);
+// 		(*lst)->cmd = NULL;
+// 		free((*lst));
+// 		*lst = NULL;
 // 		*lst = n;
 // 	}
 // 	*lst = NULL;
 // }
+void	clear_cmd(t_cmd **lst)
+{
+	t_cmd	*current;
+	t_cmd	*next;
+
+	if (!lst || !*lst)
+		return ;
+	current = *lst;
+	while (current)
+	{
+		next = current->next;
+		if (current->cmd)
+			free2d(current->cmd);
+		if (current->file)
+			free(current->file), current->file = NULL;
+		free(current);
+		current = NULL;
+		current = next;
+	}
+	*lst = NULL;
+}
 
 t_cmd	*ft_lstlast_cmd(t_cmd *lst)
 {
