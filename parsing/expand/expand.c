@@ -102,6 +102,7 @@ void	ft_expand(t_shell *shell)
 	tok = shell->token;
 	while (tok)
 	{
+			// printf("ex > [%s]\n", tok->content);
 		if (tok->type == WORD)
 		{
 			expanded = ft_expand_token(tok->content, shell->env);
@@ -113,3 +114,35 @@ void	ft_expand(t_shell *shell)
 		tok = tok->next;
 	}
 }
+
+// void	ft_expand(t_shell *shell)
+// {
+// 	t_token	*tok;
+// 	char	*expanded;
+
+// 	tok = shell->token;
+// 	while (tok)
+// 	{
+// 			// printf("ex > [%s]\n", tok->content);
+// 		if (tok->type == WORD)
+// 		{
+// 			printf("x >> [%s]\n", tok->content);
+// 			expanded = ft_expand_token(tok->content, shell->env);
+// 			// free(tok->content);
+// 			printf("str ex >> [%s]\n", expanded);
+// 			char *str = remove_quotes(expanded);
+// 			printf("str >> [%s]\n", str);
+// 			tok->content = str;
+// 		}
+// 		else if (tok->type == SI_QUOTE)
+// 		{
+// 						char *str = remove_quotes(tok->content);
+// 			printf("str >> [%s]\n", str);
+// 			printf("str ex >> [%s]\n", tok->content);
+
+// 			tok->content = str;
+// 		}
+// 			// tok->content = remove_quotes(tok->content);
+// 		tok = tok->next;
+// 	}
+// }

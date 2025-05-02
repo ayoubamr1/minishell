@@ -95,23 +95,25 @@ static void	ft_null(t_shell *shell)
 
 static void	print_node(t_shell *shell_list, char **env)
 {
-	// t_cmd	*cc;
+	t_cmd	*cc;
 
-	// cc = shell_list->cmd;
+	cc = shell_list->cmd;
 	(void)env;
-	// while (cc)
-	// {
-	// 	int	i;
+	while (cc)
+	{
+		int	i;
 
-	// 	i = 0;
-	// 	while (cc->cmd && cc->cmd[i])
-	// 	{
-	// 		printf("{cmd[%s] ,", cc->cmd[i]);
-	// 		i++;
-	// 	}
-	// 	printf("file[%s] infd[%d] outfd[%d] }\n", cc->file, cc->in, cc->out);
-	// 	cc = cc->next;
-	// }
+		i = 0;
+		printf("{");
+		while (cc->cmd && cc->cmd[i])
+		{
+			printf("cmd[%s] ,", cc->cmd[i]);
+			i++;
+		}
+		printf("file[%s] infd[%d] outfd[%d] }\n", cc->file, cc->in, cc->out);
+		cc = cc->next;
+	}
+	printf("---------------------------------------------\n");
 	t_token *sh = shell_list->token;
 
 	while (sh)
@@ -147,7 +149,6 @@ void	minishell(t_shell *shell_list, char **env)
 			shell_list->env = ft_env(shell_list->env, env);
 
 			ft_expand(shell_list);
-			// ft_expand(&shell_list);
 			shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
 			print_node(shell_list, env);
