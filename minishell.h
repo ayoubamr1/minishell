@@ -123,5 +123,6 @@ char	**ft_strjoin2d(char **s1, char *s2);
 // char	*ft_itoa(int n);
 int	ft_isalnum(int c);
 int	ft_isalpha(int c);
+int	is_special_char(char c);
 
 #endif

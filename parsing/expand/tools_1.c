@@ -48,45 +48,12 @@ char	*id_itoa(int n)
 	return (str);
 }
 
-// char	*remove_quotes(char *str)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	quote;
-// 	char	*res;
-
-// 	(1) && (i = 0, j = 0);
-// 	quote = 0;
-// 	res = malloc(strlen(str) + 1);
-// 	if (!res)
-// 		return (NULL);
-// 	while (str[i])
-// 	{
-// 		if ((str[i] == '\'' || str[i] == '"'))
-// 		{
-// 			if (quote == 0)
-// 				quote = str[i];
-// 			else if (quote == str[i])
-// 				quote = 0;
-// 			i++;
-// 		}
-// 		else
-// 			res[j++] = str[i++];
-// 	}
-// 	res[j] = '\0';
-// 	return (res);
-// }
-static int	is_special_char(char c)
-{
-	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'' || c == ' ');
-}
 char	*remove_quotes(char *str)
 {
 	int		i;
 	int		j;
 	char	quote;
 	char	*res;
-	// printf("str >> [%s]\n", str);
 	(1) && (i = 0, j = 0);
 	quote = 0;
 	res = ft_malloc(strlen(str) + 1, MALLOC);
@@ -99,12 +66,7 @@ char	*remove_quotes(char *str)
 		if (str[i] && (str[i] == '\'' || str[i] == '"'))
 			quote = str[i++];
 		else
-		{
-			res[j] = '\0';
-			// printf(">>%s\n", res);
-
-			return (res);
-		}
+			return (res[j] = '\0', res);
 		while (str[i] && str[i] != quote)
 			res[j++] = str[i++];
 		i++;
@@ -112,6 +74,5 @@ char	*remove_quotes(char *str)
 			res[j++] = str[i++];
 	}
 	res[j] = '\0';
-	// printf(">>%s", res);
 	return (res);
 }

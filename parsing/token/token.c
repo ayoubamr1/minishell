@@ -32,7 +32,7 @@ void	clear_token(t_token **lst)
 	}
 }
 
-static int	is_special_char(char c)
+int	is_special_char(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'' || c == ' ');
 }
@@ -56,9 +56,8 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 	int		start;
 	char	quote;
 	char	*value;
+	char	*s1;
 
-	// printf("c ==> [%c][%d]\n", input[*i], *i);
-	(void)str;
 	start = *i;
 	quote = input[*i];
 	(*i)++;
@@ -81,15 +80,13 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 		while (input[*i] && !is_special_char(input[*i]) && input[*i] != ' ')
 			(*i)++;
 	}
-	value = substr(input, start, *i - start);
-	char *s1 = ft_strjoin(str, value);
-	printf("val ==> [%s]\n", s1);
+	s1 = ft_strjoin(str, substr(input, start, *i - start));
 	if (quote == '\'')
 		add_token(token, s1, SI_QUOTE, *index);
 	else
 		add_token(token, s1, WORD, *index);
-	printf("================\n");
 }
+
 void	*token_str(t_token **token, char *input, int *i, int *index)
 {
 	int		start;
