@@ -19,8 +19,8 @@ SRC =   parsing/token/main.c \
 
 OBJ = $(SRC:.c=.o)
 
-# CFLAGS = -g3 -fsanitize=address
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = #-g3 -fsanitize=address
+# CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
 

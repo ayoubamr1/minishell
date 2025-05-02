@@ -34,7 +34,7 @@ void	clear_token(t_token **lst)
 
 static int	is_special_char(char c)
 {
-	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'');
+	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'' || c == ' ');
 }
 
 static int	skip_quote_block(char *input, int *i, char quote)
@@ -58,6 +58,7 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 	char	*value;
 
 	start = *i;
+	(void)str;
 	quote = input[*i];
 	(*i)++;
 	if (!skip_quote_block(input, i, quote))
@@ -67,27 +68,18 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 	}
 	while (input[*i] && !is_special_char(input[*i]) && input[*i] != ' ')
 		(*i)++;
+		printf("c ==> [%c]\n", input[*i]);
 	value = substr(input, start, *i - start);
+	// printf();
+	// if (quote == '\'')
+	// 	add_token(token, ft_strjoin(str, value), SI_QUOTE, *index);
+	// else
+	// 	add_token(token, ft_strjoin(str, value), WORD, *index);
 
-	printf(">>[%s]\n", value);
-	printf(">>[%s]\n", str);
-	if(value[0] == quote && value[1] == quote && !value[2])
-	{
-		if (quote == '\'')
-			add_token(token, str, SI_QUOTE, *index);
-		else
-			add_token(token, value, WORD, *index);
-		return;
-	}
-
-	if(value)
-	{
-
-		if (quote == '\'')
-			add_token(token, ft_strjoin(str, value), SI_QUOTE, *index);
-		else
-			add_token(token, ft_strjoin(str, value), WORD, *index);
-	}
+	if (quote == '\'')
+		add_token(token, value, SI_QUOTE, *index);
+	else
+		add_token(token, value, WORD, *index);
 }
 void	*token_str(t_token **token, char *input, int *i, int *index)
 {
@@ -145,7 +137,7 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 		ft_word(tokens, input, i, index);
 	// else if (input[(*i)] == '"' || input[(*i)] == '\'')
 	// {
-	// 	if (input[*i] == '\'' || input[*i] == '"')
+	// 	if (ieenput[*i] == '\'' || input[*i] == '"')
 	// 	{
 	// 		word = parse_word_with_quotes(input, i);
 	// 		// add_token(tokens, word, STRING, (*index)++);
