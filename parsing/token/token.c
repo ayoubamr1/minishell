@@ -57,8 +57,9 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 	char	quote;
 	char	*value;
 
-	start = *i;
+	// printf("c ==> [%c][%d]\n", input[*i], *i);
 	(void)str;
+	start = *i;
 	quote = input[*i];
 	(*i)++;
 	if (!skip_quote_block(input, i, quote))
@@ -68,18 +69,26 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 	}
 	while (input[*i] && !is_special_char(input[*i]) && input[*i] != ' ')
 		(*i)++;
-		printf("c ==> [%c]\n", input[*i]);
+	while (input[*i] && input[(*i)+ 1] != ' ')
+	{
+		quote = input[*i];
+		(*i)++;
+		if (!skip_quote_block(input, i, quote))
+		{
+			printf("Syntax error: unclosed quote\n");
+			return ;
+		}
+		while (input[*i] && !is_special_char(input[*i]) && input[*i] != ' ')
+			(*i)++;
+	}
 	value = substr(input, start, *i - start);
-	// printf();
-	// if (quote == '\'')
-	// 	add_token(token, ft_strjoin(str, value), SI_QUOTE, *index);
-	// else
-	// 	add_token(token, ft_strjoin(str, value), WORD, *index);
-
+	char *s1 = ft_strjoin(str, value);
+	printf("val ==> [%s]\n", s1);
 	if (quote == '\'')
-		add_token(token, value, SI_QUOTE, *index);
+		add_token(token, s1, SI_QUOTE, *index);
 	else
-		add_token(token, value, WORD, *index);
+		add_token(token, s1, WORD, *index);
+	printf("================\n");
 }
 void	*token_str(t_token **token, char *input, int *i, int *index)
 {

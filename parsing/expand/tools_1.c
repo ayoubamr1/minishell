@@ -86,25 +86,32 @@ char	*remove_quotes(char *str)
 	int		j;
 	char	quote;
 	char	*res;
+	// printf("str >> [%s]\n", str);
 	(1) && (i = 0, j = 0);
 	quote = 0;
 	res = ft_malloc(strlen(str) + 1, MALLOC);
 	if (!res)
 		return (NULL);
-	while (str[i] && str[i] != '\'' && str[i] != '"')
-		res[j++] = str[i++];
-	if (str[i] && (str[i] == '\'' || str[i] == '"'))
-		quote = str[i++];
-	else
+	while (str[i])
 	{
-		res[j] = '\0';
-		return (res);
+		while (str[i] && str[i] != '\'' && str[i] != '"')
+			res[j++] = str[i++];
+		if (str[i] && (str[i] == '\'' || str[i] == '"'))
+			quote = str[i++];
+		else
+		{
+			res[j] = '\0';
+			// printf(">>%s\n", res);
+
+			return (res);
+		}
+		while (str[i] && str[i] != quote)
+			res[j++] = str[i++];
+		i++;
+		while (str[i] && !is_special_char(str[i]))
+			res[j++] = str[i++];
 	}
-	while (str[i] && str[i] != quote)
-		res[j++] = str[i++];
-	i++;
-	while (str[i] && !is_special_char(str[i]))
-		res[j++] = str[i++];
 	res[j] = '\0';
+	// printf(">>%s", res);
 	return (res);
 }
