@@ -53,6 +53,8 @@ typedef struct s_cmd
 //---------------{ env structure }-----------------
 typedef struct s_env 
 {
+	// char			*key;
+	// char			*value;
 	char			*content;
 	int				index;
 	struct s_env	*next;

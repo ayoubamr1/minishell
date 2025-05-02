@@ -33,20 +33,59 @@ static char	*cher_env(char *key, t_env *env)
 	size_t	key_len;
 
 	tmp = env;
-	search = ft_strjoin(key, ft_strdup("="));
+	// search = ft_strjoin(key, ft_strdup("="));
 	key_len = strlen(key);
 	while (tmp)
 	{
-		if (!strncmp(search, tmp->content, key_len + 1))
+		if (!ft_strncmp(tmp->content, key, key_len ))
 		{
-			// printf("?[%s]]n", tmp->content);
-			return (ft_strdup(tmp->content + key_len + 1));
-		}
+	printf("key => [%s]== [%d]\n", key, (int)key_len);
+	printf("tmp content => [%s]== [%d]\n", tmp->content, strlen(tmp->content));
+			// printf("[%s]\n", ft_strdup(tmp->content + key_len + 1));
+			// exit(127);
+			
+			return (ft_strdup(tmp->content + key_len));
+		}		
+		
+		// if (!ft_strncmp(search, , key_len + 1))
+		// if (!ft_strncmp(tmp->content, search, key_len + 1))
+		// {
+		// 	// printf("SER [%s]\n", search);
+		// }
 		tmp = tmp->next;
 	}
 	// free(search);
 	return (ft_strdup(""));
 }
+// static char	*cher_env(char *key, t_env *env)
+// {
+// 	t_env	*tmp;
+// 	char	*search;
+// 	size_t	key_len;
+
+// 	search = ft_strjoin(key, "=");
+// 	// if (!search)
+// 	// 	return (ft_strdup("")); // or handle NULL case
+
+// // printf("??%s\n", search);
+// 	key_len = strlen(search);
+// 	tmp = env;
+// 	while (tmp)
+// 	{
+// 		printf("++++++++++++++++++\n");
+// 		printf("Checking: [%s] against [%s]\n", tmp->content, search);
+// 		printf("++++++++++++++++++\n");
+// 		if (!strncmp(tmp->content, search, key_len))
+// 		{
+// 			// free(search);
+// 			return (ft_strdup(tmp->content + key_len));
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	// free(search);
+// 	return (ft_strdup(""));
+// }
+
 
 static int	is_special_charr(char c)
 {
@@ -68,6 +107,8 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 		(*i)++;
 	key = substr(str, start, *i - start);
 	val = cher_env(key, env);
+
+		printf("{{{{{{%s}}}}}}\n", val);
 	if (!val)
 		return(NULL);
 	env_path = ft_malloc(sizeof(val), MALLOC); 
@@ -82,7 +123,7 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 		j++;
 	}
 	env_path[p] = '\0';
-	printf("cccc>>[%c]\n", str[*i]);
+	// printf("cccc>>[%c]\n", str[*i]);
 	tmp = ft_strjoin(res, env_path);
 	return (tmp);
 }
@@ -92,12 +133,11 @@ static char	*ft_expand_token(char *str, t_env *env)
 	int		i;
 	char	*res;
 	char	*tmp;
-// "$HOME$HOME"
 	i = 0;
 	res = ft_strdup("");
 	if (!res)
 		return (NULL);
-	printf(">>[%s]\n", str);
+	// printf(">>[%s]\n", str);
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '$')
@@ -113,7 +153,6 @@ static char	*ft_expand_token(char *str, t_env *env)
 			res = ft_strjoin(res, tmp);
 			i++;
 		}
-		printf(">>[%c]<[%d]\n", str[i], i);
 	}
 	
 	return (res);
