@@ -132,6 +132,9 @@ char	*ft_strchr(const char *s, int c);
 
 
 //           BUILTINS
-void	export(char	*input, t_shell *main_struct);
+void	export(char	*input, char **env);//t_shell *main_struct);
 void	add_env(t_shell *main, char *new_var);
+char	*my_getenv(char **env, char *var_name); // t_shell *main
+
+
 #endif
