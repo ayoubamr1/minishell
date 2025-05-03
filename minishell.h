@@ -88,6 +88,7 @@ void	ft_expand(t_shell	*shell_list);
 //---------------{ expand functions }-----------------
 char	*id_itoa(int n);
 char	*remove_quotes(char *str);
+// static int	is_special_char(char c);
 
 
 
@@ -119,6 +120,7 @@ size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strncpy(char *dest, char *src, size_t n);
+char	*ft_strcpy(const char *str, char *dest);
 int 	ft_isspace(int c);
 void 	free2d(char **str);
 char	**ft_strjoin2d(char **s1, char *s2);

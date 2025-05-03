@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/29 18:47:50 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/05/03 15:33:54 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*cher_env(char *key, t_env *env)
 		if (!ft_strncmp(tmp->content, key, key_len ))
 		{
 	printf("key => [%s]== [%d]\n", key, (int)key_len);
-	printf("tmp content => [%s]== [%d]\n", tmp->content, strlen(tmp->content));
+	printf("tmp content => [%s]== [%ld]\n", tmp->content, strlen(tmp->content));
 			// printf("[%s]\n", ft_strdup(tmp->content + key_len + 1));
 			// exit(127);
 			
@@ -87,7 +87,7 @@ static char	*cher_env(char *key, t_env *env)
 // }
 
 
-static int	is_special_charr(char c)
+static int	is_special_char(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'' || c == ' ' || c == '$');
 }
@@ -103,7 +103,7 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 
 	start = ++(*i);
 	j = 0;
-	while (str[*i] && !is_special_charr(str[*i]))
+	while (str[*i] && !is_special_char(str[*i]))
 		(*i)++;
 	key = substr(str, start, *i - start);
 	val = cher_env(key, env);

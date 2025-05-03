@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/02 17:51:17 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/03 17:20:29 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,7 @@ void	my_export(t_shell *main, char *var)
 	new_var = malloc(ft_strlen(var) + 1);
 	if (!new_var)
 		return;
-	while (var[i])
-	{
-		new_var[i] = var[i];
-		i++;
-	}
-	new_var[i] = '\0';
+	ft_strcpy(var, new_var);
 	while (curr)
 	{
 		if (ft_strncmp(curr->content, var, len) == 0 && curr->content[len] == '=')
@@ -48,6 +43,7 @@ void	my_export(t_shell *main, char *var)
 		}
 		curr = curr->next;
 	}
+	add_env(main, new_var);
 }
 
 
