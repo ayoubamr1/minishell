@@ -37,24 +37,12 @@ static char	*cher_env(char *key, t_env *env)
 	key_len = strlen(key);
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->content, key, key_len ))
+		if (!ft_strncmp(tmp->content, key, key_len))
 		{
-	printf("key => [%s]== [%d]\n", key, (int)key_len);
-	printf("tmp content => [%s]== [%d]\n", tmp->content, strlen(tmp->content));
-			// printf("[%s]\n", ft_strdup(tmp->content + key_len + 1));
-			// exit(127);
-			
 			return (ft_strdup(tmp->content + key_len));
 		}		
-		
-		// if (!ft_strncmp(search, , key_len + 1))
-		// if (!ft_strncmp(tmp->content, search, key_len + 1))
-		// {
-		// 	// printf("SER [%s]\n", search);
-		// }
 		tmp = tmp->next;
 	}
-	// free(search);
 	return (ft_strdup(""));
 }
 // static char	*cher_env(char *key, t_env *env)
@@ -107,8 +95,6 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 		(*i)++;
 	key = substr(str, start, *i - start);
 	val = cher_env(key, env);
-
-		printf("{{{{{{%s}}}}}}\n", val);
 	if (!val)
 		return(NULL);
 	env_path = ft_malloc(sizeof(val), MALLOC); 
@@ -117,13 +103,8 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	j++;
 	int p = 0;
 	while (val[j])
-	{
-		env_path[p] = val[j];
-		p++;
-		j++;
-	}
+		env_path[p++] = val[j++];
 	env_path[p] = '\0';
-	// printf("cccc>>[%c]\n", str[*i]);
 	tmp = ft_strjoin(res, env_path);
 	return (tmp);
 }
@@ -137,7 +118,6 @@ static char	*ft_expand_token(char *str, t_env *env)
 	res = ft_strdup("");
 	if (!res)
 		return (NULL);
-	// printf(">>[%s]\n", str);
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '$')
@@ -154,7 +134,6 @@ static char	*ft_expand_token(char *str, t_env *env)
 			i++;
 		}
 	}
-	
 	return (res);
 }
 
@@ -166,11 +145,9 @@ void	ft_expand(t_shell *shell)
 	tok = shell->token;
 	while (tok)
 	{
-			// printf("ex > [%s]\n", tok->content);
 		if (tok->type == WORD)
 		{
 			expanded = ft_expand_token(tok->content, shell->env);
-			// free(tok->content);
 			tok->content = remove_quotes(expanded);
 		}
 		else if (tok->type == SI_QUOTE)
@@ -178,35 +155,3 @@ void	ft_expand(t_shell *shell)
 		tok = tok->next;
 	}
 }
-
-// void	ft_expand(t_shell *shell)
-// {
-// 	t_token	*tok;
-// 	char	*expanded;
-
-// 	tok = shell->token;
-// 	while (tok)
-// 	{
-// 			// printf("ex > [%s]\n", tok->content);
-// 		if (tok->type == WORD)
-// 		{
-// 			printf("x >> [%s]\n", tok->content);
-// 			expanded = ft_expand_token(tok->content, shell->env);
-// 			// free(tok->content);
-// 			printf("str ex >> [%s]\n", expanded);
-// 			char *str = remove_quotes(expanded);
-// 			printf("str >> [%s]\n", str);
-// 			tok->content = str;
-// 		}
-// 		else if (tok->type == SI_QUOTE)
-// 		{
-// 						char *str = remove_quotes(tok->content);
-// 			printf("str >> [%s]\n", str);
-// 			printf("str ex >> [%s]\n", tok->content);
-
-// 			tok->content = str;
-// 		}
-// 			// tok->content = remove_quotes(tok->content);
-// 		tok = tok->next;
-// 	}
-// }
