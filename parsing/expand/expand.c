@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/05/05 20:16:06 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/05 20:32:00 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static char	*cher_env(char *key, t_env *env)
 // }
 
 
-static int	is_special_char(char c)
+static int	is_special_charr(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'' || c == ' ' || c == '$');
 }
@@ -91,7 +91,7 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 
 	start = ++(*i);
 	j = 0;
-	while (str[*i] && !is_special_char(str[*i]))
+	while (str[*i] && !is_special_charr(str[*i]))
 		(*i)++;
 	key = substr(str, start, *i - start);
 	val = cher_env(key, env);
