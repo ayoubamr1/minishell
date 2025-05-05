@@ -66,9 +66,11 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 		printf("Syntax error: unclosed quote\n");
 		return ;
 	}
-	while (input[*i] && !is_special_char(input[*i]) && input[*i] != ' ')
+	while (input[*i] && !is_special_char(input[*i]))
 		(*i)++;
-	while (input[*i] && input[(*i)+ 1] != ' ')
+	
+	// while (input[*i] && input[(*i)+ 1] != ' ')
+	while (input[*i] && !is_special_char(input[*i]))
 	{
 		quote = input[*i];
 		(*i)++;
@@ -77,14 +79,16 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 			printf("Syntax error: unclosed quote\n");
 			return ;
 		}
-		while (input[*i] && !is_special_char(input[*i]) && input[*i] != ' ')
+		while (input[*i] && !is_special_char(input[*i]))
 			(*i)++;
 	}
+	
 	s1 = ft_strjoin(str, substr(input, start, *i - start));
 	if (quote == '\'')
-		add_token(token, s1, SI_QUOTE, *index);
+	add_token(token, s1, SI_QUOTE, *index);
 	else
-		add_token(token, s1, WORD, *index);
+	add_token(token, s1, WORD, *index);
+	(*index)++;
 }
 
 void	*token_str(t_token **token, char *input, int *i, int *index)
@@ -123,7 +127,6 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index)
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
 {
 	// char *word;
-
 	if (input[*i] == '>')
 		{
 			add_token(tokens, ft_strdup(">"), REDIR_OUT, *index);
