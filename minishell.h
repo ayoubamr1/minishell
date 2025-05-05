@@ -130,7 +130,7 @@ int     ft_isdigit(int c);
 int     ft_isalpha(int c);
 char	*ft_strchr(const char *s, int c);
 
-
+int	is_special_char(char c);
 //           BUILTINS
 void	export(char	*input, char **env);//t_shell *main_struct);
 void	add_env(t_shell *main, char *new_var);
