@@ -121,7 +121,6 @@ static void	print_node(t_shell *shell_list, char **env)
 	// 	printf("cont = [%s] type[%d] index[%d]}\n", sh->content, sh->type, sh->index);
 	// 	sh = sh->next;
 	// }
-		
 }
 
 void	minishell(t_shell *shell_list, char **env)
