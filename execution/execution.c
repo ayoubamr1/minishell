@@ -6,11 +6,40 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/06 17:13:50 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/07 17:50:45 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	**get_path(t_env *env)
+{
+	t_env *cur;
+	char	*path;
+	char	**path_splited;
+
+	cur = env;
+	while (cur)
+	{
+		if (ft_strncmp(cur->content, "PATH=", 5) == 0)
+		{
+			path = cur->content;
+			break ;
+		}
+		cur = cur->next;
+	}
+	if (path == NULL)
+		return (NULL);
+	if (*(path + 5) == '\0')
+		return (NULL);
+	path_splited = ft_split(path, ':');
+	return (path_splited);
+}
+
+void	check_if_access(t_cmd *cmd , char **path_splited)
+{
+	
+}
 
 void	execute_commande(t_cmd *cmd, t_env *env)
 {
@@ -18,9 +47,11 @@ void	execute_commande(t_cmd *cmd, t_env *env)
 	int		pipe_fd[2];
 	pid_t	pid;
 	int		prev_read;
+	char	**path;
 	
 	cur = cmd;
 	prev_read = 0;
+	path = get_path(env);
 	while (cur)
 	{
 		if (cur->next)
