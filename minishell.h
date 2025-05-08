@@ -48,6 +48,9 @@ typedef struct s_cmd
 	int				in; // file fd
 	int				out; //file fd
 	// int 			heredoc; // 1 if <<
+	int				pipe_fd[2];
+	int				prev_read;
+	pid_t			pid;
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 //---------------{ env structure }-----------------
