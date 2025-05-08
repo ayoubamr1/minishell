@@ -152,6 +152,8 @@ void	minishell(t_shell *shell_list, char **env)
 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
 			print_node(shell_list, env);
 		}
+		get_path(shell_list);
+		check_if_access(shell_list);
 	}
 	free(input);
 }
