@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/08 16:00:59 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/08 19:44:58 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	execute_commande(t_cmd *cmd, t_env *env)
 					dup2(cur->out, 1);
 				else if (cur->next)
 					dup2(pipe_fd[1], 1);
-				if (execve(cur->cmd[0], cur->cmd, env) == -1)
+				if (execve(cur->cmd[0], cur->cmd, NULL) == -1)
 				{
 					perror("exec failled\n");
 					exit(EXIT_FAILURE);

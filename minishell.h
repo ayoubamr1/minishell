@@ -143,4 +143,15 @@ void	add_env(t_shell *main, char *new_var);
 char	*my_getenv(char **env, char *var_name); // t_shell *main
 
 
+
+
+
+
+//            EXECUTION
+void	get_path(t_shell *main);
+void	check_if_access(t_shell *main);
+void	ft_check_cmd_path(t_cmd	*cmd_array, t_env *env);
+void	ft_creat_pipe(t_cmd *cmd);
+void	ft_fork_process(t_cmd *cmd);
+
 #endif

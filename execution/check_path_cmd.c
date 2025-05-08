@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/08 15:48:22 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/08 19:41:53 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	get_path(t_shell *main)
 		cur = cur->next;
 	}
 	if (path == NULL)
-		return (NULL);
+		return ;
 	if (*(path + 5) == '\0')
-		return (NULL);
+		return ;
 	cur->path_splited = ft_split(path, ':');
 }
 
@@ -66,10 +66,10 @@ void	ft_check_cmd_path(t_cmd	*cmd_array, t_env *env)
 	{
 		tmp = ft_strjoin(env->path_splited[j], "/");
 		if (!tmp)
-			return (NULL); /// free leaks
+			return ; /// free leaks
 		res = ft_strjoin(tmp, cur->cmd[0]);
 		if (!res)
-			return (NULL); /// free leaks;
+			return ; /// free leaks;
 		free(tmp);
 		if (access(res, X_OK | F_OK) == 0)
 		{
