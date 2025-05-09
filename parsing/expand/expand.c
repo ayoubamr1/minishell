@@ -91,9 +91,10 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 
 	start = ++(*i);
 	j = 0;
-	while (str[*i] && !is_special_charr(str[*i]))
+	while (str[*i] && ft_isalpha(str[*i]) && !is_special_charr(str[*i]))
 		(*i)++;
 	key = substr(str, start, *i - start);
+	printf("key =>[%s]\n", key);
 	val = cher_env(key, env);
 	if (!val)
 		return(NULL);
@@ -118,6 +119,8 @@ static char	*ft_expand_token(char *str, t_env *env)
 	res = ft_strdup("");
 	if (!res)
 		return (NULL);
+
+	printf("str =>[%s]\n", str);
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '$')
@@ -125,7 +128,7 @@ static char	*ft_expand_token(char *str, t_env *env)
 			res = expand_pid(res);
 			i += 2;
 		}
-		else if (str[i] == '$' && str[i + 1] && ft_isalpha(str[i + 1]))
+		else if (str[i] && (str[i] == '$') && str[i + 1] && ft_isalpha(str[i + 1]))
 			res = expand_env_var(str, &i, env, res);
 		else
 		{
@@ -148,6 +151,7 @@ void	ft_expand(t_shell *shell)
 		if (tok->type == WORD)
 		{
 			expanded = ft_expand_token(tok->content, shell->env);
+			printf(">>>>[%s]\n", expanded);
 			tok->content = remove_quotes(expanded);
 		}
 		else if (tok->type == SI_QUOTE)

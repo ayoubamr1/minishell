@@ -55,6 +55,7 @@ char	*remove_quotes(char *str)
 	char	quote;
 	char	*res;
 	(1) && (i = 0, j = 0);
+	// printf(">>[%s]\n", str);
 	quote = 0;
 	res = ft_malloc(strlen(str) + 1, MALLOC);
 	if (!res)
