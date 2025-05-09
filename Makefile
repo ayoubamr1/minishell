@@ -1,6 +1,6 @@
 NAME = mini
 
-CC = cc -g3 -fsanitize=address
+CC = cc #-g3 -fsanitize=address
 RM = rm -f
 
 SRC =   parsing/token/main.c \

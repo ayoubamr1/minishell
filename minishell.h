@@ -12,7 +12,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "tools/gbc.h"
- #include <fcntl.h> // open function 
+#include <fcntl.h>  // open function 
+#include <sys/wait.h>
 // #include "leaks.h"
 
 
@@ -59,7 +60,6 @@ typedef struct s_env
 	// char			*key;
 	// char			*value;
 	char			*content;
-	char			**path_splited;
 	int				index;
 	struct s_env	*next;
 } t_env ;
@@ -72,6 +72,7 @@ typedef struct s_shell
 	t_env			*env;
 	// char 			*original;
 	t_cmd			*cmd;
+	char			**path_splited;
 	int exit_status; 
     struct s_shell 	*next;
 } t_shell;
@@ -150,8 +151,9 @@ char	*my_getenv(char **env, char *var_name); // t_shell *main
 //            EXECUTION
 void	get_path(t_shell *main);
 void	check_if_access(t_shell *main);
-void	ft_check_cmd_path(t_cmd	*cmd_array, t_env *env);
+void	ft_check_cmd_path(t_cmd *cmd, char **path);
 void	ft_creat_pipe(t_cmd *cmd);
 void	ft_fork_process(t_cmd *cmd);
+void	execute_commande(t_shell *main);
 
 #endif

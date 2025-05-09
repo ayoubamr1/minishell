@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/08 19:41:53 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/09 16:47:43 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	get_path(t_shell *main)
 	{
 		if (ft_strncmp(cur->content, "PATH=", 5) == 0)
 		{
-			path = cur->content;
+			path = cur->content + 5;
 			break ;
 		}
 		cur = cur->next;
@@ -31,7 +31,7 @@ void	get_path(t_shell *main)
 		return ;
 	if (*(path + 5) == '\0')
 		return ;
-	cur->path_splited = ft_split(path, ':');
+	main->path_splited = ft_split(path, ':');
 }
 
 void	check_if_access(t_shell *main)
@@ -41,43 +41,44 @@ void	check_if_access(t_shell *main)
 
 	cmd = main->cmd;
 	env = main->env;
+
 	while (cmd)
 	{
 		if (access(cmd->cmd[0], X_OK | F_OK) == 0)
 			cmd = cmd->next;
 		else
 		{
-			ft_check_cmd_path(cmd, env);
+			ft_check_cmd_path(cmd, main->path_splited);
 			cmd = cmd->next;
 		}
 	}
 }
 
-void	ft_check_cmd_path(t_cmd	*cmd_array, t_env *env)
+void	ft_check_cmd_path(t_cmd *cmd, char **path)
 {
-	int		j;
+	int		i;
 	char	*res;
 	char	*tmp;
 	t_cmd	*cur;
 	
-	j = 0;
-	cur = cmd_array;
-	while (cur->cmd[j])
+	i = 0;
+	cur = cmd;
+	while (path && path[i])
 	{
-		tmp = ft_strjoin(env->path_splited[j], "/");
+		tmp = ft_strjoin(path[i], "/");
 		if (!tmp)
 			return ; /// free leaks
 		res = ft_strjoin(tmp, cur->cmd[0]);
 		if (!res)
 			return ; /// free leaks;
-		free(tmp);
+		// free(tmp);
 		if (access(res, X_OK | F_OK) == 0)
 		{
-			free(cur->cmd[0]);
+			// free(cur->cmd[0]);
 			cur->cmd[0] = res;
 			break ;
 		}
-		free(res);
-		j++;
+		// free(res);
+		i++;
 	}
 }

@@ -126,7 +126,7 @@ static void	print_node(t_shell *shell_list, char **env)
 void	minishell(t_shell *shell_list, char **env)
 {
 	char	*input;
-
+	int i = 0;
 	// if (shell_list->token != NULL)
 	// 	clear_token(&shell_list->token);
 	// if (shell_list->cmd != NULL)
@@ -152,8 +152,20 @@ void	minishell(t_shell *shell_list, char **env)
 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
 			print_node(shell_list, env);
 		}
+		// while (shell_list->env)
+		// {
+		// 	printf("{%s}\n", shell_list->env->content);
+		// 	shell_list->env = shell_list->env->next;
+		// }
 		get_path(shell_list);
+		// while (shell_list->cmd->cmd)
+		// {
+			// 	printf("[%s]\n", shell_list->cmd->cmd[i]);
+			// 	i++;
+			// }
 		check_if_access(shell_list);
+		print_node(shell_list, env);
+		execute_commande(shell_list);
 	}
 	free(input);
 }
