@@ -36,6 +36,10 @@ int	is_special_char(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'' || c == ' ');
 }
+static int	is_special_q(char c)
+{
+	return (c == '|' || c == '<' || c == '>' || c == ' ');
+}
 
 static int	skip_quote_block(char *input, int *i, char quote)
 {
@@ -66,11 +70,9 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 		printf("Syntax error: unclosed quote\n");
 		return ;
 	}
-	while (input[*i] && !is_special_char(input[*i]))
+	while (input[*i] && !is_special_q(input[*i]))
 		(*i)++;
-	
-	// while (input[*i] && input[(*i)+ 1] != ' ')
-	while (input[*i] && !is_special_char(input[*i]))
+	while (input[*i] && !is_special_q(input[*i]))
 	{
 		quote = input[*i];
 		(*i)++;
@@ -79,10 +81,9 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 			printf("Syntax error: unclosed quote\n");
 			return ;
 		}
-		while (input[*i] && !is_special_char(input[*i]))
+		while (input[*i] && !is_special_q(input[*i]))
 			(*i)++;
 	}
-	
 	s1 = ft_strjoin(str, substr(input, start, *i - start));
 	if (quote == '\'')
 	add_token(token, s1, SI_QUOTE, *index);

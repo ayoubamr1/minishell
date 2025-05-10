@@ -103,13 +103,39 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 		j++;
 	j++;
 	int p = 0;
+
 	while (val[j])
+	{
 		env_path[p++] = val[j++];
+
+	}
 	env_path[p] = '\0';
 	tmp = ft_strjoin(res, env_path);
 	return (tmp);
 }
 
+static char *ft_dolar(char *str)
+{
+	int i;
+	int p;
+	char *new;
+
+	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
+	i = 0;
+	p = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
+			i++;
+		else
+		{
+			new[p++] = str[i++];
+		}
+	}
+	new[p] = '\0';
+	// printf("nw => [%s]\n", new);
+	return(new);
+}
 static char	*ft_expand_token(char *str, t_env *env)
 {
 	int		i;
@@ -120,7 +146,7 @@ static char	*ft_expand_token(char *str, t_env *env)
 	if (!res)
 		return (NULL);
 
-	printf("str =>[%s]\n", str);
+	// printf("str =>[%s]\n", str);
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '$')
@@ -137,13 +163,60 @@ static char	*ft_expand_token(char *str, t_env *env)
 			i++;
 		}
 	}
-	return (res);
+	// printf("res =>[%s]\n", res);
+	return (ft_dolar(res));
 }
+static char	*ft_expand_singl(char *str, t_env *env)
+{
+	int i;
+	char quote;
+	char *res;
 
+	res = ft_strdup("");
+	char	*tmp;
+	quote = 0;
+	i = 0;
+	int start = 0;
+	printf(">>%s\n", str);
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			start = i;
+			quote = str[i++];
+			while (str[i] && str[i] != quote)
+				i++;
+			// if (str[i] == quote)
+			res = substr(str, start, i - start);
+				i++;
+		}
+		else if (str[i] == '$' && str[i + 1] == '$')
+		{
+			res = expand_pid(res);
+			i += 2;
+		}
+		else if (str[i] && (str[i] == '$') && str[i + 1] && ft_isalpha(str[i + 1]))
+		{
+			printf("c=> [%c]\n", str[i + 1]);
+			res = expand_env_var(str, &i, env, res);
+		}
+		else
+		{
+			tmp = substr(str, i, 1);
+			res = ft_strjoin(res, tmp);
+			i++;
+		}
+
+	}
+		printf(">>[%s]\n", res);
+	return (ft_dolar(res));
+	
+}
 void	ft_expand(t_shell *shell)
 {
 	t_token	*tok;
 	char	*expanded;
+	char	*dol;
 
 	tok = shell->token;
 	while (tok)
@@ -151,11 +224,14 @@ void	ft_expand(t_shell *shell)
 		if (tok->type == WORD)
 		{
 			expanded = ft_expand_token(tok->content, shell->env);
-			printf(">>>>[%s]\n", expanded);
+			// printf(">>>>[%s]\n", expanded);
 			tok->content = remove_quotes(expanded);
 		}
 		else if (tok->type == SI_QUOTE)
-			tok->content = remove_quotes(tok->content);
+		{
+			dol = ft_expand_singl(tok->content, shell->env);
+			tok->content = remove_quotes(dol);
+		}
 		tok = tok->next;
 	}
 }

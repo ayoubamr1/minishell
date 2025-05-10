@@ -114,13 +114,15 @@ static void	print_node(t_shell *shell_list, char **env)
 		cc = cc->next;
 	}
 	printf("---------------------------------------------\n");
-	t_token *sh = shell_list->token;
+	// t_token *sh = shell_list->token;
 
-	while (sh)
-	{
-		printf("cont = [%s] type[%d] index[%d]}\n", sh->content, sh->type, sh->index);
-		sh = sh->next;
-	}
+	// while (sh)
+	// {
+	// 	printf("cont = [%s] type[%d] index[%d]}\n", sh->content, sh->type, sh->index);
+	// 	sh = sh->next;
+	// }
+	// printf("---------------------------------------------\n");
+
 }
 
 void	minishell(t_shell *shell_list, char **env)
