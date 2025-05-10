@@ -12,12 +12,27 @@
 
 #include "../../minishell.h"
 
-static char	*expand_pid(char *res)
+static char	*expand_pid(char *res, char *str, int i)
 {
 	pid_t	pid;
 	char	*pid_str;
 	char	*tmp;
+	int		start;
 
+	start = i;
+	// i = i + 2;
+	while (str[i])
+	{
+		if (str[i] == '\'')
+		{
+			i++;
+			// printf(">>[%s]\n", substr(str, start, i - start));
+			// printf(">>[%s]\n",res);
+			// printf(">>[%s]\n",ft_strjoin(res, substr(str, start, i - start)));
+			return(ft_strjoin(res, substr(str, start, i - start)));
+		}
+		i++;
+	}
 	pid = getpid();
 	pid_str = id_itoa(pid);
 	if (!pid_str)
@@ -89,48 +104,87 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	return (tmp);
 }
 
+// static char *ft_dolar(char *str)
+// {
+// 	int i;
+// 	int p;
+// 	char *new;
+// 	char qout;
+
+// 	printf(">[%s]\n", str);
+// 	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
+// 	i = 0;
+// 	p = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] &&  str[i] == '"' || str[i] == '\'')
+// 		{
+// 			qout = str[i++];
+// 			while (str[i] && str[i] != qout)
+// 				new[p++] = str[i++];
+// 			i++;
+// 		}
+// 		else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
+// 			i++;
+// 		else
+// 			new[p++] = str[i++];
+// 	}
+// 	new[p] = '\0';
+// 	printf("new>[%s]\n", str);
+
+// 	return(new);
+// }
+
 static char *ft_dolar(char *str)
 {
-	int i;
-	int p;
-	char *new;
-	char qout;
+    int i = 0;
+    int p = 0;
+    char *new;
+    char qout;
 
-	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
-	i = 0;
-	p = 0;
-	while (str[i])
-	{
-		if (str[i] &&  str[i] == '"' || str[i] == '\'')
-		{
-			qout = str[i++];
-			while (str[i] && str[i] != qout)
-				new[p++] = str[i++];
-			i++;
-		}
-		else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
-			i++;
-		else
-			new[p++] = str[i++];
-	}
-	new[p] = '\0';
-	return(new);
+    new = ft_malloc(ft_strlen(str) + 1, MALLOC);
+    if (!new)
+        return NULL;
+
+    while (str[i])
+    {
+        if (str[i] == '"' || str[i] == '\'')
+        {
+            qout = str[i++];
+            while (str[i] && str[i] != qout)
+                new[p++] = str[i++];
+            if (str[i] == qout)
+                i++; // skip closing quote
+        }
+        else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
+        {
+            i++; // skip the dollar sign
+        }
+        else
+        {
+            new[p++] = str[i++];
+        }
+    }
+    new[p] = '\0';
+    printf("new>[%s]\n", new);
+
+    return new;
 }
+
 
 static char	*ft_expand_token(char *str, t_env *env)
 {
 	int		i;
 	char	*res;
 	char	*tmp;
+
 	i = 0;
 	res = ft_strdup("");
-	if (!res)
-		return (NULL);
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '$')
 		{
-			res = expand_pid(res);
+			res = expand_pid(res, str, i);
 			i += 2;
 		}
 		else if (str[i] && (str[i] == '$') && str[i + 1] && ft_isalpha(str[i + 1]))
@@ -142,7 +196,7 @@ static char	*ft_expand_token(char *str, t_env *env)
 			i++;
 		}
 	}
-	printf("res =>[%s]\n", res);
+	// printf("res =>[%s]\n", ft_dolar(res));
 	return (ft_dolar(res));
 }
 
@@ -157,8 +211,8 @@ void	ft_expand(t_shell *shell)
 	{
 		if (tok->type == WORD || tok->type == SI_QUOTE)
 		{
-			printf(">>[%s]\n", tok->content);
 			expanded = ft_expand_token(tok->content, shell->env);
+			// printf("|>>>>[%s]\n", tok->content);
 			tok->content = remove_quotes(expanded);
 		}
 		tok = tok->next;
