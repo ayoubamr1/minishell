@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/09 16:47:43 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/10 17:23:10 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,21 @@ void	ft_check_cmd_path(t_cmd *cmd, char **path)
 		// free(res);
 		i++;
 	}
+}
+
+void	nbr_cmd(t_shell *main)
+{
+	t_cmd	*cur;
+	int		count;
+
+	cur= main->cmd;
+	count = 0;
+	while (cur)
+	{
+		// printf("commande : %s\n", cur->cmd[0]);
+		count++;
+		cur = cur->next;
+	}
+	// printf("final count %d\n", count);
+	main->nbr_cmd = count;
 }

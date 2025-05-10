@@ -51,7 +51,6 @@ typedef struct s_cmd
 	// int 			heredoc; // 1 if <<
 	int				pipe_fd[2];
 	int				prev_read;
-	pid_t			pid;
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 //---------------{ env structure }-----------------
@@ -73,6 +72,8 @@ typedef struct s_shell
 	// char 			*original;
 	t_cmd			*cmd;
 	char			**path_splited;
+	int				nbr_cmd;
+	pid_t			*pid;
 	int exit_status; 
     struct s_shell 	*next;
 } t_shell;
@@ -153,7 +154,9 @@ void	get_path(t_shell *main);
 void	check_if_access(t_shell *main);
 void	ft_check_cmd_path(t_cmd *cmd, char **path);
 void	ft_creat_pipe(t_cmd *cmd);
-void	ft_fork_process(t_cmd *cmd);
+void	ft_fork_process(t_shell *main, int i);
 void	execute_commande(t_shell *main);
+void	nbr_cmd(t_shell *main);
+
 
 #endif
