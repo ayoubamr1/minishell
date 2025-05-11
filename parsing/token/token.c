@@ -84,7 +84,9 @@ static void	handle_quoted_token(t_token **token, char *input, int *i, int *index
 		while (input[*i] && !is_special_q(input[*i]))
 			(*i)++;
 	}
+	// printf("str>>[%s] || sub [%s]\n", str, substr(input, start, *i - start));
 	s1 = ft_strjoin(str, substr(input, start, *i - start));
+	// printf("s1 => [%s]\n", s1);
 	if (quote == '\'')
 	add_token(token, s1, SI_QUOTE, *index);
 	else
@@ -102,11 +104,18 @@ void	*token_str(t_token **token, char *input, int *i, int *index)
 		(*i)++;
 	if (input[*i] == '"' || input[*i] == '\'')
 	{
-		value = substr(input, start, *i - start);
+		// printf("[%c]\n", input[*i]);
+		// if (*i == 0)
+		// 	value = substr(input, start, 1);
+		// else
+			value = substr(input, start, *i - start);
+		// printf("1>>[%s]\n", value);
 		handle_quoted_token(token, input, i, index, value);
 		return (NULL);
 	}
 	value = substr(input, start, *i - start);
+		// printf("start[%c], [%d], start[%i], i=[%i]\n", input[start], *i - start, start, *i);
+	// printf("2>>[%s]\n", value);
 	add_token(token, value, WORD, *index);
 	(*index)++;
 	return (NULL);

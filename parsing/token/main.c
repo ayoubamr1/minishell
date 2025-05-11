@@ -29,15 +29,14 @@ static void	print_node(t_shell *shell_list, char **env)
 		cc = cc->next;
 	}
 	printf("---------------------------------------------\n");
-	t_token *sh = shell_list->token;
+	// t_token *sh = shell_list->token;
 
-	while (sh)
-	{
-		printf("cont = [%s] type[%d] index[%d]}\n", sh->content, sh->type, sh->index);
-		sh = sh->next;
-	}
-	printf("---------------------------------------------\n");
-
+	// while (sh)
+	// {
+	// 	printf("cont = [%s] type[%d] index[%d]}\n", sh->content, sh->type, sh->index);
+	// 	sh = sh->next;
+	// }
+	// printf("---------------------------------------------\n");
 }
 
 void	minishell(t_shell *shell_list, char **env)
@@ -65,6 +64,7 @@ void	minishell(t_shell *shell_list, char **env)
 			shell_list->env = ft_env(shell_list->env, env);
 			
 			ft_expand(shell_list);
+			// exit(0);
 			shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
 			print_node(shell_list, env);

@@ -126,13 +126,15 @@ static char *ft_dolar(char *str)
 	p = 0;
 	while (str[i])
 	{
-		if (str[i] &&  str[i] == '"' || str[i] == '\'')
+		if (str[i] && (str[i] == '"' || str[i] == '\''))
 		{
-			qout = str[i++];
+			qout = str[i];
+			new[p++] = str[i++];
+			printf("[%c]==[%c]\n", str[i], qout);
 			while (str[i] && str[i] != qout)
 				new[p++] = str[i++];
 			if (str[i] == qout)
-				i++;
+				new[p++] = str[i++];
 		}
 		else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
 			i++;
@@ -140,6 +142,8 @@ static char *ft_dolar(char *str)
 			new[p++] = str[i++];
 	}
 	new[p] = '\0';
+	// printf("new=>[%s]\n", new);
+	// exit(0);
 	return(new);
 }
 
@@ -204,6 +208,7 @@ static char	*ft_expand_token(char *str, t_env *env)
 			i++;
 		}
 	}
+		// printf("res=>[%s]\n", res);
 	return (ft_dolar(res));
 }
 
