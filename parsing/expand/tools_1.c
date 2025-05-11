@@ -54,11 +54,10 @@ char	*remove_quotes(char *str)
 	int		j;
 	char	quote;
 	char	*res;
+	
 	(1) && (i = 0, j = 0);
 	quote = 0;
 	res = ft_malloc(strlen(str) + 1, MALLOC);
-	if (!res)
-		return (NULL);
 	while (str[i])
 	{
 		while (str[i] && str[i] != '\'' && str[i] != '"')

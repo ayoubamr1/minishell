@@ -80,8 +80,18 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	char	*tmp;
 	char 	*env_path;
 	int		j;
-
-	int p;
+	int		k;
+	int 	p;
+	char	quot = 0;
+	k = 0;
+	while (str[k] && k <= (*i))
+	{
+		if ((str[k] == '\'' || str[k] == '"') && quot == 0)
+			quot = str[k];
+		else if (str[k] == quot)
+			quot = 0;
+		k++;
+	}
 	start = ++(*i);
 	j = 0;
 	while (str[*i] && ft_isalpha(str[*i]) && !is_special_charr(str[*i]))
@@ -90,7 +100,7 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	val = cher_env(key, env);
 	if (!val)
 		return(NULL);
-	if (str[*i] == '\'')
+	if (quot == '\'')
 		return(ft_strjoin(res, ft_strjoin("$", key)));
 	env_path = ft_malloc(sizeof(val), MALLOC);
 	while (val[j] && val[j] != '=')
@@ -104,72 +114,70 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	return (tmp);
 }
 
-// static char *ft_dolar(char *str)
-// {
-// 	int i;
-// 	int p;
-// 	char *new;
-// 	char qout;
-
-// 	printf(">[%s]\n", str);
-// 	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
-// 	i = 0;
-// 	p = 0;
-// 	while (str[i])
-// 	{
-// 		if (str[i] &&  str[i] == '"' || str[i] == '\'')
-// 		{
-// 			qout = str[i++];
-// 			while (str[i] && str[i] != qout)
-// 				new[p++] = str[i++];
-// 			i++;
-// 		}
-// 		else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
-// 			i++;
-// 		else
-// 			new[p++] = str[i++];
-// 	}
-// 	new[p] = '\0';
-// 	printf("new>[%s]\n", str);
-
-// 	return(new);
-// }
-
 static char *ft_dolar(char *str)
 {
-    int i = 0;
-    int p = 0;
-    char *new;
-    char qout;
+	int i;
+	int p;
+	char *new;
+	char qout;
 
-    new = ft_malloc(ft_strlen(str) + 1, MALLOC);
-    if (!new)
-        return NULL;
-
-    while (str[i])
-    {
-        if (str[i] == '"' || str[i] == '\'')
-        {
-            qout = str[i++];
-            while (str[i] && str[i] != qout)
-                new[p++] = str[i++];
-            if (str[i] == qout)
-                i++; // skip closing quote
-        }
-        else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
-        {
-            i++; // skip the dollar sign
-        }
-        else
-        {
-            new[p++] = str[i++];
-        }
-    }
-    new[p] = '\0';
-    printf("new>[%s]\n", new);
-
-    return new;
+	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
+	i = 0;
+	p = 0;
+	while (str[i])
+	{
+		if (str[i] &&  str[i] == '"' || str[i] == '\'')
+		{
+			qout = str[i++];
+			while (str[i] && str[i] != qout)
+				new[p++] = str[i++];
+			if (str[i] == qout)
+				i++;
+		}
+		else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
+			i++;
+		else
+			new[p++] = str[i++];
+	}
+	new[p] = '\0';
+	return(new);
 }
+
+// static char *ft_dolar(char *str)
+// {
+//     int i = 0;
+//     int p = 0;
+//     char *new;
+//     char qout;
+
+//     new = ft_malloc(ft_strlen(str) + 1, MALLOC);
+//     if (!new)
+//         return NULL;
+
+//     while (str[i])
+//     {
+//         if (str[i] == '"' || str[i] == '\'')
+//         {
+//             qout = str[i++];
+//             while (str[i] && str[i] != qout)
+//                 new[p++] = str[i++];
+//             if (str[i] == qout)
+//                 i++; // skip closing quote
+//         }
+//         else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
+//         {
+//             i++; // skip the dollar sign
+//         }
+//         else
+//         {
+//             new[p++] = str[i++];
+//         }
+//     }
+//     new[p] = '\0';
+//     printf("new>[%s]\n", new);
+
+//     return new;
+// }
 
 
 static char	*ft_expand_token(char *str, t_env *env)
@@ -196,7 +204,6 @@ static char	*ft_expand_token(char *str, t_env *env)
 			i++;
 		}
 	}
-	// printf("res =>[%s]\n", ft_dolar(res));
 	return (ft_dolar(res));
 }
 
@@ -212,7 +219,7 @@ void	ft_expand(t_shell *shell)
 		if (tok->type == WORD || tok->type == SI_QUOTE)
 		{
 			expanded = ft_expand_token(tok->content, shell->env);
-			// printf("|>>>>[%s]\n", tok->content);
+			// printf("expanded>[%s]\n", expanded);
 			tok->content = remove_quotes(expanded);
 		}
 		tok = tok->next;
