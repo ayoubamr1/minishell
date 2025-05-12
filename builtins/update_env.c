@@ -6,13 +6,13 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:48:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/04/30 18:00:45 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/12 18:53:38 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	update_env(t_shell *main, char *var_updated)
+void	update_env(t_env *env, char *var_updated)
 {
 	char	*pos_equal;
 	t_env	*cur;
@@ -20,7 +20,7 @@ void	update_env(t_shell *main, char *var_updated)
 	
 	pos_equal = ft_strchr(var_updated, '=');
 	len = pos_equal - var_updated;
-	cur = main->env;
+	cur = env;
 	while (cur)
 	{
 		if (ft_strncmp(cur->content, var_updated, len) == 0 && cur->content[len + 1] == '=')
@@ -31,5 +31,4 @@ void	update_env(t_shell *main, char *var_updated)
 		}
 		cur = cur->next;
 	}
-	
 }

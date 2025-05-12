@@ -6,13 +6,13 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/04/22 11:58:17 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/12 19:07:48 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	my_cd(char **str)
+int	my_cd(char **str, t_shell *main)
 {
 	char	*cwd;
 	char	*target_dir;
@@ -35,12 +35,24 @@ int	my_cd(char **str)
 		return (1);
 	}
 	// change directory
+	printf("=======================\n");
 	if (chdir(target_dir) != 0)
 	{
 		perror("cd");
 		return (1);
 	}
 	// it still update PWD in my environment variable
+	update_env(main->env, "OLDPWD");
+	free(cwd);
+	cwd = getcwd(NULL, 0);
+	if (!cwd)
+	{
+		perror("cwd");
+		return (1);
+	}
+	update_env(main->env, "PWD");
+	free(cwd);
+	return (0);
 	// if (setenv("PWD", target_dir, 1) != 0)
 	// {
 	// 	perror("setenv");
@@ -52,11 +64,12 @@ int main ()
 {
 	char *arr[] = {"cd", "echo", "export", "unset", NULL};
 	int i;
+	t_shell *main = NULL;
 	i = 0;
 	while (arr[i] != NULL)
 	{
 		if (strcmp(arr[i], "cd") == 0)
-				my_cd(arr);
+			my_cd(arr, main);
 		// else if ((strcmp(arr[i][j], "echo") == 0))
 		// 	my_echo(arr);
 		// else if	(strcmp(arr[i][j], "export") == 0)
