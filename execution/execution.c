@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/10 18:05:31 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/12 12:31:31 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	execute_commande(t_shell *main)
 		if (main->pid[i] == 0) // child process
 		{
 			// close(cur->pipe_fd[0]);
+			// printf("{%d}\n", cur->pipe_fd[0]);
 			if (cur->in != 0)
 				dup2(cur->in, 0);
 			else if (cur->prev_read)
@@ -43,6 +44,7 @@ void	execute_commande(t_shell *main)
 				dup2(cur->out, 1);
 			else if (cur->next)
 				dup2(cur->pipe_fd[1], 1);
+				// printf("{%d}\n", cur->pipe_fd[1]);
 			if (cur->prev_read)
 				close(cur->prev_read);
 			if (cur->in != 0)
@@ -77,8 +79,6 @@ void	execute_commande(t_shell *main)
 		i++;
 		cur = cur->next;
 	}
-
-	cur = main->cmd;
 	while (j < main->nbr_cmd)
 	{
 		waitpid(main->pid[j], NULL, 0);
@@ -86,21 +86,21 @@ void	execute_commande(t_shell *main)
 	}
 }
 
-void	ft_creat_pipe(t_cmd *cmd)
-{
-	if (pipe(cmd->pipe_fd) == -1)
-	{
-		exit(EXIT_FAILURE);
-		perror("pipe filled\n");
-	}
-}
+// void	ft_creat_pipe(t_cmd *cmd)
+// {
+// 	if (pipe(cmd->pipe_fd) == -1)
+// 	{
+// 		exit(EXIT_FAILURE);
+// 		perror("pipe filled\n");
+// 	}
+// }
 
-void	ft_fork_process(t_shell *main, int i)
-{
-	main->pid[i] = fork();
-	if (main->pid[i] == -1)
-	{
-		perror("fork failed");
-		exit(EXIT_FAILURE);
-	}
-}
+// void	ft_fork_process(t_shell *main, int i)
+// {
+// 	main->pid[i] = fork();
+// 	if (main->pid[i] == -1)
+// 	{
+// 		perror("fork failed");
+// 		exit(EXIT_FAILURE);
+// 	}
+// }

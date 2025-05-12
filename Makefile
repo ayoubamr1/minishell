@@ -17,7 +17,7 @@ SRC =   parsing/token/main.c \
         tools/tools_2.c \
         tools/tools_3.c \
         execution/check_path_cmd.c \
-        execution/execution.c \
+        execution/exec.c \
         # parsing/expand/tools_2.c \
 
 OBJ = $(SRC:.c=.o)

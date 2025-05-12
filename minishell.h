@@ -74,6 +74,8 @@ typedef struct s_shell
 	char			**path_splited;
 	int				nbr_cmd;
 	pid_t			*pid;
+	int				in_fd;
+	int				out_fd;
 	int exit_status; 
     struct s_shell 	*next;
 } t_shell;
@@ -155,8 +157,9 @@ void	check_if_access(t_shell *main);
 void	ft_check_cmd_path(t_cmd *cmd, char **path);
 void	ft_creat_pipe(t_cmd *cmd);
 void	ft_fork_process(t_shell *main, int i);
-void	execute_commande(t_shell *main);
 void	nbr_cmd(t_shell *main);
+void	exec_cmd(t_shell *main);
+void	ft_check_child(char **cmd, int read_fd, int write_fd);
 
 
 #endif

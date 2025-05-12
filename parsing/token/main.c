@@ -165,8 +165,9 @@ void	minishell(t_shell *shell_list, char **env)
 			// 	i++;
 			// }
 		check_if_access(shell_list);
-		print_node(shell_list, env);
-		execute_commande(shell_list);
+		// print_node(shell_list, env);
+		// execute_commande(shell_list);
+		exec_cmd(shell_list);
 	}
 	free(input);
 }
