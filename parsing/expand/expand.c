@@ -122,15 +122,13 @@ static char *ft_dolar(char *str)
 	char qout;
 
 	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
-	i = 0;
-	p = 0;
+	(1) && (i = 0, p = 0);
 	while (str[i])
 	{
 		if (str[i] && (str[i] == '"' || str[i] == '\''))
 		{
 			qout = str[i];
 			new[p++] = str[i++];
-			printf("[%c]==[%c]\n", str[i], qout);
 			while (str[i] && str[i] != qout)
 				new[p++] = str[i++];
 			if (str[i] == qout)
@@ -142,8 +140,6 @@ static char *ft_dolar(char *str)
 			new[p++] = str[i++];
 	}
 	new[p] = '\0';
-	// printf("new=>[%s]\n", new);
-	// exit(0);
 	return(new);
 }
 
