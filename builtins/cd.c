@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/12 19:07:48 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/13 19:03:55 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,24 @@ int	my_cd(char **str, t_shell *main)
 {
 	char	*cwd;
 	char	*target_dir;
+	t_env	*env;
 	
-	target_dir = str[1];
-	if (target_dir == NULL)
+	// env = main->env;
+	if (str[1])
+		target_dir = str[1];
+	else
 	{
-		target_dir = getenv("HOME");
+		target_dir = my_getenv(env,"HOME");
 		if (target_dir == NULL)
 		{
 			perror("cd\n");
 			return (1);
 		}
 	}
+	printf("{%s}\n", target_dir);
 	// get the currect working directory
 	cwd = getcwd(NULL, 0);
+	printf("{cwd = %s}\n", cwd);
 	if (!cwd)
 	{
 		perror("getcwd");
@@ -38,11 +43,13 @@ int	my_cd(char **str, t_shell *main)
 	printf("=======================\n");
 	if (chdir(target_dir) != 0)
 	{
+		printf("{%s}\n", target_dir);
 		perror("cd");
 		return (1);
 	}
 	// it still update PWD in my environment variable
-	update_env(main->env, "OLDPWD");
+	update_env(main->env, cwd);
+	printf("====== hna error =======\n");
 	free(cwd);
 	cwd = getcwd(NULL, 0);
 	if (!cwd)
@@ -62,9 +69,10 @@ int	my_cd(char **str, t_shell *main)
 
 int main ()
 {
-	char *arr[] = {"cd", "echo", "export", "unset", NULL};
+	// char *arr[] = {"cd", "echo", "export", "unset", NULL};
+	char *arr[] = {"cd", "/home" , NULL};
 	int i;
-	t_shell *main = NULL;
+	t_shell *main;
 	i = 0;
 	while (arr[i] != NULL)
 	{
