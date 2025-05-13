@@ -1,89 +1,4 @@
 #include "../../minishell.h"
-// static	void ft_null(t_shell	*shell)
-// {
-// 	shell->env = NULL;
-// 	shell->token = NULL;
-// 	shell->cmd = NULL;
-// }
-
-// static	void	print_node(t_shell *shell_list, char **env)
-// {
-// 	t_cmd *cc = shell_list->cmd;
-// 	(void)env;
-// 	// t_env *env_list; 
-// 	// shell_list->env = ft_env(shell_list->env, env);
-// 	// while (shell_list->env)
-// 	// {
-// 	// 	printf("[%s]\n", shell_list->env->content);
-// 	// 	shell_list->env = shell_list->env->next;
-// 	// }
-// 	while (cc)
-// 	{
-// 		int i = 0;
-// 		while(cc->cmd && cc->cmd[i])
-// 		{
-// 			printf ("{cmd[%s] ,", cc->cmd[i]);
-// 			i++;
-// 		}
-// 		printf("file[%s] infd[%d] outfd[%d] }\n",cc->file, cc->in, cc->out);
-// 		cc = cc->next;
-// 	}			
-// 	// t_token *sh = NULL;
-// 	// sh = shell_list->token;
-// 	// 	while (sh)
-// 	// 	{
-// 	// 		printf("content = %s\n", sh->content);
-// 	// 		// printf("==> %s\n", sh->content);
-// 	// 		sh = sh->next;
-// 	// 	}
-// }
-
-// void	minishell(t_shell *shell_list, char **env)
-// {
-//     char *input;
-// 	if (shell_list->token != NULL)
-// 		clear_token(&shell_list->token);
-//     shell_list = ft_malloc(sizeof(t_shell), MALLOC);
-// 	input = readline("minishell> ");
-// 	if (input[0])
-// 	{
-// 		add_history(input);
-// 		if (!input)
-// 			exit(0);
-// 		if (shell_list->cmd)
-// 			clear_cmd(&shell_list->cmd);
-// 		shell_list->cmd = ft_malloc((size_t)(sizeof(t_cmd)), MALLOC);
-// 		if (!ft_strncmp(input, "exit", ft_strlen("exit")))
-// 		{
-// 			ft_malloc(0, FREE);
-// 			free(input);
-// 			exit(1);
-// 		}
-// 		lexer_1(input, &shell_list->token);
-// 		if (syntax_error(&shell_list->token) == TRUE)
-// 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
-// 		print_node(shell_list, env);
-// 		free(input);
-// 	}
-// }
-
-// int main(int ac, char **av, char **env)
-// {
-//     t_shell *shell_list;
-
-// 	(void)ac;
-// 	(void)av;
-// 	(void)env;
-//     shell_list = NULL;
-//     shell_list = ft_malloc(sizeof(t_shell), MALLOC);
-// 	ft_null(shell_list);
-//     while (1)
-//     {
-// 		minishell(shell_list, env);
-//     }
-//     return 0;
-// }
-
 
 
 static void	ft_null(t_shell *shell)
@@ -113,14 +28,17 @@ static void	print_node(t_shell *shell_list, char **env)
 		printf("file[%s] infd[%d] outfd[%d] }\n", cc->file, cc->in, cc->out);
 		cc = cc->next;
 	}
-	// printf("---------------------------------------------\n");
+	printf("---------------------------------------------\n");
 	// t_token *sh = shell_list->token;
 
 	// while (sh)
 	// {
+	// 	if (!sh->content[0])
+	// 		printf("ayaye\n");
 	// 	printf("cont = [%s] type[%d] index[%d]}\n", sh->content, sh->type, sh->index);
 	// 	sh = sh->next;
 	// }
+	// printf("---------------------------------------------\n");
 }
 
 void	minishell(t_shell *shell_list, char **env)
@@ -148,6 +66,7 @@ void	minishell(t_shell *shell_list, char **env)
 			shell_list->env = ft_env(shell_list->env, env);
 			
 			ft_expand(shell_list);
+			// exit(0);
 			shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
 			print_node(shell_list, env);
@@ -183,6 +102,6 @@ int	main(int ac, char **av, char **env)
 	}
 	
 	// This part would only be reached if the loop is broken
-	ft_malloc(0, FREE);
+	// ft_malloc(0, FREE);
 	return (0);
 }

@@ -75,13 +75,19 @@ t_env *ft_env(t_env *env_list, char **env)
 	int i;
 
 	i = 0;
-	env_list = ft_lstnew_env(ft_strdup(env[i++]));
-	tmp = env_list;
-	while (env[i])
-	{
-		tmp->next = ft_lstnew_env(ft_strdup(env[i]));;
-		tmp = tmp->next;
-		i++;
-	}
+	// if (env && *env)
+	// {
+
+		env_list = ft_lstnew_env(ft_strdup(env[i++]));
+		tmp = env_list;
+		while (env[i])
+		{
+			tmp->next = ft_lstnew_env(ft_strdup(env[i]));;
+			tmp = tmp->next;
+			i++;
+		}
+	// }
+	// else 
+	// 	env_list = ft_hard_env();
 	return (env_list);
 }

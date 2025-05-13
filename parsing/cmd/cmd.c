@@ -76,12 +76,43 @@ static t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
 	}
 	return (start);
 }
+
+
+static void remove_empty_tokens(t_token **head)
+{
+    t_token *curr = *head;
+    t_token *prev = NULL;
+    t_token *tmp;
+
+    while (curr)
+    {
+        if (!curr->content || curr->content[0] == '\0')
+        {
+            tmp = curr;
+            if (prev)
+                prev->next = curr->next;
+            else
+                *head = curr->next;
+
+            curr = curr->next;
+            free(tmp->content);
+            free(tmp);
+        }
+        else
+        {
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+}
+
 t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list)
 {
 	t_token	*tmp;
 	t_cmd	*head;
 	t_cmd	*cmd_tmp;
 
+	remove_empty_tokens(token);
 	tmp = *token;
 	cmd_tmp = ft_lstnew_cmd();
 	head = cmd_tmp;
