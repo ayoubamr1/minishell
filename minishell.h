@@ -143,9 +143,9 @@ char	*ft_strchr(const char *s, int c);
 int	is_special_char(char c);
 //           BUILTINS
 void	export(char	*input, char **env);//t_shell *main_struct);
-void	add_env(t_env *main, char *new_var);
-char	*my_getenv(t_env *main, char *var_name); // t_shell *main
-void	update_env(t_env *env, char *var_updated);
+void	add_to_env(t_shell *main, char *new_var);
+char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
+void	update_env(t_shell *main, char *var_updated);
 int		my_cd(char **str, t_shell *main);
 
 
