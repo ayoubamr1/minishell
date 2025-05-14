@@ -147,8 +147,11 @@ void	add_to_env(t_shell *main, char *new_var);
 char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
 void	update_env(t_shell *main, char *var_updated);
 int		my_cd(char **str, t_shell *main);
-
-
+void	unset_env(t_shell *main, char *var_name);
+int		echo(t_cmd *cur);
+// void	builtins(t_shell *main);
+int		builtins(t_shell *main, t_cmd *cmd);
+void 	print_env(t_shell *main);
 
 
 

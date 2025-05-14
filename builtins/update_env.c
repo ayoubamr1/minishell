@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:48:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/14 12:43:01 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:21:53 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	update_env(t_shell *main, char *var_updated)
 	t_env	*cur;
 	size_t	len;
 	
+	// printf("====== hna =======\n");
 	pos_equal = ft_strchr(var_updated, '=');
 	if (!pos_equal)
 		return ;
@@ -29,9 +30,10 @@ void	update_env(t_shell *main, char *var_updated)
 		{
 			free(cur->content);
 			cur->content = ft_strdup(var_updated);
+			printf("%s\n", cur->content);
 			return ;	
 		}
 		cur = cur->next;
 	}
-	add_env(cur, var_updated);
+	add_to_env(main, var_updated);
 }

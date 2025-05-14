@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/03 17:20:29 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/14 15:42:12 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	my_export(t_shell *main, char *var)
 		}
 		curr = curr->next;
 	}
-	add_env(main, new_var);
+	add_to_env(main, new_var);
 }
 
 
@@ -113,18 +113,18 @@ void	my_export(t_shell *main, char *var)
 // 	// // need to update in my enviroment variable
 // }
 
-int main (int ac, char **av, char **env)
-{
-	(void)ac;
-	(void)av;
-	// t_shell *env = NULL;
-	// (void)ac;
-	// export("hello $USER, you home is $HOME");
-	export("somethis=ayoub", env);
-	// int i = 0;
-	// while (s[i])
-	// {
-	// 	printf("[%s][%p]\n", s[i], &s[i]);
-	// 	i++;
-	// }
-}
+// int main (int ac, char **av, char **env)
+// {
+// 	(void)ac;
+// 	(void)av;
+// 	// t_shell *env = NULL;
+// 	// (void)ac;
+// 	// export("hello $USER, you home is $HOME");
+// 	export("somethis=ayoub", env);
+// 	// int i = 0;
+// 	// while (s[i])
+// 	// {
+// 	// 	printf("[%s][%p]\n", s[i], &s[i]);
+// 	// 	i++;
+// 	// }
+// }

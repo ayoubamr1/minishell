@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:31:55 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/05/12 16:29:04 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/14 19:40:32 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,20 @@ t_cmd *ft_lstnew_cmd(void)
 	return node;
 }
 
-// int	ft_lstsize_cmd(t_cmd *lst)
-// {
-// 	int		count;
-// 	t_cmd	*sin;
+int	ft_lstsize_cmd(t_cmd *lst)
+{
+	int		count;
+	t_cmd	*sin;
 
-// 	sin = lst;
-// 	count = 0;
-// 	while (sin)
-// 	{
-// 		sin = sin->next;
-// 		count++;
-// 	}
-// 	return (count);
-// }
+	sin = lst;
+	count = 0;
+	while (sin)
+	{
+		sin = sin->next;
+		count++;
+	}
+	return (count);
+}
 
 // void	clear_cmd(t_cmd **lst)
 // {

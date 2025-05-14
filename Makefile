@@ -18,13 +18,21 @@ SRC =   parsing/token/main.c \
         tools/tools_3.c \
         execution/check_path_cmd.c \
         execution/exec.c \
+        builtins/add_env.c \
+        builtins/cd.c \
+        builtins/echo.c \
+        builtins/export.c \
+        builtins/my_getenv.c \
+        builtins/my_unset.c \
+        builtins/update_env.c \
+        builtins/builtins.c \
         # parsing/expand/tools_2.c \
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = #-Wall -Wextra -Werror #-g3 -fsanitize=address
+CFLAGS =  #-g3 -fsanitize=address #-Wall -Wextra -Werror
 
-all: $(NAME)
+all: $(NAME) #clean  #########################
 
 %.o: %.c minishell.h gbc.h
 	$(CC) $(CFLAGS) -c $< -o $@
