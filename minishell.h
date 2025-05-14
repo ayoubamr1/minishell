@@ -12,7 +12,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "tools/gbc.h"
- #include <fcntl.h> // open function 
+#include <fcntl.h>  // open function 
+#include <sys/wait.h>
 // #include "leaks.h"
 
 
@@ -48,6 +49,8 @@ typedef struct s_cmd
 	int				in; // file fd
 	int				out; //file fd
 	// int 			heredoc; // 1 if <<
+	int				pipe_fd[2];
+	int				prev_read;
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 //---------------{ env structure }-----------------
@@ -68,6 +71,11 @@ typedef struct s_shell
 	t_env			*env;
 	// char 			*original;
 	t_cmd			*cmd;
+	char			**path_splited;
+	int				nbr_cmd;
+	pid_t			*pid;
+	int				in_fd;
+	int				out_fd;
 	int exit_status; 
     struct s_shell 	*next;
 } t_shell;
@@ -135,8 +143,24 @@ char	*ft_strchr(const char *s, int c);
 int	is_special_char(char c);
 //           BUILTINS
 void	export(char	*input, char **env);//t_shell *main_struct);
-void	add_env(t_shell *main, char *new_var);
-char	*my_getenv(char **env, char *var_name); // t_shell *main
+void	add_to_env(t_shell *main, char *new_var);
+char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
+void	update_env(t_shell *main, char *var_updated);
+int		my_cd(char **str, t_shell *main);
+
+
+
+
+
+//            EXECUTION
+void	get_path(t_shell *main);
+void	check_if_access(t_shell *main);
+void	ft_check_cmd_path(t_cmd *cmd, char **path);
+void	ft_creat_pipe(t_cmd *cmd);
+void	ft_fork_process(t_shell *main, int i);
+void	nbr_cmd(t_shell *main);
+void	exec_cmd(t_shell *main);
+void	ft_check_child(char **cmd, int read_fd, int write_fd);
 
 
 #endif

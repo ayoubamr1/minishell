@@ -1,6 +1,6 @@
 NAME = mini
 
-CC = cc
+CC = cc #-g3 -fsanitize=address
 RM = rm -f
 
 SRC =   parsing/token/main.c \
@@ -15,13 +15,14 @@ SRC =   parsing/token/main.c \
         tools/ft_malloc.c \
         tools/tools_1.c \
         tools/tools_2.c \
-        tools/tools_3.c
+        tools/tools_3.c \
+        execution/check_path_cmd.c \
+        execution/exec.c \
         # parsing/expand/tools_2.c \
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = #-g3 -fsanitize=address
-# CFLAGS = -Wall -Wextra -Werror
+CFLAGS = #-Wall -Wextra -Werror #-g3 -fsanitize=address
 
 all: $(NAME)
 

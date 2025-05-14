@@ -6,13 +6,13 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:38:40 by ayameur           #+#    #+#             */
-/*   Updated: 2025/04/30 18:02:41 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/14 12:37:28 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	add_env(t_shell *main, char *new_var)
+void	add_to_env(t_shell *main, char *new_var)
 {
 	t_env	*new_node;
 	t_env	*cur;
@@ -31,5 +31,5 @@ void	add_env(t_shell *main, char *new_var)
 			cur = cur->next;
 		cur->next = new_node; // we add it at the end
 	}
-	add_env(main, new_var); // if not found add it in the environment variable
+	// add_env(main, new_var); // if not found add it in the environment variable
 }
