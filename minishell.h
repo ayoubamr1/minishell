@@ -50,7 +50,7 @@ typedef struct s_cmd
 	int				out; //file fd
 	// int 			heredoc; // 1 if <<
 	int				pipe_fd[2];
-	int				prev_read;
+	int				is_builtin;
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 //---------------{ env structure }-----------------
@@ -127,6 +127,7 @@ char	*ft_strdup(const char *s1);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strncpy(char *dest, char *src, size_t n);
 char	*ft_strcpy(const char *str, char *dest);
 int 	ft_isspace(int c);
@@ -163,7 +164,8 @@ void	ft_creat_pipe(t_cmd *cmd);
 void	ft_fork_process(t_shell *main, int i);
 void	nbr_cmd(t_shell *main);
 void	exec_cmd(t_shell *main);
-void	ft_check_child(char **cmd, int read_fd, int write_fd);
-
+void	ft_check_child(char **cmd, int read_fd, int write_fd, t_shell *main);
+int		is_builtin(char *str);
+char	**env_in_2D(t_shell *main);
 
 #endif

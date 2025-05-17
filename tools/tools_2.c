@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:17:27 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/05/12 19:04:54 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/17 17:11:40 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,48 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *) &s[i]);
 	return (NULL);
 }
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)*s1 - (unsigned char)*s2);
+}
+
+char	**env_in_2D(t_shell *main)
+{
+	t_env	*cur;
+	int		count;
+	char	**s;
+	
+	cur = main->env;
+	count = 0;
+	while (cur)
+	{
+		count++;
+		cur = cur->next;		
+	}
+	s = (char **)malloc(sizeof(char *) * (count + 1));
+	count = 0;
+	cur = main->env;
+	while (cur)
+	{
+		s[count] = cur->content;
+		count++;
+		cur = cur->next;
+	}
+	s[count] = '\0';
+	return (s);
+}
+
+
+
+
+
+
 
 // int	ft_isalnum(int c)
 // {

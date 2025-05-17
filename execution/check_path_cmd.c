@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/12 12:38:25 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/17 16:30:52 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,17 @@ void	check_if_access(t_shell *main)
 
 	while (cmd)
 	{
-		if (access(cmd->cmd[0], X_OK | F_OK) == 0)
+		if (cmd->is_builtin)
 			cmd = cmd->next;
 		else
 		{
-			ft_check_cmd_path(cmd, main->path_splited);
-			cmd = cmd->next;
+			if (access(cmd->cmd[0], X_OK | F_OK) == 0)
+				cmd = cmd->next;
+			else
+			{
+				ft_check_cmd_path(cmd, main->path_splited);
+				cmd = cmd->next;
+			}
 		}
 	}
 }
