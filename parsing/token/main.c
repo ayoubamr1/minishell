@@ -66,8 +66,8 @@ void	minishell(t_shell *shell_list, char **env)
 			lexer_1(input, &shell_list->token);
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
-				shell_list->env = ft_env(shell_list->env, env);
 				
+				shell_list->env = ft_env(shell_list->env, env);
 				ft_expand(shell_list);
 				// exit(0);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);

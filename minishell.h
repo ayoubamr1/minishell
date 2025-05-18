@@ -103,9 +103,10 @@ char	*remove_quotes(char *str);
 
 
 
+void	print_env_list(t_env *lst); /// remove it
 
-
-
+void	ft_lstadd_back_env(t_env **lst, t_env *new);
+t_env	*ft_lstlast(t_env *lst);
 t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list);
 t_cmd	*ft_lstnew_cmd(void);
 // int		ft_lstsize_cmd(t_cmd *lst);
@@ -143,7 +144,7 @@ char	*ft_strchr(const char *s, int c);
 
 int	is_special_char(char c);
 //           BUILTINS
-void	export(char	*input, char **env);//t_shell *main_struct);
+void	my_export(t_shell *main, char *var);
 void	add_to_env(t_shell *main, char *new_var);
 char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
 void	update_env(t_shell *main, char *var_updated);

@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:17:27 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/05/17 17:11:40 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/18 14:36:39 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*ft_strchr(const char *s, int c)
 
 	i = 0;
 	tp = (char) c;
+	if (!s)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == tp)
@@ -59,7 +61,7 @@ char	**env_in_2D(t_shell *main)
 {
 	t_env	*cur;
 	int		count;
-	char	**s;
+	char	**env;
 	
 	cur = main->env;
 	count = 0;
@@ -68,17 +70,17 @@ char	**env_in_2D(t_shell *main)
 		count++;
 		cur = cur->next;		
 	}
-	s = (char **)malloc(sizeof(char *) * (count + 1));
+	env = (char **)malloc(sizeof(char *) * (count + 1));
 	count = 0;
 	cur = main->env;
 	while (cur)
 	{
-		s[count] = cur->content;
+		env[count] = cur->content;
 		count++;
 		cur = cur->next;
 	}
-	s[count] = '\0';
-	return (s);
+	env[count] = '\0';
+	return (env);
 }
 
 
