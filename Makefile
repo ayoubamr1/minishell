@@ -27,6 +27,7 @@ SRC =   parsing/token/main.c \
         builtins/my_unset.c \
         builtins/update_env.c \
         builtins/my_pwd.c \
+        builtins/my_env.c \
         # parsing/expand/tools_2.c \
 
 OBJ = $(SRC:.c=.o)

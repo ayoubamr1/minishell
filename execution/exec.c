@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 13:24:41 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/19 19:01:16 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,11 @@ void	ft_check_child(char **cmd, int read_fd, int write_fd, t_shell *main)
 	}
 	if (main->cmd->is_builtin == TRUE)
 	{
+		printf("is builtins : %s\n", cmd[0]);
 		run_builtins(main, cmd);
 		exit(1);
 	}
-	// printf("is Not_builtins : %s\n", cmd[0]);
+	printf("is Not_builtins : %s\n", cmd[0]);
 	if (execve(cmd[0], cmd, env_in_2D(main)) == -1) /// update with my env
 	{
 		perror("execve");
@@ -67,22 +68,6 @@ void	ft_check_child(char **cmd, int read_fd, int write_fd, t_shell *main)
 // 	return TRUE;
 // }
 
-// void	flag_builtins(t_shell *main)
-// {
-// 	t_cmd *curr;
-
-// 	curr = main->cmd;
-// 	while (curr)
-// 	{
-// 		if (!is_builtin(curr->cmd[0]))
-// 			curr->is_builtin = TRUE;
-// 		else
-// 			curr->is_builtin = FALSE;
-		
-// 		curr = curr->next;
-// 	}
-// }
-
 void	flag_builtins(t_shell *main)
 {
 	t_cmd *curr;
@@ -90,9 +75,7 @@ void	flag_builtins(t_shell *main)
 	curr = main->cmd;
 	while (curr)
 	{
-		if (!ft_strcmp(curr->cmd[0], "env") || !ft_strcmp(curr->cmd[0], "cd")
-			|| !ft_strcmp(curr->cmd[0], "export") || !ft_strcmp(curr->cmd[0], "pwd")
-			|| !ft_strcmp(curr->cmd[0], "unset"))
+		if (is_builtin(curr->cmd[0]))
 			curr->is_builtin = TRUE;
 		else
 			curr->is_builtin = FALSE;
@@ -100,6 +83,24 @@ void	flag_builtins(t_shell *main)
 		curr = curr->next;
 	}
 }
+
+// void	flag_builtins(t_shell *main)
+// {
+// 	t_cmd *curr;
+
+// 	curr = main->cmd;
+// 	while (curr)
+// 	{
+// 		if (!ft_strcmp(curr->cmd[0], "env") || !ft_strcmp(curr->cmd[0], "cd")
+// 			|| !ft_strcmp(curr->cmd[0], "export") || !ft_strcmp(curr->cmd[0], "pwd")
+// 			|| !ft_strcmp(curr->cmd[0], "unset"))
+// 			curr->is_builtin = TRUE;
+// 		else
+// 			curr->is_builtin = FALSE;
+		
+// 		curr = curr->next;
+// 	}
+// }
 
 void	exec_cmd(t_shell *main)
 {
