@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/18 16:14:24 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/19 11:37:34 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,25 @@ void	my_export(t_shell *main, char *var)
 		printf("====== is NULL======\n");
 		return ;
 	}
-	printf("signe equal = %s\n", signe_equal);
+	// printf("signe equal = %s\n", signe_equal);
 	len = signe_equal - var;
-	printf("len = %ld\n", len);
+	// printf("len = %ld\n", len);
 	ft_strncpy(buffer, var, len);
 	buffer[len] = '\0';
-	printf("buffer = %s\n", buffer);
+	// printf("buffer = %s\n", buffer);
 	value = signe_equal + 1;
-	printf("value = %s\n", value);
+	// printf("value = %s\n", value);
 	curr = main->env;
 	new_var = malloc(ft_strlen(var) + 1);
 	if (!new_var)
 		return;
 	ft_strcpy(var, new_var);
-	printf("new_var = %s\n", new_var);
+	// printf("new_var = %s\n", new_var);
 	while (curr)
 	{
 		if (ft_strncmp(curr->content, buffer, len) == 0 && curr->content[len] == '=')
 		{
-			printf("===============\n");
+			// printf("===============\n");
 			free(curr->content);
 			curr->content = new_var;
 			return ;

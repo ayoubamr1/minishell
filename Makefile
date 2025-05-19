@@ -18,6 +18,7 @@ SRC =   parsing/token/main.c \
         tools/tools_3.c \
         execution/check_path_cmd.c \
         execution/exec.c \
+        execution/builtins.c \
         builtins/add_env.c \
         builtins/cd.c \
         builtins/echo.c \
@@ -25,7 +26,7 @@ SRC =   parsing/token/main.c \
         builtins/my_getenv.c \
         builtins/my_unset.c \
         builtins/update_env.c \
-        builtins/builtins.c \
+        builtins/my_pwd.c \
         # parsing/expand/tools_2.c \
 
 OBJ = $(SRC:.c=.o)

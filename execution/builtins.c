@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:30:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/16 13:18:05 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/19 12:23:52 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,28 @@ void print_env(t_shell *main){
 	}
 }
 
-// int	builtins(t_shell *main, t_cmd *cmd)
-// {
-// 	// puts(cmd->cmd[0]);
-// 	if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
-// 		return (my_cd(cmd->cmd, main), 1);
-// 	if (ft_strncmp(cmd->cmd[0], "env", 3) == 0)
-// 		return (print_env(main), 1);
-// 	// if (ft_strncmp(cmd->cmd[0], "echo", 4) == 0)
-// 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
-// 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
-// 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
-// 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
-// 	return 0;
-// } 
+void	run_builtins(t_shell *main, char **cmd)
+{
+	// puts(cmd->cmd[0]);
+	if (!ft_strcmp(cmd[0], "cd"))
+		my_cd(cmd, main);
+	if (!ft_strcmp(cmd[0], "env"))
+		print_env(main);
+	if (!ft_strcmp(cmd[0], "export"))
+		my_export(main, cmd[1]);
+	if (!ft_strcmp(cmd[0], "pwd"))
+		my_pwd(main);
+	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
+	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
+	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
+	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
+}
+
+int	is_builtin(char *str)
+{
+	if (!ft_strcmp(str, "env") || !ft_strcmp(str, "cd")
+		|| !ft_strcmp(str, "export") || 
+		!ft_strcmp(str, "pwd") || !ft_strcmp(str, "echo"))
+		return TRUE;
+	return FALSE;
+}

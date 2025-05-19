@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/18 15:25:25 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/19 12:33:07 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,22 +27,12 @@ void	ft_check_child(char **cmd, int read_fd, int write_fd, t_shell *main)
 			exit(1);
 		close(write_fd);
 	}
-	if (!ft_strcmp(cmd[0], "env"))
+	if (main->cmd->is_builtin == TRUE)
 	{
-		print_env(main);
+		run_builtins(main, cmd);
 		exit(1);
 	}
-	else if (!ft_strcmp(cmd[0], "cd"))
-	{
-		my_cd(cmd, main);
-		exit(1);
-	}
-	else if (!ft_strcmp(cmd[0], "export"))
-	{
-		my_export(main, cmd[0]);
-		exit(1);
-	}
-		// printf("is Not_builtins : %s\n", cmd[0]);
+	// printf("is Not_builtins : %s\n", cmd[0]);
 	if (execve(cmd[0], cmd, env_in_2D(main)) == -1) /// update with my env
 	{
 		perror("execve");
@@ -67,14 +57,6 @@ void	ft_check_child(char **cmd, int read_fd, int write_fd, t_shell *main)
 	// }
 }
 
-int	is_builtin(char *str)
-{
-	if (strcmp(str, "env") != 0 && strcmp(str, "cd") != 0
-		&& ft_strcmp(str, "export") != 0)
-		return FALSE;
-	return TRUE;
-}
-
 // int	is_builtin(t_shell *main)
 // {
 // 	t_cmd *cur;
@@ -85,6 +67,22 @@ int	is_builtin(char *str)
 // 	return TRUE;
 // }
 
+// void	flag_builtins(t_shell *main)
+// {
+// 	t_cmd *curr;
+
+// 	curr = main->cmd;
+// 	while (curr)
+// 	{
+// 		if (!is_builtin(curr->cmd[0]))
+// 			curr->is_builtin = TRUE;
+// 		else
+// 			curr->is_builtin = FALSE;
+		
+// 		curr = curr->next;
+// 	}
+// }
+
 void	flag_builtins(t_shell *main)
 {
 	t_cmd *curr;
@@ -93,7 +91,7 @@ void	flag_builtins(t_shell *main)
 	while (curr)
 	{
 		if (!ft_strcmp(curr->cmd[0], "env") || !ft_strcmp(curr->cmd[0], "cd")
-			|| !ft_strcmp(curr->cmd[0], "export"))
+			|| !ft_strcmp(curr->cmd[0], "export") || !ft_strcmp(curr->cmd[0], "pwd"))
 			curr->is_builtin = TRUE;
 		else
 			curr->is_builtin = FALSE;
@@ -124,12 +122,7 @@ void	exec_cmd(t_shell *main)
 	main->in_fd = main->cmd->in;
 	if (cur->is_builtin && main->nbr_cmd == 1)
 	{
-		if (!ft_strcmp(cur->cmd[0], "env"))
-			print_env(main);
-		if (!ft_strcmp(cur->cmd[0], "cd"))
-			my_cd(cur->cmd, main);
-		if (!ft_strcmp(cur->cmd[0], "export"))
-			my_export(main, cur->cmd[1]);
+		run_builtins(main, cur->cmd);
 		return ;
 	}
 	while (i < main->nbr_cmd && cur)

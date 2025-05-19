@@ -3,7 +3,7 @@
 
 static void	ft_null(t_shell *shell)
 {
-	shell->env = NULL;
+	// shell->env = NULL;
 	shell->token = NULL;
 	shell->cmd = NULL;
 }
@@ -51,11 +51,13 @@ void	minishell(t_shell *shell_list, char **env)
 	// 	clear_token(&shell_list->token);
 	// if (shell_list->cmd != NULL)
 	// 	clear_cmd(&shell_list->cmd);
+	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
+	shell_list->env = ft_env(shell_list->env, env);
 	while (TRUE){
-		shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 		input = readline("minishell> ");
 		if (input)
 		{
+			ft_null(shell_list);
 			add_history(input);
 			if (!ft_strncmp(input, "exit", ft_strlen("exit")))
 			{
@@ -67,12 +69,12 @@ void	minishell(t_shell *shell_list, char **env)
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
 				
-				shell_list->env = ft_env(shell_list->env, env);
 				ft_expand(shell_list);
 				// exit(0);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
 				// print_node(shell_list, env);
+				exec_cmd(shell_list);
 			}
 			// while (shell_list->env)
 			// {
@@ -91,7 +93,6 @@ void	minishell(t_shell *shell_list, char **env)
 			// print_node(shell_list, env);
 			// execute_commande(shell_list);
 			// builtins(shell_list);
-			exec_cmd(shell_list);
 		}
 		free(input);
 	}
@@ -114,8 +115,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
-	ft_null(shell_list);
+	// shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	// signal(SIGINT, handle_sigint);  // This assumes you have a signal handler
 	// signal(SIGQUIT, SIG_IGN);
 	
