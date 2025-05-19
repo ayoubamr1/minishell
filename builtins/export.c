@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 11:37:34 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/19 15:57:25 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	my_export(t_shell *main, char *var)
 	}
 	// printf("signe equal = %s\n", signe_equal);
 	len = signe_equal - var;
-	// printf("len = %ld\n", len);
+	// printf("len export = %ld\n", len);
 	ft_strncpy(buffer, var, len);
 	buffer[len] = '\0';
 	// printf("buffer = %s\n", buffer);

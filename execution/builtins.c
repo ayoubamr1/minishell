@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:30:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 12:23:52 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/19 13:23:27 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	run_builtins(t_shell *main, char **cmd)
 		my_export(main, cmd[1]);
 	if (!ft_strcmp(cmd[0], "pwd"))
 		my_pwd(main);
+	if (!ft_strcmp(cmd[0], "unset"))
+		unset_env(main, cmd[1]);
 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)

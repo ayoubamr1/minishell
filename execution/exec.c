@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 12:33:07 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/19 13:24:41 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void	flag_builtins(t_shell *main)
 	while (curr)
 	{
 		if (!ft_strcmp(curr->cmd[0], "env") || !ft_strcmp(curr->cmd[0], "cd")
-			|| !ft_strcmp(curr->cmd[0], "export") || !ft_strcmp(curr->cmd[0], "pwd"))
+			|| !ft_strcmp(curr->cmd[0], "export") || !ft_strcmp(curr->cmd[0], "pwd")
+			|| !ft_strcmp(curr->cmd[0], "unset"))
 			curr->is_builtin = TRUE;
 		else
 			curr->is_builtin = FALSE;
@@ -136,10 +137,10 @@ void	exec_cmd(t_shell *main)
 		// rintf("child process %d\n", i);
 		// rintf("==================\n");
 		// f (!cur->cmd || !cur->cmd[0])
-		// 
+		
 		// printf("cur->cmd[0] is NULL\n");
 		// exit(1);
-		// 
+		
 		// rintf("==================\n");
 		// rintf("will exec: %s\n", cur->cmd[0]);
 		// xit(0);
