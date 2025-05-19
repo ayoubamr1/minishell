@@ -6,13 +6,13 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 19:01:16 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/19 19:28:58 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_check_child(char **cmd, int read_fd, int write_fd, t_shell *main)
+void	ft_check_child(t_cmd *cmd, int read_fd, int write_fd, t_shell *main)
 {
 	// printf("in childe : read_fd = %d, write_fd = %d\n", read_fd, write_fd);
 	if (read_fd != -1)
@@ -27,14 +27,14 @@ void	ft_check_child(char **cmd, int read_fd, int write_fd, t_shell *main)
 			exit(1);
 		close(write_fd);
 	}
-	if (main->cmd->is_builtin == TRUE)
+	if (cmd->is_builtin == TRUE)
 	{
-		printf("is builtins : %s\n", cmd[0]);
-		run_builtins(main, cmd);
+		printf("is builtins : %s\n", cmd->cmd[0]);
+		run_builtins(main, cmd->cmd);
 		exit(1);
 	}
-	printf("is Not_builtins : %s\n", cmd[0]);
-	if (execve(cmd[0], cmd, env_in_2D(main)) == -1) /// update with my env
+	printf("is Not_builtins : %s\n", cmd->cmd[0]);
+	if (execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1) /// update with my env
 	{
 		perror("execve");
 		exit(1);
@@ -148,10 +148,10 @@ void	exec_cmd(t_shell *main)
 			if (cur->next)
 			{
 				close(cur->pipe_fd[0]);
-				ft_check_child(cur->cmd, main->in_fd, cur->pipe_fd[1], main);
+				ft_check_child(cur, main->in_fd, cur->pipe_fd[1], main);
 			}
 			else
-				ft_check_child(cur->cmd, main->in_fd, cur->out, main);
+				ft_check_child(cur, main->in_fd, cur->out, main);
 		}
 		else
 		{
