@@ -60,8 +60,8 @@ void	minishell(t_shell *shell_list, char **env)
 			ft_malloc(0, FREE);
 			exit(0);
 		}
-		lexer_1(input, &shell_list->token);
-		if (syntax_error(&shell_list->token) == TRUE)
+		// lexer_1(input, &shell_list->token);
+		if (lexer_1(input, &shell_list->token) && syntax_error(&shell_list->token) == TRUE)
 		{
 			shell_list->env = ft_env(shell_list->env, env);
 			

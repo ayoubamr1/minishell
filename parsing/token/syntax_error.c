@@ -35,6 +35,29 @@ static int	is_general_syntax_error(t_token *t)
 	return (0);
 }
 
+static int	close_quote(char *str)
+{
+	int	i;
+	char quote;
+
+	i = 0;
+	quote = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' || str[i] == '"')
+		{
+			quote = str[i];
+			i++;
+			while (str[i] && str[i] != quote)
+				i++;
+			if(str[i] != quote)
+			return(1);
+		}	
+		i++;
+	}
+	return(0);
+}
+
 int	syntax_error(t_token **tokens)
 {
 	t_token	*tmp;
@@ -43,11 +66,16 @@ int	syntax_error(t_token **tokens)
 	tmp = *tokens;
 	while (tmp)
 	{
+		if (close_quote(tmp->content))
+		{
+			printf("Syntax error: unclosed quote\n");
+			return (FALSE);
+		}
 		if (is_general_syntax_error(tmp))
 		{
 			printf("syntax error near unexpected token\n");
 			// ft_malloc(0, FREE);
-			clear_token(tokens);
+			// clear_token(tokens);
 			return (FALSE);
 		}
 		tmp = tmp->next;
