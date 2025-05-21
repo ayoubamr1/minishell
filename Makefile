@@ -14,12 +14,14 @@ SRC =   parsing/token/main.c \
         parsing/expand/tools_1.c \
         tools/ft_malloc.c \
         tools/tool_1.c \
-        tools/tool_2.c
+        tools/tool_2.c \
+		Get_Next_Line/get_next_line_utils.c \
+		Get_Next_Line/get_next_line.c \
         # parsing/expand/tools_2.c \
 
 OBJ = $(SRC:.c=.o)
 
-CFLAGS = #-g3 -fsanitize=address
+CFLAGS = -g3 -fsanitize=address
 # CFLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)

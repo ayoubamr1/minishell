@@ -12,6 +12,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "tools/gbc.h"
+#include "Get_Next_Line/get_next_line.h"
  #include <fcntl.h> // open function 
 // #include "leaks.h"
 
@@ -47,7 +48,7 @@ typedef struct s_cmd
 	char 			*file; // file name 
 	int				in; // file fd
 	int				out; //file fd
-	// int 			heredoc; // 1 if <<
+	int 			heredoc; // 1 if <<
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 //---------------{ env structure }-----------------

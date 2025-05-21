@@ -54,6 +54,131 @@ static t_token	*handle_redir_append(t_cmd *node, t_token *start)
 	return (start->next);
 }
 
+static	int	len_n(int n)
+{
+	int	len;
+
+	len = 0;
+	if (n <= 0)
+		len = 1;
+	while (n != 0)
+	{
+		n /= 10;
+		len++;
+	}
+	return (len);
+}
+
+static char	*ft_itoa(int n)
+{
+	char	*res;
+	int		len;
+
+	len = len_n(n);
+	if (n == -2147483648)
+		return (ft_strdup("-2147483648"));
+	res = malloc(sizeof(char) * (len + 1));
+	if (!res)
+		return (NULL);
+	if (n < 0)
+	{
+		res[0] = '-';
+		n = -n;
+	}
+	res[len] = '\0';
+	if (n == 0)
+		res[0] = '0';
+	while (n > 0)
+	{
+		res[--len] = (n % 10) + '0';
+		n /= 10;
+	}
+	return (res);
+}
+
+// static int	handle_heredoc(char	*delimiter) 
+// {
+// 	static size_t hrc_pid = 0;
+
+// 	if (hrc_pid == 0)
+// 		hrc_pid = getpid();
+// 	else
+// 		hrc_pid++;
+
+// 	// Generate filename
+// 	char *id_str = ft_itoa(hrc_pid);
+// 	char *filepath = ft_strjoin("/tmp/", id_str);
+// 	free(id_str);
+
+// 	int fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
+// 	if (fd < 0)
+// 	{
+// 		perror("open");
+// 		free(filepath);
+// 		return (-1);
+// 	}
+
+// 	while (1)
+// 	{
+// 		char *line = readline("> ");
+// 		if (!line || strcmp(line, delimiter) == 0)
+// 		{
+// 			free(line);
+// 			break;
+// 		}
+// 		write(fd, line, strlen(line));
+// 		write(fd, "\n", 1);
+// 		free(line);
+// 	}
+// 	free(filepath);
+// 	char *str = get_next_line(fd);
+// 	while (str)
+// 	{
+// 		printf("[%s]\n", str);
+// 		str = get_next_line(fd);
+// 	}
+// 	return (fd); // Return file descriptor to read from later
+// }
+
+static char *handle_heredoc(char *delimiter) 
+{
+	static size_t	hrc_pid;
+	char			*id_str;
+	char			*filepath;
+	int				fd;
+
+	static size_t hrc_pid = 0;
+	if (hrc_pid == 0)
+		hrc_pid = getpid();
+	else
+		hrc_pid++;
+	id_str = ft_itoa(hrc_pid);
+	filepath = ft_strjoin("/tmp/", id_str);
+	free(id_str);
+	fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (fd < 0)
+	{
+		perror("open");
+		return (NULL);
+	}
+	while (1)
+	{
+		char *line = readline("> ");
+		if (!line || strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break;
+		}
+		write(fd, line, strlen(line));
+		write(fd, "\n", 1);
+		free(line);
+	}
+	// lseek(fd, 0, SEEK_SET);
+	return (filepath);
+}
+
+
+
 static t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
 {
 	if (!start)
@@ -71,8 +196,23 @@ static t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
 			start = handle_redir_out(node_to_fill, start);
 		else if (start && start->type == APPEND)
 			start = handle_redir_append(node_to_fill, start);
-		// else if (start && start->type == HEREDOC)
-		// 	start = handle_heredoc(node_to_fill, start); // nooe_to_fill == hi lirt3mare  && start hiya li radi takhod manha
+		else if (start && start->type == HEREDOC)
+		{
+			start = start->next;
+			// char fd = handle_heredoc(start->content);
+			// int fd = open(handle_heredoc(start->content), O_RDONLY);
+			node_to_fill->heredoc = open(handle_heredoc(start->content), O_RDONLY);
+			// char *str = get_next_line(fd);
+			// while (str)
+			// {
+			// 	printf("%s", str);
+			// 	str = get_next_line(fd);
+			// }
+			// exit(0);
+			start = start->next;
+
+		}
+			// start = handle_heredoc(node_to_fill, start); // nooe_to_fill == hi lirt3mare  && start hiya li radi takhod manha
 	}
 	return (start);
 }
