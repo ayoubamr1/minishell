@@ -150,10 +150,10 @@ char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
 void	update_env(t_shell *main, char *var_updated);
 int		my_cd(char **str, t_shell *main);
 void	unset_env(t_shell *main, char *var_name);
-int		echo(t_cmd *cur);
+int		my_echo(char **av, t_cmd *cur);
 void	my_pwd(t_shell *main);
 // void	builtins(t_shell *main);
-void	run_builtins(t_shell *main, char **cmd);
+void	run_builtins(t_shell *main, char **cmd, t_cmd *cur);
 int		is_builtin(char *str);
 void 	print_env(t_shell *main);
 

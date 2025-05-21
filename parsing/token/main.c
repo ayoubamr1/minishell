@@ -25,7 +25,7 @@ static void	print_node(t_shell *shell_list, char **env)
 			printf("cmd[%s] ,", cc->cmd[i]);
 			i++;
 		}
-		printf("file[%s] infd[%d] outfd[%d] }\n", cc->file, cc->in, cc->out);
+		printf("file[%s] infd[%d] outfd[%d] is_bultins[%d]}\n", cc->file, cc->in, cc->out, cc->is_builtin);
 		cc = cc->next;
 	}
 	printf("---------------------------------------------\n");
@@ -73,7 +73,7 @@ void	minishell(t_shell *shell_list, char **env)
 				// exit(0);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
-				// print_node(shell_list, env);
+				print_node(shell_list, env);
 				exec_cmd(shell_list);
 			}
 			// while (shell_list->env)

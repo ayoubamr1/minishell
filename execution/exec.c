@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 20:02:00 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/21 18:19:49 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	ft_check_child(t_cmd *cmd, int read_fd, int write_fd, t_shell *main)
 	if (cmd->is_builtin == TRUE)
 	{
 		printf("is builtins : %s\n", cmd->cmd[0]);
-		run_builtins(main, cmd->cmd);
+		run_builtins(main, cmd->cmd, cmd);
 		exit(1);
 	}
-	printf("is Not_builtins : %s\n", cmd->cmd[0]);
+	// printf("is Not_builtins : %s\n", cmd->cmd[0]);
 	if (execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
 	{
 		perror("execve");
@@ -75,7 +75,19 @@ void	flag_builtins(t_shell *main)
 	curr = main->cmd;
 	while (curr)
 	{
-		if (is_builtin(curr->cmd[0]))
+		// printf("cmd[0] = %s\n", curr->cmd[0]);
+		// printf("cmd[0] = %p\n", curr->cmd[0]);
+		if (!curr->cmd && curr->next->cmd)
+		{
+			pipe(curr->pipe_fd);
+			// printf("pipe[0] = %d\n", curr->pipe_fd[0]);
+			// printf("pipe[1] = %d\n", curr->pipe_fd[1]);
+			close(curr->pipe_fd[1]);
+			curr->next->in = curr->pipe_fd[0];
+			// printf("in_fd = %d\n", curr->in);
+			curr = curr->next;
+		}
+		if (is_builtin(curr->cmd[0])) // curr && curr->cmd[0] && 
 			curr->is_builtin = TRUE;
 		else
 			curr->is_builtin = FALSE;
@@ -124,7 +136,7 @@ void	exec_cmd(t_shell *main)
 	main->in_fd = main->cmd->in;
 	if (cur->is_builtin && main->nbr_cmd == 1)
 	{
-		run_builtins(main, cur->cmd);
+		run_builtins(main, cur->cmd, cur);
 		return ;
 	}
 	while (i < main->nbr_cmd && cur)
@@ -135,16 +147,16 @@ void	exec_cmd(t_shell *main)
 		ft_fork_process(main, i);
 		if (main->pid[i] == 0)
 		{
-		// rintf("child process %d\n", i);
-		// rintf("==================\n");
-		// f (!cur->cmd || !cur->cmd[0])
-		
-		// printf("cur->cmd[0] is NULL\n");
-		// exit(1);
-		
-		// rintf("==================\n");
-		// rintf("will exec: %s\n", cur->cmd[0]);
-		// xit(0);
+			// rintf("child process %d\n", i);
+			// rintf("==================\n");
+			// f (!cur->cmd || !cur->cmd[0])
+			
+			// printf("cur->cmd[0] is NULL\n");
+			// exit(1);
+			
+			// rintf("==================\n");
+			// rintf("will exec: %s\n", cur->cmd[0]);
+			// xit(0);
 			if (cur->next)
 			{
 				close(cur->pipe_fd[0]);

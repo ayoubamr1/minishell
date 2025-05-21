@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/17 16:30:52 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/21 13:52:08 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ void	check_if_access(t_shell *main)
 			cmd = cmd->next;
 		else
 		{
-			if (access(cmd->cmd[0], X_OK | F_OK) == 0)
+			// printf("cmd = %p\n", cmd->cmd[0]);
+			if (cmd->cmd && cmd->cmd[0] && access(cmd->cmd[0], X_OK | F_OK) == 0)
 				cmd = cmd->next;
 			else
 			{
@@ -68,7 +69,7 @@ void	ft_check_cmd_path(t_cmd *cmd, char **path)
 	
 	i = 0;
 	cur = cmd;
-	while (path && path[i])
+	while (path && path[i] && cur->cmd)
 	{
 		tmp = ft_strjoin(path[i], "/");
 		if (!tmp)

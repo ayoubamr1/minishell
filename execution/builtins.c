@@ -6,13 +6,13 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:30:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 18:58:57 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/20 12:27:20 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	run_builtins(t_shell *main, char **cmd)
+void	run_builtins(t_shell *main, char **cmd, t_cmd *cur)
 {
 	// puts(cmd->cmd[0]);
 	if (!ft_strcmp(cmd[0], "cd"))
@@ -25,6 +25,8 @@ void	run_builtins(t_shell *main, char **cmd)
 		my_pwd(main);
 	if (!ft_strcmp(cmd[0], "unset"))
 		unset_env(main, cmd[1]);
+	if (!ft_strcmp(cmd[0], "echo"))
+		my_echo(cmd, cur);
 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
 	// if (ft_strncmp(cmd->cmd[0], "cd", 2) == 0)
