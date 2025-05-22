@@ -170,5 +170,6 @@ void	exec_cmd(t_shell *main);
 void	ft_check_child(t_cmd *cmd, int read_fd, int write_fd, t_shell *main);
 int		is_builtin(char *str);
 char	**env_in_2D(t_shell *main);
+void	check_redir(t_shell *main);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/21 18:19:49 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/22 16:32:34 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,19 +75,7 @@ void	flag_builtins(t_shell *main)
 	curr = main->cmd;
 	while (curr)
 	{
-		// printf("cmd[0] = %s\n", curr->cmd[0]);
-		// printf("cmd[0] = %p\n", curr->cmd[0]);
-		if (!curr->cmd && curr->next->cmd)
-		{
-			pipe(curr->pipe_fd);
-			// printf("pipe[0] = %d\n", curr->pipe_fd[0]);
-			// printf("pipe[1] = %d\n", curr->pipe_fd[1]);
-			close(curr->pipe_fd[1]);
-			curr->next->in = curr->pipe_fd[0];
-			// printf("in_fd = %d\n", curr->in);
-			curr = curr->next;
-		}
-		if (is_builtin(curr->cmd[0])) // curr && curr->cmd[0] && 
+		if (curr->cmd && is_builtin(curr->cmd[0])) // curr && curr->cmd[0] && 
 			curr->is_builtin = TRUE;
 		else
 			curr->is_builtin = FALSE;
@@ -125,6 +113,7 @@ void	exec_cmd(t_shell *main)
 	cur = main->cmd;
 	nbr_cmd(main);
 	get_path(main);
+	// check_redir(main);
 	flag_builtins(main);
 	check_if_access(main);
 	// main->nbr_cmd = ft_lstsize_cmd(main->cmd);
@@ -142,6 +131,7 @@ void	exec_cmd(t_shell *main)
 	while (i < main->nbr_cmd && cur)
 	{
 		// printf("==================\n");
+		check_redir(main);
 		if (cur->next)
 			ft_creat_pipe(cur);
 		ft_fork_process(main, i);
@@ -160,10 +150,15 @@ void	exec_cmd(t_shell *main)
 			if (cur->next)
 			{
 				close(cur->pipe_fd[0]);
+				// printf("first in_fd = %d\n", main->in_fd);
 				ft_check_child(cur, main->in_fd, cur->pipe_fd[1], main);
 			}
 			else
+			{	
+				// printf("in_fd = %d\n", cur->in);
+				// printf("out_fd = %d\n", cur->out);
 				ft_check_child(cur, main->in_fd, cur->out, main);
+			}
 		}
 		else
 		{
@@ -194,8 +189,8 @@ void	ft_creat_pipe(t_cmd *cmd)
 {
 	if (pipe(cmd->pipe_fd) == -1)
 	{
-		exit(EXIT_FAILURE);
 		perror("pipe filled\n");
+		exit(EXIT_FAILURE);
 	}
 	// printf("{pipe 0 = %d pipe1 = %d}\n", cmd->pipe_fd[0], cmd->pipe_fd[1]);
 }
