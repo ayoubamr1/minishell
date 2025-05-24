@@ -171,5 +171,11 @@ void	ft_check_child(t_cmd *cmd, int read_fd, int write_fd, t_shell *main);
 int		is_builtin(char *str);
 char	**env_in_2D(t_shell *main);
 void	check_redir(t_shell *main);
+void	wait_children(t_shell *main);
+void	flag_builtins(t_shell *main);
+void	execution(t_shell *main);
 
+
+void	edit_redir(t_shell *main);
+void	print_node(t_shell *shell_list, char **env);
 #endif

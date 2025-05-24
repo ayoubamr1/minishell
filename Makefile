@@ -20,6 +20,8 @@ SRC =   parsing/token/main.c \
         execution/exec.c \
         execution/builtins.c \
         execution/redirection.c \
+        execution/execution.c \
+        execution/utils_execution.c \
         builtins/add_env.c \
         builtins/cd.c \
         builtins/echo.c \

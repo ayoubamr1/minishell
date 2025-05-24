@@ -8,7 +8,7 @@ static void	ft_null(t_shell *shell)
 	shell->cmd = NULL;
 }
 
-static void	print_node(t_shell *shell_list, char **env)
+void	print_node(t_shell *shell_list, char **env)
 {
 	t_cmd	*cc;
 
@@ -74,7 +74,7 @@ void	minishell(t_shell *shell_list, char **env)
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
 				print_node(shell_list, env);
-				exec_cmd(shell_list);
+				execution(shell_list);
 			}
 			// while (shell_list->env)
 			// {

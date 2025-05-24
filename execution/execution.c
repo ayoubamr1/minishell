@@ -6,101 +6,60 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/12 12:31:31 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/24 20:33:22 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	execute_commande(t_shell *main)
+void	execution(t_shell *main)
 {
-	t_cmd	*cur;
-	char	**path;
-	int		i;
-	int		j;
-	
-	cur = main->cmd;
-	cur->prev_read = 0;
-	i = 0;
-	j = 0;
-	main->pid = malloc(main->nbr_cmd * sizeof(pid_t));
-	if (!main->pid)
-		exit(EXIT_FAILURE);
-	printf("{%d}\n", main->nbr_cmd);
-	while (cur)
-	{
-		if (cur->next)
-			ft_creat_pipe(cur);
-		ft_fork_process(main, i);
-		if (main->pid[i] == 0) // child process
-		{
-			// close(cur->pipe_fd[0]);
-			// printf("{%d}\n", cur->pipe_fd[0]);
-			if (cur->in != 0)
-				dup2(cur->in, 0);
-			else if (cur->prev_read)
-				dup2(cur->prev_read, 0);
-			if (cur->out != 1)
-				dup2(cur->out, 1);
-			else if (cur->next)
-				dup2(cur->pipe_fd[1], 1);
-				// printf("{%d}\n", cur->pipe_fd[1]);
-			if (cur->prev_read)
-				close(cur->prev_read);
-			if (cur->in != 0)
-				close(cur->in);
-			if (cur->out != 1)
-				close (cur->out);
-			if (cur->next)
-			{
-				close(cur->pipe_fd[0]);
-				close(cur->pipe_fd[1]);
-			}
-			if (execve(cur->cmd[0], cur->cmd, NULL) == -1)
-			{
-				perror("exec failled\n");
-				exit(EXIT_FAILURE);
-			}
-		}
-		else
-		{
-			if (cur->prev_read)
-				close(cur->prev_read);
-			if (cur->in != 0)
-				close(cur->in);
-			if (cur->out != 1)
-				close(cur->out);
-			if (cur->next)
-			{
-				close(cur->pipe_fd[1]);
-				cur->prev_read = cur->pipe_fd[0];
-			}
-		}
-		i++;
-		cur = cur->next;
-	}
-	while (j < main->nbr_cmd)
-	{
-		waitpid(main->pid[j], NULL, 0);
-		j++;
-	}
+	nbr_cmd(main);
+	get_path(main);
+	check_redir(main);
+	flag_builtins(main);
+	check_if_access(main);
+	edit_redir(main);
+	print_node(main, NULL);
+	exec_cmd(main);
 }
 
-// void	ft_creat_pipe(t_cmd *cmd)
-// {
-// 	if (pipe(cmd->pipe_fd) == -1)
-// 	{
-// 		exit(EXIT_FAILURE);
-// 		perror("pipe filled\n");
-// 	}
-// }
+void edit_redir(t_shell *main)
+{
+	t_cmd *curr;
 
-// void	ft_fork_process(t_shell *main, int i)
-// {
-// 	main->pid[i] = fork();
-// 	if (main->pid[i] == -1)
-// 	{
-// 		perror("fork failed");
-// 		exit(EXIT_FAILURE);
-// 	}
-// }
+	curr = main->cmd;
+	while (curr)
+	{
+		if (curr == main->cmd && !curr->next)
+		{
+			if (curr->in == -1)
+				curr->in = open("/dev/stdin", O_RDONLY);
+			if (curr->out == -1)
+				curr->out = open("/dev/stdout", O_RDWR);
+			return ;
+		}
+		if (curr == main->cmd)
+		{
+			if (curr->in == -1)
+				curr->in = open("/dev/stdin", O_RDONLY);
+			if (curr->out == -1)
+				curr->out = -1337;
+		}
+		if (curr != main->cmd && curr->next)
+		{
+			if (curr->in == -1)
+				curr->in = -1337;
+			if (curr->out == -1)
+				curr->out = -1337;
+		}
+		if (curr != main->cmd && !curr->next)
+		{
+			if (curr->in == -1)
+				curr->in = -1337;
+			if (curr->out == -1)
+				curr->out = open("/dev/stdout", O_RDWR);
+		}
+		curr = curr->next;
+	}
+}
