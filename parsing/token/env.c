@@ -42,31 +42,44 @@ static t_env	*ft_lstnew_env(char *content)
 // 	*lst = NULL;
 // }
 
-// static t_env	*ft_lstlast(t_env *lst)
+t_env	*ft_lstlast(t_env *lst)
+{
+	if (!lst)
+		return (NULL);
+	while (lst->next != NULL)
+	{
+		lst = lst->next;
+	}
+	return (lst);
+}
+
+void	ft_lstadd_back_env(t_env **lst, t_env *new)
+{
+	t_env	*final;
+
+	if (!new || !lst)
+		return ;
+	if (*lst == NULL)
+	{
+		// printf("lst befor\n");
+		// print_env_list(*lst);
+		*lst = new;
+		// printf("lst after\n");
+		// print_env_list(*lst);
+		return ;
+	}
+	final = ft_lstlast(*lst);
+	final->next = new;
+	return ;
+}
+
+// void print_env_list(t_env *lst)
 // {
-// 	if (!lst)
-// 		return (NULL);
-// 	while (lst->next != NULL)
+// 	while (lst)
 // 	{
+// 		printf("lst = %s\n", lst->content);
 // 		lst = lst->next;
 // 	}
-// 	return (lst);
-// }
-
-// static void	ft_lstadd_back(t_env **lst, t_env *new)
-// {
-// 	t_env	*final;
-
-// 	if (!new || !lst)
-// 		return ;
-// 	if (*lst == NULL)
-// 	{
-// 		*lst = new;
-// 		return ;
-// 	}
-// 	final = ft_lstlast(*lst);
-// 	final->next = new;
-// 	return ;
 // }
 
 t_env *ft_env(t_env *env_list, char **env)

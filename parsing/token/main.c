@@ -3,12 +3,12 @@
 
 static void	ft_null(t_shell *shell)
 {
-	shell->env = NULL;
+	// shell->env = NULL;
 	shell->token = NULL;
 	shell->cmd = NULL;
 }
 
-static void	print_node(t_shell *shell_list, char **env)
+void	print_node(t_shell *shell_list, char **env)
 {
 	t_cmd	*cc;
 
@@ -25,6 +25,7 @@ static void	print_node(t_shell *shell_list, char **env)
 			printf("cmd[%s] ,", cc->cmd[i]);
 			i++;
 		}
+<<<<<<< HEAD
 		printf("file[%s] infd[%d] outfd[%d] }\n", cc->file, cc->in, cc->out);
 		char *str = get_next_line(cc->heredoc);
 		while (cc->heredoc > 0 && str)
@@ -32,6 +33,9 @@ static void	print_node(t_shell *shell_list, char **env)
 			printf("%s", str);
 			str = get_next_line(cc->heredoc);
 		}
+=======
+		printf("file[%s] infd[%d] outfd[%d] is_bultins[%d]}\n", cc->file, cc->in, cc->out, cc->is_builtin);
+>>>>>>> main
 		cc = cc->next;
 	}
 	printf("---------------------------------------------\n");
@@ -47,21 +51,23 @@ static void	print_node(t_shell *shell_list, char **env)
 	// printf("---------------------------------------------\n");
 }
 
+
+
 void	minishell(t_shell *shell_list, char **env)
 {
 	char	*input;
-
+	int i = 0;
 	// if (shell_list->token != NULL)
 	// 	clear_token(&shell_list->token);
 	// if (shell_list->cmd != NULL)
 	// 	clear_cmd(&shell_list->cmd);
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
-	input = readline("minishell> ");
-	if (input)
-	{
-		add_history(input);
-		if (!ft_strncmp(input, "exit", ft_strlen("exit")))
+	shell_list->env = ft_env(shell_list->env, env);
+	while (TRUE){
+		input = readline("minishell> ");
+		if (input)
 		{
+<<<<<<< HEAD
 			free(input);
 			ft_malloc(0, FREE);
 			exit(0);
@@ -76,9 +82,48 @@ void	minishell(t_shell *shell_list, char **env)
 			shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 			shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
 			print_node(shell_list, env);
+=======
+			ft_null(shell_list);
+			add_history(input);
+			if (!ft_strncmp(input, "exit", ft_strlen("exit")))
+			{
+				free(input);
+				ft_malloc(0, FREE);
+				exit(0);
+			}
+			lexer_1(input, &shell_list->token);
+			if (syntax_error(&shell_list->token) == TRUE)
+			{
+				
+				ft_expand(shell_list);
+				// exit(0);
+				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
+				shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
+				print_node(shell_list, env);
+				execution(shell_list);
+			}
+			// while (shell_list->env)
+			// {
+			// 	printf("{%s}\n", shell_list->env->content);
+			// 	shell_list->env = shell_list->env->next;
+			// }
+			// while (shell_list->cmd->cmd)
+			// {
+				// 	printf("[%s]\n", shell_list->cmd->cmd[i]);
+				// 	i++;
+				// }
+
+			// nbr_cmd(shell_list);
+			// get_path(shell_list);
+			// check_if_access(shell_list);
+			// print_node(shell_list, env);
+			// execute_commande(shell_list);
+			// builtins(shell_list);
+>>>>>>> main
 		}
+		free(input);
 	}
-	free(input);
+
 }
 
 // static void	handle_sigint(int sig)
@@ -97,15 +142,14 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
-	ft_null(shell_list);
+	// shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	// signal(SIGINT, handle_sigint);  // This assumes you have a signal handler
 	// signal(SIGQUIT, SIG_IGN);
 	
-	while (1)
-	{
+	// while (1)
+	// {
 		minishell(shell_list, env);
-	}
+	// }
 	
 	// This part would only be reached if the loop is broken
 	// ft_malloc(0, FREE);

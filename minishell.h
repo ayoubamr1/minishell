@@ -12,8 +12,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "tools/gbc.h"
-#include "Get_Next_Line/get_next_line.h"
- #include <fcntl.h> // open function 
+#include <fcntl.h>  // open function 
+#include <sys/wait.h>
 // #include "leaks.h"
 
 
@@ -48,7 +48,9 @@ typedef struct s_cmd
 	char 			*file; // file name 
 	int				in; // file fd
 	int				out; //file fd
-	int 			heredoc; // 1 if <<
+	// int 			heredoc; // 1 if <<
+	int				pipe_fd[2];
+	int				is_builtin;
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 //---------------{ env structure }-----------------
@@ -69,6 +71,11 @@ typedef struct s_shell
 	t_env			*env;
 	// char 			*original;
 	t_cmd			*cmd;
+	char			**path_splited;
+	int				nbr_cmd;
+	pid_t			*pid;
+	int				in_fd;
+	int				out_fd;
 	int exit_status; 
     struct s_shell 	*next;
 } t_shell;
@@ -89,15 +96,17 @@ void	ft_expand(t_shell	*shell_list);
 //---------------{ expand functions }-----------------
 char	*id_itoa(int n);
 char	*remove_quotes(char *str);
+// static int	is_special_char(char c);
 
 
 
 
 
 
+void	print_env_list(t_env *lst); /// remove it
 
-
-
+void	ft_lstadd_back_env(t_env **lst, t_env *new);
+t_env	*ft_lstlast(t_env *lst);
 t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list);
 t_cmd	*ft_lstnew_cmd(void);
 // int		ft_lstsize_cmd(t_cmd *lst);
@@ -119,13 +128,54 @@ char	*ft_strdup(const char *s1);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strncpy(char *dest, char *src, size_t n);
+char	*ft_strcpy(const char *str, char *dest);
 int 	ft_isspace(int c);
 void 	free2d(char **str);
 char	**ft_strjoin2d(char **s1, char *s2);
-// char	*ft_itoa(int n);
-int	ft_isalnum(int c);
-int	ft_isalpha(int c);
-int	is_special_char(char c);
+int     ft_isspace(int c);
+char	**ft_split(const char *str, char c);
+int     ft_isalnum(int c);
+void	ft_putchar(char c);
+int     ft_isdigit(int c);
+int     ft_isalpha(int c);
+char	*ft_strchr(const char *s, int c);
 
+int	is_special_char(char c);
+//           BUILTINS
+void	my_export(t_shell *main, char *var);
+void	add_to_env(t_shell *main, char *new_var);
+char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
+void	update_env(t_shell *main, char *var_updated);
+int		my_cd(char **str, t_shell *main);
+void	unset_env(t_shell *main, char *var_name);
+int		my_echo(char **av, t_cmd *cur);
+void	my_pwd(t_shell *main);
+// void	builtins(t_shell *main);
+void	run_builtins(t_shell *main, char **cmd, t_cmd *cur);
+int		is_builtin(char *str);
+void 	print_env(t_shell *main);
+
+
+
+//            EXECUTION
+void	get_path(t_shell *main);
+void	check_if_access(t_shell *main);
+void	ft_check_cmd_path(t_cmd *cmd, char **path);
+void	ft_creat_pipe(t_cmd *cmd);
+void	ft_fork_process(t_shell *main, int i);
+void	nbr_cmd(t_shell *main);
+void	exec_cmd(t_shell *main);
+void	ft_check_child(t_cmd *cmd, int read_fd, int write_fd, t_shell *main);
+int		is_builtin(char *str);
+char	**env_in_2D(t_shell *main);
+void	check_redir(t_shell *main);
+void	wait_children(t_shell *main);
+void	flag_builtins(t_shell *main);
+void	execution(t_shell *main);
+
+
+void	edit_redir(t_shell *main);
+void	print_node(t_shell *shell_list, char **env);
 #endif
