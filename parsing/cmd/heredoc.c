@@ -168,32 +168,25 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	start = ++(*i);
 	j = 0;
 	while (str[*i] && ft_isalpha(str[*i]) && !is_special_charr(str[*i]))
-	(*i)++;
+		(*i)++;
 	key = substr(str, start, *i - start);
 	val = cher_env(key, env);
-	// printf("key[%s]==val[%s]\n", key, val);
-	// if (!val)
-	// 	return(NULL);
 	if (quot == '\'')
-	{
-		// printf("qq=>[%s]", ft_strjoin(res, ft_strjoin("$", key)));
 		return(ft_strjoin(res, ft_strjoin("$", key)));
-	}
 	if (val)
 	{
-
-	env_path = ft_malloc(ft_strlen(val) + 1, MALLOC);
-	while (val[j] && val[j] != '=')
-		j++;
-	if (val[j])
-		j++;
-	p = 0;
-	while (val[j])
-		env_path[p++] = val[j++];
-	env_path[p] = '\0';
+		env_path = ft_malloc(ft_strlen(val) + 1, MALLOC);
+		while (val[j] && val[j] != '=')
+			j++;
+		if (val[j])
+			j++;
+		p = 0;
+		while (val[j])
+			env_path[p++] = val[j++];
+		env_path[p] = '\0';
 	}
 	tmp = ft_strjoin(res, env_path);
-	// printf("tmp=>[%s] || res [%s]\n", tmp, res);
+	// you can remove tmp and k
 	return (tmp);
 }
 
