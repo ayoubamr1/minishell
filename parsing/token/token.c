@@ -54,71 +54,76 @@ static int	skip_quote_block(char *input, int *i, char quote)
 	}
 	return (0);
 }
+typedef struct s_parm
+{
+	t_token	**token;
+	char	*input;
+	// int		*i;
+	int		*index;
+	char	*str;
+	char 	quote;
+	char	*s1;
+}	t_parm;
 
-static void	handle_quoted_token(t_token **token, char *input, int *i, int *index, char *str)
+static int	handle_quoted_token(t_parm *parm, char *input, int *i)
 {
 	int		start;
 	char	quote;
-	char	*value;
-	char	*s1;
 
-	start = *i;
-	quote = input[*i];
-	(*i)++;
+	(1) && (start = *i, quote = input[(*i)++]);
 	if (!skip_quote_block(input, i, quote))
 	{
 		printf("Syntax error: unclosed quote\n");
-		return ;
+		return (1);
 	}
 	while (input[*i] && !is_special_q(input[*i]))
 		(*i)++;
 	while (input[*i] && !is_special_q(input[*i]))
 	{
-		quote = input[*i];
-		(*i)++;
+		quote = input[(*i)++];
 		if (!skip_quote_block(input, i, quote))
 		{
 			printf("Syntax error: unclosed quote\n");
-			return ;
+			return (1);
 		}
 		while (input[*i] && !is_special_q(input[*i]))
 			(*i)++;
 	}
-	// printf("str>>[%s] || sub [%s]\n", str, substr(input, start, *i - start));
-	s1 = ft_strjoin(str, substr(input, start, *i - start));
-	// printf("s1 => [%s]\n", s1);
-	if (quote == '\'')
-	add_token(token, s1, SI_QUOTE, *index);
-	else
-	add_token(token, s1, WORD, *index);
-	(*index)++;
+	parm->s1 = ft_strjoin(parm->str, substr(input, start, *i - start));
+	return (0);
 }
+	// if (quote == '\'')
+	// 	add_token(token, s1, SI_QUOTE, *index);
+	// else
+	// 	add_token(token, s1, WORD, *index);
 
-void	*token_str(t_token **token, char *input, int *i, int *index)
+int	token_str(t_token **token, char *input, int *i, int *index)
 {
 	int		start;
 	char	*value;
+	t_parm	*parm;
 
+	parm = malloc(sizeof(t_parm));
 	start = *i;
 	while (input[*i] && !is_special_char(input[*i]))
 		(*i)++;
 	if (input[*i] == '"' || input[*i] == '\'')
 	{
-		// printf("[%c]\n", input[*i]);
-		// if (*i == 0)
-		// 	value = substr(input, start, 1);
-		// else
-			value = substr(input, start, *i - start);
-		// printf("1>>[%s]\n", value);
-		handle_quoted_token(token, input, i, index, value);
-		return (NULL);
+		parm->str = substr(input, start, *i - start);
+		if (handle_quoted_token(parm, input, i))
+			return (1);
+		else
+		{
+			if (parm->quote == '\'')
+				add_token(token, parm->s1, SI_QUOTE, (*index)++);
+			else
+				add_token(token, parm->s1, WORD, (*index)++);
+		}
+		return (0);
 	}
 	value = substr(input, start, *i - start);
-		// printf("start[%c], [%d], start[%i], i=[%i]\n", input[start], *i - start, start, *i);
-	// printf("2>>[%s]\n", value);
-	add_token(token, value, WORD, *index);
-	(*index)++;
-	return (NULL);
+	add_token(token, value, WORD, (*index)++);
+	return (0);
 }
 
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
@@ -164,11 +169,10 @@ void lexer_2(t_token **tokens, char *input, int *i, int *index)
 	// }
 }
 
-void lexer_1(char *input, t_token **tokens)
+int lexer_1(char *input, t_token **tokens)
 {
 	int i;
 	int index;
-
 
 	i = 0;
 	index = 1;
@@ -179,7 +183,8 @@ void lexer_1(char *input, t_token **tokens)
 		else if (input[i] && input[i] != ' ' && input[i] != '|' &&
 			input[i] != '<' && input[i] != '>' ) 
 		{
-			token_str(tokens, input, &i, &index);
+			if (token_str(tokens, input, &i, &index))
+				return (0);
 		}
 		else if (input[i] == '>' && input[i + 1] == '>')
 		{
@@ -194,5 +199,5 @@ void lexer_1(char *input, t_token **tokens)
 		else
 			lexer_2(tokens, input, &i, &index);
 	}
-	return ;
+	return (1);
 }

@@ -11,6 +11,7 @@ static void	ft_null(t_shell *shell)
 void	print_node(t_shell *shell_list, char **env)
 {
 	t_cmd	*cc;
+	printf("---------------------------------------------\n");
 
 	cc = shell_list->cmd;
 	(void)env;
@@ -26,9 +27,15 @@ void	print_node(t_shell *shell_list, char **env)
 			i++;
 		}
 		printf("file[%s] infd[%d] outfd[%d] is_bultins[%d]}\n", cc->file, cc->in, cc->out, cc->is_builtin);
+		char *str = get_next_line(cc->heredoc);
+		while (cc->heredoc > 0 && str)
+		{
+			printf("get=>[%s]", str);
+			str = get_next_line(cc->heredoc);
+		}
 		cc = cc->next;
+		printf("---------------------------------------------\n");
 	}
-	printf("---------------------------------------------\n");
 	// t_token *sh = shell_list->token;
 
 	// while (sh)
@@ -53,7 +60,8 @@ void	minishell(t_shell *shell_list, char **env)
 	// 	clear_cmd(&shell_list->cmd);
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	shell_list->env = ft_env(shell_list->env, env);
-	while (TRUE){
+	while (TRUE)
+	{
 		input = readline("minishell> ");
 		if (input)
 		{
@@ -70,10 +78,10 @@ void	minishell(t_shell *shell_list, char **env)
 			{
 				
 				ft_expand(shell_list);
-				// exit(0);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
-				shell_list->cmd = ft_cmd(&shell_list->token, &shell_list->cmd);
+				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd, shell_list->env);
 				print_node(shell_list, env);
+				printf("||||||||||||||||||||||||||||||||\n");
 				execution(shell_list);
 			}
 			// while (shell_list->env)

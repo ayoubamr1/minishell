@@ -79,7 +79,7 @@ char	**env_in_2D(t_shell *main)
 		count++;
 		cur = cur->next;
 	}
-	env[count] = '\0';
+	env[count] = NULL;
 	return (env);
 }
 

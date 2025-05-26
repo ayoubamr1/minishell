@@ -14,6 +14,7 @@
 #include "tools/gbc.h"
 #include <fcntl.h>  // open function 
 #include <sys/wait.h>
+// #include "Get_Next_Line/get_next_line.h"
 // #include "leaks.h"
 
 
@@ -29,7 +30,7 @@ typedef enum e_token_type
     APPEND,     // >>
     HEREDOC,   // << 
     // FILE_IN,   // << 
-    // FILE_OUT,   // << 
+    // FILE_OUT,   // <<
 	VOID     
 } t_token_type;
 //---------------{ tokenization structure }-----------------
@@ -48,7 +49,7 @@ typedef struct s_cmd
 	char 			*file; // file name 
 	int				in; // file fd
 	int				out; //file fd
-	// int 			heredoc; // 1 if <<
+	int 			heredoc; // 1 if <<
 	int				pipe_fd[2];
 	int				is_builtin;
 	struct s_cmd	*next; // for piped commands
@@ -83,13 +84,13 @@ typedef struct s_shell
 void	minishell(t_shell *shell_list, char **env);
 
 //---------------{ tokenization functions }-----------------
-void	lexer_1(char *input, t_token **tokens);
+int		lexer_1(char *input, t_token **tokens);
 void 	lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
 //---------------{ cmd functions }-----------------
 void	ft_expand(t_shell	*shell_list);
-
+char *handle_heredoc(t_shell *shell, char *delimiter);
 
 
 
@@ -100,20 +101,21 @@ char	*remove_quotes(char *str);
 
 
 
-
+char	*ft_expand_token(char *str, t_env *env);
 
 
 void	print_env_list(t_env *lst); /// remove it
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*ft_lstlast(t_env *lst);
-t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list);
+// t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list);
+t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env);
 t_cmd	*ft_lstnew_cmd(void);
 // int		ft_lstsize_cmd(t_cmd *lst);
 void	clear_cmd(t_cmd **lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
-void	*token_str(t_token **token, char *input, int *i, int *index);
+int	token_str(t_token **token, char *input, int *i, int *index);
 // void	ft_quote(t_token **tokens, char *input, int *i, int *index);
 
 //                **  token_tools  **
@@ -175,6 +177,7 @@ void	wait_children(t_shell *main);
 void	flag_builtins(t_shell *main);
 void	execution(t_shell *main);
 
+char	*get_next_line(int fd);
 
 void	edit_redir(t_shell *main);
 void	print_node(t_shell *shell_list, char **env);
