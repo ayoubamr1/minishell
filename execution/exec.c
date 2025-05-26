@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/24 20:35:25 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/26 12:19:23 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void ft_child(t_shell *main, t_cmd *cmd)
 {
-	printf("in childe : in_fd = %d, out_fd = %d\n", cmd->in, cmd->out);
+	// printf("in childe : in_fd = %d, out_fd = %d\n", cmd->in, cmd->out);
 	close(cmd->pipe_fd[0]);
 	if (cmd->out == -1337)
 		cmd->out = cmd->pipe_fd[1];
@@ -36,6 +36,7 @@ void ft_child(t_shell *main, t_cmd *cmd)
 		}
 		close(cmd->out);
 	}
+	printf("is_builtin = [%d]\n", cmd->is_builtin);
 	if (cmd->is_builtin == TRUE)
 	{
 		printf("is builtins : %s\n", cmd->cmd[0]);
