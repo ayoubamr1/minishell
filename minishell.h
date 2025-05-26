@@ -14,7 +14,7 @@
 #include "tools/gbc.h"
 #include <fcntl.h>  // open function 
 #include <sys/wait.h>
-#include "Get_Next_Line/get_next_line.h"
+// #include "Get_Next_Line/get_next_line.h"
 // #include "leaks.h"
 
 
