@@ -14,6 +14,7 @@
 #include "tools/gbc.h"
 #include <fcntl.h>  // open function 
 #include <sys/wait.h>
+#include "Get_Next_Line/get_next_line.h"
 // #include "leaks.h"
 
 
@@ -48,7 +49,7 @@ typedef struct s_cmd
 	char 			*file; // file name 
 	int				in; // file fd
 	int				out; //file fd
-	// int 			heredoc; // 1 if <<
+	int 			heredoc; // 1 if <<
 	int				pipe_fd[2];
 	int				is_builtin;
 	struct s_cmd	*next; // for piped commands
@@ -89,7 +90,7 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
 //---------------{ cmd functions }-----------------
 void	ft_expand(t_shell	*shell_list);
-
+char *handle_heredoc(t_shell *shell, char *delimiter);
 
 
 
@@ -100,14 +101,15 @@ char	*remove_quotes(char *str);
 
 
 
-
+char	*ft_expand_token(char *str, t_env *env);
 
 
 void	print_env_list(t_env *lst); /// remove it
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*ft_lstlast(t_env *lst);
-t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list);
+// t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list);
+t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env);
 t_cmd	*ft_lstnew_cmd(void);
 // int		ft_lstsize_cmd(t_cmd *lst);
 void	clear_cmd(t_cmd **lst);

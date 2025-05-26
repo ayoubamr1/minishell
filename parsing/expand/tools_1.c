@@ -55,6 +55,8 @@ char	*remove_quotes(char *str)
 	char	quote;
 	char	*res;
 	
+	if (!str)
+		return (NULL);
 	(1) && (i = 0, j = 0);
 	quote = 0;
 	res = ft_malloc(strlen(str) + 1, MALLOC);
@@ -68,7 +70,8 @@ char	*remove_quotes(char *str)
 			return (res[j] = '\0', res);
 		while (str[i] && str[i] != quote)
 			res[j++] = str[i++];
-		i++;
+		if (str[i])
+			i++;
 		while (str[i] && !is_special_char(str[i]))
 			res[j++] = str[i++];
 	}

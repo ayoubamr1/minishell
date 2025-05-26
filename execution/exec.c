@@ -42,7 +42,7 @@ void ft_child(t_shell *main, t_cmd *cmd)
 		run_builtins(main, cmd->cmd, cmd);
 		exit(1);
 	}
-	if (execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
+	if (cmd->cmd && execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
 	{
 		perror("execve");
 		exit(1);

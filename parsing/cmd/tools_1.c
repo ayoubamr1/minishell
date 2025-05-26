@@ -23,7 +23,7 @@ t_cmd *ft_lstnew_cmd(void)
 	node->in = -1;
 	node->out = -1;
 	// node->append = 0;
-	node->heredoc = 0;
+	node->heredoc = -1;
 	node->next = NULL;
 	return node;
 }

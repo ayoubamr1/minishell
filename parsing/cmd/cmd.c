@@ -140,49 +140,63 @@ static char	*ft_itoa(int n)
 // 	return (fd); // Return file descriptor to read from later
 // }
 
-static char *handle_heredoc(char *delimiter) 
-{
-	static size_t	hrc_pid;
-	char			*id_str;
-	char			*filepath;
-	int				fd;
+// char *handle_heredoc(t_shell *shell, char *delimiter) 
+// {
+// 	// static size_t	hrc_pid;
+// 	char			*id_str;
+// 	char			*filepath;
+// 	int				fd;
 
-	static size_t hrc_pid = 0;
-	if (hrc_pid == 0)
-		hrc_pid = getpid();
-	else
-		hrc_pid++;
-	id_str = ft_itoa(hrc_pid);
-	filepath = ft_strjoin("/tmp/", id_str);
-	free(id_str);
-	fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (fd < 0)
-	{
-		perror("open");
-		return (NULL);
-	}
-	while (1)
-	{
-		char *line = readline("> ");
-		if (!line || strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break;
-		}
-		write(fd, line, strlen(line));
-		write(fd, "\n", 1);
-		free(line);
-	}
-	// lseek(fd, 0, SEEK_SET);
-	return (filepath);
-}
+// 	static size_t hrc_pid = 0;
+// 	if (hrc_pid == 0)
+// 		hrc_pid = getpid();
+// 	else
+// 		hrc_pid++;
+// 	id_str = ft_itoa(hrc_pid);
+// 	filepath = ft_strjoin("/tmp/", id_str);
+// 	free(id_str);
+// 	fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
+// 	if (fd < 0)
+// 	{
+// 		perror("open");
+// 		return (NULL);
+// 	}
+// 	while (1)
+// 	{
+// 		char *line = readline("> ");
+// 		if (!line || strcmp(line, delimiter) == 0)
+// 		{
+// 			free(line);
+// 			break;
+// 		}
+// 		// line = ft_expand_token(line, env);
+// 		int i = 0;
+// 		while (line[i])
+// 		{
+// 			if (line[i] == '$')
+// 			{
+// 				line = ft_expand_token(line, shell->env);
+// 				break;
+// 			}
+// 			i++;
+// 		}
+			
+// 		write(fd, line, strlen(line));
+// 		write(fd, "\n", 1);
+// 		free(line);
+// 	}
+// 	// lseek(fd, 0, SEEK_SET);
+// 	return (filepath);
+// }
 
 
 
-static t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
+static t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 {
 	if (!start)
 		return (NULL);
+	
+	int fd;
 	while (start && start->type != PIPE)
 	{
 		if (start->type == WORD || start->type == SI_QUOTE)
@@ -199,20 +213,13 @@ static t_token	*store_cmd_node(t_cmd *node_to_fill, t_token *start)
 		else if (start && start->type == HEREDOC)
 		{
 			start = start->next;
-			// char fd = handle_heredoc(start->content);
-			// int fd = open(handle_heredoc(start->content), O_RDONLY);
-			node_to_fill->heredoc = open(handle_heredoc(start->content), O_RDONLY);
-			// char *str = get_next_line(fd);
-			// while (str)
-			// {
-			// 	printf("%s", str);
-			// 	str = get_next_line(fd);
-			// }
-			// exit(0);
+			fd = open(handle_heredoc(shell, start->content), O_RDONLY);
+			if (fd > 0)
+				node_to_fill->heredoc = fd;
+			else
+				return (NULL);
 			start = start->next;
-
 		}
-			// start = handle_heredoc(node_to_fill, start); // nooe_to_fill == hi lirt3mare  && start hiya li radi takhod manha
 	}
 	return (start);
 }
@@ -245,7 +252,7 @@ static void remove_empty_tokens(t_token **head)
 	}
 }
 
-t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list)
+t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env)
 {
 	t_token	*tmp;
 	t_cmd	*head;
@@ -258,7 +265,7 @@ t_cmd	*ft_cmd(t_token **token, t_cmd **cmd_list)
 	ft_lstadd_back_cmd(cmd_list, cmd_tmp);
 	while (tmp)
 	{
-		tmp = store_cmd_node(cmd_tmp, tmp);
+		tmp = store_cmd_node(shell, cmd_tmp, tmp);
 		if (tmp && tmp->type == PIPE)
 		{
 			cmd_tmp = ft_lstnew_cmd();
