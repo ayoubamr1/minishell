@@ -177,6 +177,7 @@ void	wait_children(t_shell *main);
 void	flag_builtins(t_shell *main);
 void	execution(t_shell *main);
 
+char	*get_next_line(int fd);
 
 void	edit_redir(t_shell *main);
 void	print_node(t_shell *shell_list, char **env);
