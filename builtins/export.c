@@ -6,60 +6,192 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 15:57:25 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/29 21:57:39 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	my_export(t_shell *main, char *var)
-{
-	t_env	*curr;
-	size_t	len;
-	char	*new_var;
-	char	*signe_equal;
-	char	buffer[256];
-	char	*value;
-	int		i;
+// void	my_export(t_shell *main, char *var)
+// {
+// 	t_env	*curr;
+// 	size_t	len;
+// 	char	*new_var;
+// 	char	*signe_equal;
+// 	char	buffer[256];
+// 	char	*value;
+// 	int		i;
 	
-	i = 0;
-	signe_equal = ft_strchr(var, '=');
-	if (!signe_equal)
-	{	
-		printf("====== is NULL======\n");
-		return ;
-	}
-	// printf("signe equal = %s\n", signe_equal);
-	len = signe_equal - var;
-	// printf("len export = %ld\n", len);
-	ft_strncpy(buffer, var, len);
-	buffer[len] = '\0';
-	// printf("buffer = %s\n", buffer);
-	value = signe_equal + 1;
-	// printf("value = %s\n", value);
-	curr = main->env;
-	new_var = malloc(ft_strlen(var) + 1);
-	if (!new_var)
-		return;
-	ft_strcpy(var, new_var);
-	// printf("new_var = %s\n", new_var);
-	while (curr)
+// 	i = 0;
+// 	if (!is_valid_var(var))
+// 	{	
+// 		printf("export: `%s': not a valid identifier\n", var);
+// 		return ;
+// 	}
+// 	signe_equal = ft_strchr(var, '=');
+// 	if (!signe_equal)
+// 	{	
+// 		printf("====== is NULL======\n");
+// 		return ;
+// 	}
+// 	// printf("signe equal = %s\n", signe_equal);
+// 	len = signe_equal - var;
+// 	// printf("len export = %ld\n", len);
+// 	ft_strncpy(buffer, var, len);
+// 	buffer[len] = '\0';
+// 	printf("buffer = %s\n", buffer);
+// 	value = signe_equal + 1;
+// 	printf("value = %s\n", value);
+// 	curr = main->env;
+// 	new_var = malloc(ft_strlen(var) + 1);
+// 	if (!new_var)
+// 		return;
+// 	ft_strcpy(var, new_var);
+// 	// printf("new_var = %s\n", new_var);
+// 	while (curr)
+// 	{
+// 		if (ft_strncmp(curr->content, buffer, len) == 0 && curr->content[len] == '=')
+// 		{
+// 			// printf("===============\n");
+// 			free(curr->content);
+// 			curr->content = new_var;
+// 			return ;
+// 		}
+// 		curr = curr->next;
+// 	}
+// 	add_to_env(main, new_var);
+// }
+
+void	my_export(t_shell *main, char **cmd)
+{
+	char	*value;
+	char	*equal_signe;
+	char	*plus_equal;
+	char	*old_value;
+	char	*new_value;
+	char	*new_content;
+	t_env	*env;
+	int		i;
+	int		flag;
+	size_t len;
+
+	i = 1;
+	flag = 0;
+	env = main->env;
+	if (!cmd[1])
+		environment(env);
+	while (cmd[i])
 	{
-		if (ft_strncmp(curr->content, buffer, len) == 0 && curr->content[len] == '=')
+		equal_signe = ft_strchr(cmd[i], '=');
+		printf("equal signe = %s\n", equal_signe);
+		plus_equal = ft_strstr(cmd[i], "+=");
+		printf("plus equal = %s\n", plus_equal);
+		if (plus_equal && plus_equal == equal_signe - 1)
 		{
-			// printf("===============\n");
-			free(curr->content);
-			curr->content = new_var;
-			return ;
+			len = plus_equal - cmd[i];
+			printf("len = %ld\n", len);
+			value = plus_equal + 2;
+			printf("value = %s\n", value);
+			env = main->env;
+			while (env)
+			{
+				if (!ft_strncmp(env->content, cmd[i], len) && env->content[len] == '=')
+				{
+					flag = 1;
+					printf("dkhaal hnaa\n");
+					old_value = env->content + len + 1;
+					printf("old value = %s\n", old_value);
+					new_value = ft_strjoin(old_value, value);
+					printf("new value = %s\n", new_value);
+					new_content = malloc(len + 1 + ft_strlen(new_value) + 1);
+					ft_strncpy(new_content, cmd[i], len);
+					new_content[len] = '=';
+					printf("new content befor = %s\n", new_content);
+					ft_strcpy(new_value, new_content + len + 1);
+					printf("new content = %s\n", new_content);
+					free(env->content);
+					env->content = new_content;
+					free(new_value);
+					break ;
+				}
+				env = env->next;
+			}
+			if (!flag)
+				add_to_env(main, new_value);
 		}
-		curr = curr->next;
+		else if (equal_signe)
+		{
+			// printf("dkhalt hnaaaaa\n");
+			len = equal_signe - cmd[i];
+			env = main->env;
+			while (env)
+			{
+				if (!ft_strncmp(env->content, cmd[i], len) && env->content[len] == '=')
+				{
+					flag = 1;
+					free(env->content);
+					env->content = ft_strdup(cmd[i]);
+					break ;
+				}
+				env = env->next;
+			}
+			if (!flag)
+				add_to_env(main, cmd[i]);
+		}
+		i++;
 	}
-	add_to_env(main, new_var);
 }
 
+void	environment(t_env *env)
+{
+	while (env)
+	{
+		printf("declare -x %s\n", env->content);
+		env = env->next;
+	}
+}
+// int	check_equal(char *cmd)
+// {
+// 	int	i;
+	
+// 	i = 0;
+// 	while (cmd[i])
+// 	{
+// 		if (cmd[i] == '+')
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (1);
+// }
 
+// void	add_var(t_shell *main)
+// {
+// 	t_env *curr;
 
+// 	curr = main->env;
+// 	while (curr)
+// 	{
+		
+// 	}
+// }
 
+// int	is_valid_var(char *str)
+// {
+// 	int i;
+	
+// 	i = 1;
+// 	if (!str || !*str)
+// 		return (0);
+// 	if (!ft_isalpha(str[0]) && str[0] != '_')
+// 		return (0);
+// 	while (str[i] && str[i] != '=')
+// 	{
+// 		if (!ft_isalnum(str[i]) && str[i] != '_')
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (1);
+// }
 
 
 

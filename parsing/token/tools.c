@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/28 18:21:56 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/05/29 12:04:27 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,28 @@ char	**ft_strjoin2d(char **s1, char *s2)
 	new[i++] = ft_strdup(s2);
 	new[i] = NULL;
 	return (new);
+}
+
+char	*ft_strstr(char *str, char *to_find)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	if (to_find[i] == '\0')
+		return (str);
+	while (str[i] != '\0')
+	{
+		j = 0;
+		while (str[i + j] && str[i + j] == to_find[j])
+		{
+			if (to_find[j + 1] == '\0')
+			{
+				return (str + i);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (0);
 }

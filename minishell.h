@@ -143,10 +143,11 @@ void	ft_putchar(char c);
 int     ft_isdigit(int c);
 int     ft_isalpha(int c);
 char	*ft_strchr(const char *s, int c);
+char	*ft_strstr(char *str, char *to_find);
 
 int	is_special_char(char c);
 //           BUILTINS
-void	my_export(t_shell *main, char *var);
+void	my_export(t_shell *main, char **cmd);
 void	add_to_env(t_shell *main, char *new_var);
 char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
 void	update_env(t_shell *main, char *var_updated);
@@ -158,6 +159,8 @@ void	my_pwd(t_shell *main);
 void	run_builtins(t_shell *main, char **cmd, t_cmd *cur);
 int		is_builtin(char *str);
 void 	print_env(t_shell *main);
+int		is_valid_var(char *str);
+void	environment(t_env *env);
 
 
 
