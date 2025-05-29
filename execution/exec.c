@@ -14,7 +14,7 @@
 
 void ft_child(t_shell *main, t_cmd *cmd)
 {
-	printf("in childe : in_fd = %d, out_fd = %d\n", cmd->in, cmd->out);
+	// printf("in childe : in_fd = %d, out_fd = %d\n", cmd->in, cmd->out);
 	close(cmd->pipe_fd[0]);
 	if (cmd->out == -1337)
 		cmd->out = cmd->pipe_fd[1];
