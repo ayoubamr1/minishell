@@ -20,7 +20,7 @@ void	execution(t_shell *main)
 	flag_builtins(main);
 	check_if_access(main);
 	edit_redir(main);
-	print_node(main, NULL);
+	// print_node(main, NULL);
 	exec_cmd(main);
 }
 
