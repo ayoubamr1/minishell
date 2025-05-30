@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/30 18:45:56 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/30 22:00:05 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,11 @@ void	my_export(t_shell *main, char **cmd)
 	i = 1;
 	flag = 0;
 	env = main->env;
+	if (!is_valid_var(cmd[i]))
+	{	
+		printf("export: `%s': not a valid identifier\n", cmd[i]);
+		return ;
+	}
 	if (!cmd[1])
 		environment(env);
 	while (cmd[i])
