@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/29 21:57:39 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/30 18:45:56 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,18 @@
 // 	}
 // 	add_to_env(main, new_var);
 // }
+
+int find_equal(char *str)
+{
+	int i = 0;
+	while (str && str[i])
+	{
+		if (str[i] == '=')
+			return (i);
+		i++;
+	}
+	return (0);
+}
 
 void	my_export(t_shell *main, char **cmd)
 {
@@ -117,7 +129,18 @@ void	my_export(t_shell *main, char **cmd)
 				env = env->next;
 			}
 			if (!flag)
+			{
+				// printf("cmd[%d] = %s\n", i ,cmd[i]);
+				// new_value = parse_value(cmd[i], len);
+				int eq = find_equal(cmd[i]);
+				// chb3ana leaks
+				new_value = substr(cmd[i], 0, eq -1);
+				new_value = ft_strjoin(new_value, "=");
+				printf("new :%s", new_value);
 				add_to_env(main, new_value);
+			}
+			// else
+			// 	add_to_env(main, new_value);
 		}
 		else if (equal_signe)
 		{
@@ -150,6 +173,34 @@ void	environment(t_env *env)
 		env = env->next;
 	}
 }
+
+char	*parse_value(char *str, size_t len)
+{
+	int		i;
+	int		j;
+	char	*new_value;
+
+	i = 0;
+	j = 0;
+	printf("str = %s\n", str);
+	new_value = malloc(len + 2);
+	if (!new_value)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] != '+')
+		{
+			new_value[i] = str[i];
+			j++;
+		}
+		i++;
+	}
+	new_value[len] = '=';
+	new_value[j] = '\0';
+	printf("new_value = %s\n", new_value);
+	return (new_value);
+}
+
 // int	check_equal(char *cmd)
 // {
 // 	int	i;
@@ -175,23 +226,23 @@ void	environment(t_env *env)
 // 	}
 // }
 
-// int	is_valid_var(char *str)
-// {
-// 	int i;
+int	is_valid_var(char *str)
+{
+	int i;
 	
-// 	i = 1;
-// 	if (!str || !*str)
-// 		return (0);
-// 	if (!ft_isalpha(str[0]) && str[0] != '_')
-// 		return (0);
-// 	while (str[i] && str[i] != '=')
-// 	{
-// 		if (!ft_isalnum(str[i]) && str[i] != '_')
-// 			return (0);
-// 		i++;
-// 	}
-// 	return (1);
-// }
+	i = 1;
+	if (!str || !*str)
+		return (0);
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 
 

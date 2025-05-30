@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/14 19:30:35 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/30 16:04:29 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	my_cd(char **str, t_shell *main)
 	// printf("{%s}\n", target_dir);
 	// get the currect working directory
 	cwd = getcwd(NULL, 0);
-	// printf("{cwd = %s}\n", cwd);
+	printf("{cwd = %s}\n", cwd);
 	if (!cwd)
 	{
 		perror("getcwd");
@@ -60,16 +60,16 @@ int	my_cd(char **str, t_shell *main)
 		return (1);
 	}
 	update_env(main, target_dir); // PWD become target_dir
-	// printf("target_dir = %s\n", target_dir);
+	printf("target_dir = %s\n", target_dir);
 	free(cwd);
 	t_env *cur;
 	cur = main->env;
-	// while (cur)
-	// {
-	// 	if (ft_strncmp(cur->content, "PWD", 3) == 0 || ft_strncmp(cur->content, "OLDPWD", 6) == 0)
-	// 		printf("%s\n", cur->content);
-	// 	cur = cur->next;
-	// }
+	while (cur)
+	{
+		if (ft_strncmp(cur->content, "PWD", 3) == 0 || ft_strncmp(cur->content, "OLDPWD", 6) == 0)
+			printf("%s\n", cur->content);
+		cur = cur->next;
+	}
 	return (0);
 	// if (setenv("PWD", target_dir, 1) != 0)
 	// {
