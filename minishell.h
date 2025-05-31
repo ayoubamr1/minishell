@@ -162,6 +162,7 @@ void 	print_env(t_shell *main);
 int		is_valid_var(char *str);
 void	environment(t_env *env);
 char	*parse_value(char *str, size_t len);
+int		search_equal(char **array, int i);
 
 
 
