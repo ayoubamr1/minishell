@@ -6,13 +6,13 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:50:07 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/14 15:24:14 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/25 13:33:18 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-char	*my_getenv(t_shell *main, char *var_name) // t_shell *main
+char	*my_getenv(t_shell *main, char *var_name)
 {
 	size_t	len;
 	t_env	*tmp;

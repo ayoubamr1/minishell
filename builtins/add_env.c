@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:38:40 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 11:38:07 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/05/30 13:03:37 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	add_to_env(t_shell *main, char *new_var)
 		while (cur)
 		{
 			// printf("%s\n", cur->content);
+			if (!ft_strcmp(cur->content, new_var))
+			{
+				free(cur->content);
+				cur->content = new_node->content;
+				return ;
+			}
 			cur = cur->next;
 		}
 		// cur->next = new_node;

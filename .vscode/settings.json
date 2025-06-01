@@ -1,6 +1,8 @@
 {
 	"files.associations": {
 		"minishell.h": "c",
-		"gbc.h": "c"
+		"gbc.h": "c",
+		"random": "c",
+		"stdio.h": "c"
 	}
 }
