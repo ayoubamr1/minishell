@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/31 18:59:20 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/01 16:30:28 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char *ft_plus_equal(t_env *env, char **cmd, int len, char *value, int i)
 	char *new_content;
 	
 	old_value = env->content + len + 1;
-	// printf("old value = %s\n", old_value);
+	printf("old value = %s\n", old_value);
 	new_value = ft_strjoin(old_value, value);
 	// printf("new value = %s\n", new_value);
 	new_content = malloc(len + 1 + ft_strlen(new_value) + 1);
@@ -42,7 +42,7 @@ char *ft_plus_equal(t_env *env, char **cmd, int len, char *value, int i)
 	// printf("new content = %s\n", new_content);
 	free(env->content);
 	env->content = new_content;
-	free(new_value);
+	free(new_value);         //// need to check it compared to ft_malloc
 }
 
 int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
@@ -93,6 +93,8 @@ void	my_export(t_shell *main, char **cmd)
 		// printf("equal signe = %s\n", equal_signe);
 		plus_equal = ft_strstr(cmd[i], "+=");
 		// printf("plus equal = %s\n", plus_equal);
+		// printf("plus equal = %p\n", plus_equal);
+		// printf("plus equal = %s\n", equal_signe - 1);
 		if (plus_equal && plus_equal == equal_signe - 1)
 		{
 			len = plus_equal - cmd[i];
@@ -106,19 +108,6 @@ void	my_export(t_shell *main, char **cmd)
 				{
 					flag = 1;
 					ft_plus_equal(env, cmd, len, value, i);
-					// old_value = env->content + len + 1;
-					// // printf("old value = %s\n", old_value);
-					// new_value = ft_strjoin(old_value, value);
-					// // printf("new value = %s\n", new_value);
-					// new_content = malloc(len + 1 + ft_strlen(new_value) + 1);
-					// ft_strncpy(new_content, cmd[i], len);
-					// new_content[len] = '=';
-					// // printf("new content befor = %s\n", new_content);
-					// ft_strcpy(new_value, new_content + len + 1);
-					// // printf("new content = %s\n", new_content);
-					// free(env->content);
-					// env->content = new_content;
-					// free(new_value);
 					break ;
 				}
 				env = env->next;
@@ -131,6 +120,7 @@ void	my_export(t_shell *main, char **cmd)
 				// chb3ana leaks
 				new_value = substr(cmd[i], 0, eq -1);
 				new_value = ft_strjoin(new_value, "=");
+				new_value = ft_strjoin(new_value, value);
 				printf("new :%s\n", new_value);
 				add_to_env(main, new_value);
 			}
@@ -140,18 +130,6 @@ void	my_export(t_shell *main, char **cmd)
 			// printf("dkhalt hnaaaaa\n");
 			len = equal_signe - cmd[i];
 			flag = ft_equal(main, cmd, len, i, flag);
-			// env = main->env;
-			// while (env)
-			// {
-			// 	if (!ft_strncmp(env->content, cmd[i], len) && env->content[len] == '=')
-			// 	{
-			// 		flag = 1;
-			// 		free(env->content);
-			// 		env->content = ft_strdup(cmd[i]);
-			// 		break ;
-			// 	}
-			// 	env = env->next;
-			// }
 			if (!flag)
 				add_to_env(main, cmd[i]);
 		}
@@ -218,8 +196,16 @@ void	environment(t_env *env)
 	while (array[i])
 	{
 		equal_pos =  search_equal(array, i);
+		write (1, "declare -x ", 11);
 		if (equal_pos != -1)
-			printf("declare -x %.*s\"%s\"\n", equal_pos + 1, array[i], array[i] + equal_pos + 1);
+		{
+			write (1, array[i], equal_pos + 1);
+			write (1, "\"", 1);
+			write (1, array[i] + equal_pos + 1, ft_strlen(array[i] + equal_pos + 1));
+			write (1, "\"\n", 2);	
+		}
+		else
+			printf("%s\n", array[i]);
 		i++;
 	}
 }
