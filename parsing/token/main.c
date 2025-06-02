@@ -63,6 +63,8 @@ void	minishell(t_shell *shell_list, char **env)
 	while (TRUE)
 	{
 		input = readline("minishell> ");
+		if (!input)
+			exit(0);
 		if (input)
 		{
 			ft_null(shell_list);

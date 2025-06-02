@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/26 12:19:23 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/02 17:30:38 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ void ft_child(t_shell *main, t_cmd *cmd)
 		}
 		close(cmd->out);
 	}
-	printf("is_builtin = [%d]\n", cmd->is_builtin);
 	if (cmd->is_builtin == TRUE)
 	{
 		printf("is builtins : %s\n", cmd->cmd[0]);
 		run_builtins(main, cmd->cmd, cmd);
 		exit(1);
 	}
+	// printf("mini dazet men hna\n");
 	if (cmd->cmd && execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
 	{
 		perror("execve");

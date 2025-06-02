@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:34:59 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/24 20:35:18 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/02 16:48:11 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,9 @@ void ft_fork_process(t_shell *main, int i)
 		exit(EXIT_FAILURE);
 	}
 	// printf("forked pid[%d] : %d\n", i, main->pid[i]);
+}
+
+void	signal_hundler(int sig)
+{
+	write (1, "\nminishell>", 11);
 }

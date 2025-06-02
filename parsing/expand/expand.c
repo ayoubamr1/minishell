@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/29 18:47:50 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/02 17:40:45 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static char	*expand_pid(char *res, char *str, int i)
 		i++;
 	}
 	pid = getpid();
+	// printf("PID = %ld\n", pid);
 	pid_str = id_itoa(pid);
 	if (!pid_str)
 		return (res);

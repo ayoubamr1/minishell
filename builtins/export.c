@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/01 16:30:28 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/02 14:07:57 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int find_equal(char *str)
 	return (0);
 }
 
-char *ft_plus_equal(t_env *env, char **cmd, int len, char *value, int i)
+void	ft_plus_equal(t_env *env, char **cmd, int len, char *value, int i)
 {
 	char *old_value;
 	char *new_value;
