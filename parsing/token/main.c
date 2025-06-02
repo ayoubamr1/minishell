@@ -1,5 +1,6 @@
 #include "../../minishell.h"
 
+int g_exit_status = 0;
 
 static void	ft_null(t_shell *shell)
 {
@@ -63,6 +64,8 @@ void	minishell(t_shell *shell_list, char **env)
 	while (TRUE)
 	{
 		input = readline("minishell> ");
+		if (!input)
+			exit(0);
 		if (input)
 		{
 			ft_null(shell_list);
@@ -123,7 +126,8 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	// shell_list = ft_malloc(sizeof(t_shell), MALLOC);
+	printf("-------------------------------------\n");
+	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	// signal(SIGINT, handle_sigint);  // This assumes you have a signal handler
 	// signal(SIGQUIT, SIG_IGN);
 	

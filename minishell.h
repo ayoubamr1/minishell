@@ -16,7 +16,7 @@
 #include <sys/wait.h>
 // #include "Get_Next_Line/get_next_line.h"
 // #include "leaks.h"
-
+extern int g_exit_status;
 
 typedef enum e_token_type
 {
@@ -93,7 +93,7 @@ void	ft_expand(t_shell	*shell_list);
 char *handle_heredoc(t_shell *shell, char *delimiter);
 
 
-
+char	*ft_itoa(int n);
 //---------------{ expand functions }-----------------
 char	*id_itoa(int n);
 char	*remove_quotes(char *str);
@@ -186,4 +186,5 @@ char	*get_next_line(int fd);
 
 void	edit_redir(t_shell *main);
 void	print_node(t_shell *shell_list, char **env);
+
 #endif

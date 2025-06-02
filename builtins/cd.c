@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/30 16:04:29 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/02 16:03:55 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	my_cd(char **str, t_shell *main)
 	if (!cwd)
 	{
 		perror("getcwd");
+		g_exit_status = 1;
 		return (1);
 	}
 	// change directory
@@ -70,12 +71,14 @@ int	my_cd(char **str, t_shell *main)
 			printf("%s\n", cur->content);
 		cur = cur->next;
 	}
+	g_exit_status = 0;
 	return (0);
 	// if (setenv("PWD", target_dir, 1) != 0)
 	// {
 	// 	perror("setenv");
 	// 	return (1);
 	// }
+	
 }
 
 // int main ()
