@@ -31,9 +31,9 @@ SRC =   parsing/token/main.c \
         builtins/update_env.c \
         builtins/my_pwd.c \
         builtins/my_env.c \
-		parsing/cmd/heredoc.c \
-		Get_Next_Line/get_next_line_utils.c \
-		Get_Next_Line/get_next_line.c
+		parsing/cmd/heredoc.c
+		# Get_Next_Line/get_next_line_utils.c \
+		# Get_Next_Line/get_next_line.c
 
 OBJ = $(SRC:.c=.o)
 

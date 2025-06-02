@@ -27,12 +27,12 @@ void	print_node(t_shell *shell_list, char **env)
 			i++;
 		}
 		printf("file[%s] infd[%d] outfd[%d] is_bultins[%d]}\n", cc->file, cc->in, cc->out, cc->is_builtin);
-		char *str = get_next_line(cc->heredoc);
-		while (cc->heredoc > 0 && str)
-		{
-			printf("get=>[%s]", str);
-			str = get_next_line(cc->heredoc);
-		}
+		// char *str = get_next_line(cc->heredoc);
+		// while (cc->heredoc > 0 && str)
+		// {
+		// 	printf("get=>[%s]", str);
+		// 	str = get_next_line(cc->heredoc);
+		// }
 		cc = cc->next;
 		printf("---------------------------------------------\n");
 	}
