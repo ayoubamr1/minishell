@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/03 20:43:49 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/03 23:24:18 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,24 +41,50 @@ static char	*expand_pid(char *res, char *str, int i)
 	return (tmp);
 }
 
-static char	*cher_env(char *key, t_env *env)
+// static char	*cher_env(char *key, t_env *env)
+// {
+// 	t_env	*tmp;
+// 	char	*search;
+// 	size_t	key_len;
+
+// 	tmp = env;
+// 	search = ft_strjoin(key, ft_strdup("="));
+// 	key_len = strlen(search);
+// 	printf("%s || %lu\n",search , key_len);
+// 	while (tmp)
+// 	{
+// 		if (!ft_strncmp(tmp->content, key, key_len) )
+// 		{
+// 			printf(">>>[%s]\n", ft_strdup(tmp->content + key_len));
+// 			// exit(0);
+// 			return (ft_strdup(tmp->content + key_len));
+// 		}		
+// 		tmp = tmp->next;
+// 	}
+// 	return (ft_strdup(""));
+// }
+
+static char *cher_env(char *key, t_env *env)
 {
-	t_env	*tmp;
-	char	*search;
-	size_t	key_len;
+	t_env *tmp = env;
+	size_t name_len;
+	char *equal;
 
-	tmp = env;
-	// search = ft_strjoin(key, ft_strdup("="));
-	key_len = strlen(key);
-
+	if (!key || !env)
+		return (ft_strdup(""));
 	while (tmp)
 	{
-		if (!ft_strncmp(tmp->content, key, key_len))
+		equal = ft_strchr(tmp->content, '=');
+		// printf(">>>%s\n", equal);
+		if (equal)
 		{
-			return (ft_strdup(tmp->content + key_len));
-		}		
+			name_len = equal - tmp->content;
+			if (ft_strlen(key) == name_len && ft_strncmp(tmp->content, key, name_len) == 0)
+				return (ft_strdup(equal + 1));
+		}
 		tmp = tmp->next;
 	}
+	// exit(0);
 	return (ft_strdup(""));
 }
 
@@ -162,28 +188,31 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 		(*i)++;
 	
 	key = substr(str, start, *i - start);
+	
 	val = cher_env(key, env);
-	// printf("key[%s]==res[%s]\n", key, res);
+	// printf("key[%s]==res[%s] || val => [%s]\n", key, res, val);
+	// exit(0);
 	// printf("tmp =>%s | key => %s | i=>%i | [%c]\n", res, key, *i, str[]);
 	if (!val)
 		return(res);
 	if (quot == '\'')
 		return(ft_strjoin(res, ft_strjoin("$", key)));
-	if (val)
-	{
-		env_path = ft_malloc(ft_strlen(val) + 1, MALLOC);
-		while (val[j] && val[j] != '=')
-			j++;
-		if (val[j])
-			j++;
-		p = 0;
-		while (val[j])
-			env_path[p++] = val[j++];
-		env_path[p] = '\0';
-		}
-	tmp = ft_strjoin(res, env_path);
+	// if (val)
+	// {
+	// 	env_path = ft_malloc(ft_strlen(val) + 1, MALLOC);
+	// 	while (val[j] && val[j] != '=')
+	// 		j++;
+	// 	if (val[j])
+	// 		j++;
+	// 	p = 0;
+	// 	while (val[j])
+	// 		env_path[p++] = val[j++];
+	// 	env_path[p] = '\0';
+	// }
+	tmp = ft_strjoin(res, val);
 	// printf("%s\n", tmp);
 	// exit(0);
+	// printf("tmp :%s\n", tmp);
 	return (tmp);
 }
 
@@ -387,6 +416,8 @@ char	*ft_expand_token(char *str, t_env *env)
 				res = handle_variable_expansion(str, &i, env, res);
 		}
 	}
+	// printf("[%s]\n", res);
+	// exit(0);
 	return (ft_dolar(res));
 }
 

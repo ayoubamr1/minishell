@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/02 16:07:21 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/03 21:15:03 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ static t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *sta
 			start = start->next;
 			fd = open(handle_heredoc(shell, start->content), O_RDONLY);
 			if (fd > 0)
-				node_to_fill->heredoc = fd;
+				node_to_fill->in = fd;
 			else
 				return (NULL);
 			start = start->next;
