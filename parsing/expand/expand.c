@@ -6,11 +6,12 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/02 19:44:31 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:43:49 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
 static char	*expand_pid(char *res, char *str, int i)
 {
 	pid_t	pid;
@@ -197,7 +198,7 @@ static char *ft_dolar(char *str)
 	i = 0;
 	p = 0;
 	// printf(">>%s\n", str);
-	while (str[i] )
+	while (str[i])
 	{
 		if (str[i] &&  str[i] == '"' || str[i] == '\'')
 		{
@@ -332,98 +333,22 @@ static int ft_check_sp(char *str)
 			return(1);
 		i++;
 	}
-	// i = 0;
-	// int j = 0;
-	// char *new = ft_malloc(MALLOC, ft_strlen(str) + 1);
-	// while (str[i])
-	// {	
-	// 	while (str[i] && str[i] == ' ')
-	// 		i++;
-	// 	while (str[i] && str[i] != ' ')
-	// 		new[j++] = str[i++];
-	// 	while (str[i] && str[i] == ' ')
-	// 		i++;
-	// 	if (str[i++]);
-	// 		new[j++] = ' ';
-	// }
-	// new[j] = '\0';	
 	return(0);
 }
-static int ft_cc(char *str, int *i)
-{
-	int k = 0;
-	char quot = 0;
-	
-	while (str[k] && k < (*i))
-	{
-		if ((str[k] == '\'' || str[k] == '"') && quot == 0)
-		quot = str[k];
-		else if (str[k] == quot)
-		quot = 0;
-		k++;
-	}
-	if (quot == '"')
-		return(0);
-	else
-		return(1);
-}
-	// export b="      ls     bbbb"
-static char *ft_char_sp(char *str)
-{
-	char	*new;
-	int		i;
-	int		j;
-
-	if (!str)
-		return (NULL);
-	i = 0;
-	j = 0;
-	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
-	while (str[i])
-	{
-		while (str[i] == ' ')
-			i++;
-		while (str[i] && str[i] != ' ')
-			new[j++] = str[i++];
-		if (str[i]) // There are more characters ahead
-			new[j++] = ' ';
-
-		while (str[i] == ' ')
-			i++;
-	}
-	if (j > 0 && new[j - 1] == ' ')
-		j--; 
-	new[j] = '\0';
-	return (new);
-}
-
 
 static char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res)
 {
-	char *status_str;
 	if (str[*i] == '$' && str[*i + 1] == '$')
 	{
 		res = expand_pid(res, str, *i);
 		*i += 2;
 	}
-	else if (str[*i] == '$' && str[*i + 1] == '?')
-	{
-		status_str = ft_itoa(g_exit_status);
-		res = ft_strjoin(res, status_str);
-		i += 2;
-	}
 	else if (str[*i] == '$' && str[*i + 1] && ft_isalpha(str[*i + 1]) 
-		&& !ft_quote(str[*i + 1]))
+	&& !ft_quote(str[*i + 1]))
 	{
-		// if (!ft_check_sp(str))
-		// 	res = ft_strtrim(expand_env_var(str, i, env, res), " ");
-		if (ft_cc(str, i))
+		if (!ft_check_sp(str))
 		{
-			char *envv = expand_env_var(str, i, env, res);
-			char *test = ft_char_sp(envv);
-			res = ft_strjoin(res,test );
-			// printf("env[%s] || res[%s]\n", envv, res);
-			// exit(0);
+			res = ft_strtrim(expand_env_var(str, i, env, res), " ");
 		}
 		else
 			res = expand_env_var(str, i, env, res);
@@ -454,9 +379,7 @@ char	*ft_expand_token(char *str, t_env *env)
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '\'')
-		{
 			res = handle_ansi_c_quote(str, &i, res);
-		}
 		else
 		{
 			res = handle_regular_quotes(str, &i, res, &quot);
@@ -464,7 +387,6 @@ char	*ft_expand_token(char *str, t_env *env)
 				res = handle_variable_expansion(str, &i, env, res);
 		}
 	}
-	// exit(0);
 	return (ft_dolar(res));
 }
 
