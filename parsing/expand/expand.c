@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/03 23:24:18 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/04 10:03:10 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -307,50 +307,6 @@ static char	*handle_regular_quotes(char *str, int *i, char *res, char *quot)
 	return (res);
 }
 
-static size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-
-	i = 0;
-	if (dstsize > 0)
-	{
-		while (i < dstsize - 1 && src[i] != '\0')
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	while (src[i] != '\0')
-		i++;
-	return (i);
-}
-
-static char	*ft_strtrim(char const *s1, char const *set)
-{
-	char	*str;
-	size_t	start;
-	size_t	end;
-	size_t	size;
-
-	if (!s1)
-		return (NULL);
-	if (!set)
-		return (ft_strdup(s1));
-	start = 0;
-	while (s1[start] && ft_strchr(set, s1[start]))
-		start++;
-	end = ft_strlen(s1);
-	while (end > start && ft_strchr(set, s1[end - 1]))
-		end--;
-	size = end - start;
-	str = (char *)malloc(sizeof(char) * (size + 1));
-	if (!str)
-		return (NULL);
-	ft_strlcpy(str, s1 + start, size + 1);
-	return (str);
-}
-
 static int ft_check_sp(char *str)
 {
 	int i;
@@ -365,6 +321,31 @@ static int ft_check_sp(char *str)
 	return(0);
 }
 
+static char *remove_multi_space(char *str)
+{
+	char	*new;
+	int		i;
+	int		p;
+
+	if (!str)
+	return(str);
+	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
+	p = 0;
+	i = 0;
+	while (str[i] && str[i] == ' ')
+		i++;
+
+	while (str[i])
+	{
+		if (str[i] == ' ' && str[i + 1] == ' ')
+			i++;
+		else
+			new[p++] = str[i++];
+	}
+	new[p] = '\0';
+	return (new);
+}
+
 static char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res)
 {
 	if (str[*i] == '$' && str[*i + 1] == '$')
@@ -376,9 +357,7 @@ static char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res)
 	&& !ft_quote(str[*i + 1]))
 	{
 		if (!ft_check_sp(str))
-		{
-			res = ft_strtrim(expand_env_var(str, i, env, res), " ");
-		}
+			res = remove_multi_space(expand_env_var(str, i, env, res));
 		else
 			res = expand_env_var(str, i, env, res);
 	}
