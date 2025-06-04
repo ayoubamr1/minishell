@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/25 18:52:47 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/04 11:53:24 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,9 @@ void edit_redir(t_shell *main)
 			if (curr->in == -1)
 				curr->in = -1337;
 			if (curr->out == -1)
+			{	
 				curr->out = open("/dev/stdout", O_RDWR);
+			}
 		}
 		curr = curr->next;
 	}

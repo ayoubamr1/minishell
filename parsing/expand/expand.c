@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/04 10:03:10 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/04 12:03:03 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -337,7 +337,7 @@ static char *remove_multi_space(char *str)
 
 	while (str[i])
 	{
-		if (str[i] == ' ' && str[i + 1] == ' ')
+		if (str[i] == ' ' && str[i + 1] == ' ' || str[i] == ' ' && str[i + 1] == '\0')
 			i++;
 		else
 			new[p++] = str[i++];
