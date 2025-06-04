@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/04 12:03:03 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:18:21 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static char	*expand_pid(char *res, char *str, int i)
 		i++;
 	}
 	pid = getpid();
+	// printf("PID = %ld\n", pid);
 	pid_str = id_itoa(pid);
 	if (!pid_str)
 		return (res);

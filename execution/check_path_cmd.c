@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/21 13:52:08 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/02 17:29:53 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	get_path(t_shell *main)
 	char	*path;
 
 	cur = main->env;
+	path = NULL;
 	while (cur)
 	{
 		if (ft_strncmp(cur->content, "PATH=", 5) == 0)
@@ -27,10 +28,19 @@ void	get_path(t_shell *main)
 		}
 		cur = cur->next;
 	}
-	if (path == NULL)
+	if (path == NULL || *(path + 5) == '\0')
+	{	
+		printf("commande not found\n");
+		main->path_splited = NULL;
+		// exit(1);
 		return ;
-	if (*(path + 5) == '\0')
-		return ;
+	}
+	// if (*(path + 5) == '\0')
+	// {
+	// 	// exit(1);
+	// 	return ;
+	// }
+	// printf("my path = %s\n", path);
 	main->path_splited = ft_split(path, ':');
 }
 
@@ -48,7 +58,6 @@ void	check_if_access(t_shell *main)
 			cmd = cmd->next;
 		else
 		{
-			// printf("cmd = %p\n", cmd->cmd[0]);
 			if (cmd->cmd && cmd->cmd[0] && access(cmd->cmd[0], X_OK | F_OK) == 0)
 				cmd = cmd->next;
 			else
@@ -78,6 +87,7 @@ void	ft_check_cmd_path(t_cmd *cmd, char **path)
 		if (!res)
 			return ; /// free leaks;
 		// free(tmp);
+		// printf("res = %s\n", res);
 		if (access(res, X_OK | F_OK) == 0)
 		{
 			// free(cur->cmd[0]);

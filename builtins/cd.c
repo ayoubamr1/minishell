@@ -6,11 +6,12 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/02 16:03:55 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:20:41 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+int g_exit_status = 0;
 
 int	my_cd(char **str, t_shell *main)
 {
@@ -39,6 +40,7 @@ int	my_cd(char **str, t_shell *main)
 	{
 		perror("getcwd");
 		g_exit_status = 1;
+		// exite_status = 1;
 		return (1);
 	}
 	// change directory
@@ -48,6 +50,7 @@ int	my_cd(char **str, t_shell *main)
 		// printf("======== dkhal hna ======");
 		// printf("{%s}\n", target_dir);
 		perror("cd");
+		// exite_status = 1;
 		return (1);
 	}
 	// it still update PWD in my environment variable
@@ -58,6 +61,7 @@ int	my_cd(char **str, t_shell *main)
 	if (!cwd)
 	{
 		perror("cwd");
+		// exite_status = 1;
 		return (1);
 	}
 	update_env(main, target_dir); // PWD become target_dir

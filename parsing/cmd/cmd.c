@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/04 12:34:58 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/04 20:20:27 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,29 @@ static void remove_empty_tokens(t_token **head)
 	}
 }
 
+void	ft_edit_redirections(t_cmd *head) 
+{
+	t_cmd *current;
+	
+	current = head;
+	while (current) 
+	{
+		if (current == head && current->in == -1337)
+		{
+			current->in = open("/dev/stdin", O_RDONLY);
+			if (current->in == -1)
+				perror("open");
+		} 
+		if (!current->next && current->out == -1337) 
+		{
+			current->out = open("/dev/stdout", O_CREAT | O_RDWR | O_TRUNC, 0644);
+			if (current->out == -1)
+				perror("open");
+		}
+		current = current->next;
+	}
+}
+
 t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env)
 {
 	t_token	*tmp;
@@ -277,5 +300,6 @@ t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env)
 			tmp = tmp->next;
 		}
 	}
+	ft_edit_redirections(head);
 	return (head);
 }

@@ -16,7 +16,7 @@
 #include <sys/wait.h>
 // #include "Get_Next_Line/get_next_line.h"
 // #include "leaks.h"
-extern int g_exit_status;
+extern int exite_status;
 
 typedef enum e_token_type
 {
@@ -155,6 +155,7 @@ int		my_cd(char **str, t_shell *main);
 void	unset_env(t_shell *main, char *var_name);
 int		my_echo(char **av, t_cmd *cur);
 void	my_pwd(t_shell *main);
+void	my_exite(t_shell *main);
 // void	builtins(t_shell *main);
 void	run_builtins(t_shell *main, char **cmd, t_cmd *cur);
 int		is_builtin(char *str);
