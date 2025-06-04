@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/03 17:41:12 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/04 18:08:18 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	my_cd(char **str, t_shell *main)
 	if (!cwd)
 	{
 		perror("getcwd");
-		exite_status = 1;
+		// exite_status = 1;
 		return (1);
 	}
 	// change directory
@@ -48,7 +48,7 @@ int	my_cd(char **str, t_shell *main)
 		// printf("======== dkhal hna ======");
 		// printf("{%s}\n", target_dir);
 		perror("cd");
-		exite_status = 1;
+		// exite_status = 1;
 		return (1);
 	}
 	// it still update PWD in my environment variable
@@ -59,7 +59,7 @@ int	my_cd(char **str, t_shell *main)
 	if (!cwd)
 	{
 		perror("cwd");
-		exite_status = 1;
+		// exite_status = 1;
 		return (1);
 	}
 	update_env(main, target_dir); // PWD become target_dir
