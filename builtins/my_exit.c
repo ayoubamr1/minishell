@@ -1,38 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   my_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 12:01:30 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/04 15:25:53 by ayameur          ###   ########.fr       */
+/*   Created: 2025/06/03 17:20:33 by ayameur           #+#    #+#             */
+/*   Updated: 2025/06/04 18:05:45 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	my_echo(char **av, t_cmd *cur)
+void	my_exite(t_shell *main)
 {
-	// char **av = cur->cmd;
-	// printf("==============\n");
-	// printf("%s\n", av[1]);
-	int	i;
-	int	j;
-
-	i = 1;
-	while (av[i])
+	t_cmd *curr;
+	
+	curr = main->cmd;
+	if (!strncmp(curr->cmd[0], "exit", ft_strlen("exit")))
 	{
-		j = 0;
-		while (av[i][j])
-		{
-			write(1, &av[i][j], 1);
-			j++;
-		}
-		if (av[i + 1])
-			write (1, " ", 1);
-		i++;
+		ft_malloc(0, FREE);
+		exit(0);
+		exite_status = 0;
 	}
-	write (1, "\n", 1);
-	return (0);
+	else
+		exite_status = 1;
 }

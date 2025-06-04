@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/28 18:18:31 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/04 17:43:44 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,7 +215,7 @@ static t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *sta
 			start = start->next;
 			fd = open(handle_heredoc(shell, start->content), O_RDONLY);
 			if (fd > 0)
-				node_to_fill->heredoc = fd;
+				node_to_fill->in = fd;
 			else
 				return (NULL);
 			start = start->next;
@@ -252,6 +252,29 @@ static void remove_empty_tokens(t_token **head)
 	}
 }
 
+void	ft_edit_redirections(t_cmd *head) 
+{
+	t_cmd *current;
+	
+	current = head;
+	while (current) 
+	{
+		if (current == head && current->in == -1337)
+		{
+			current->in = open("/dev/stdin", O_RDONLY);
+			if (current->in == -1)
+				perror("open");
+		} 
+		if (!current->next && current->out == -1337) 
+		{
+			current->out = open("/dev/stdout", O_CREAT | O_RDWR | O_TRUNC, 0644);
+			if (current->out == -1)
+				perror("open");
+		}
+		current = current->next;
+	}
+}
+
 t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env)
 {
 	t_token	*tmp;
@@ -273,5 +296,6 @@ t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env)
 			tmp = tmp->next;
 		}
 	}
+	ft_edit_redirections(head);
 	return (head);
 }

@@ -1,6 +1,7 @@
 #include "../../minishell.h"
 
 
+int exite_status ;
 static void	ft_null(t_shell *shell)
 {
 	// shell->env = NULL;
@@ -69,12 +70,12 @@ void	minishell(t_shell *shell_list, char **env)
 		{
 			ft_null(shell_list);
 			add_history(input);
-			if (!ft_strncmp(input, "exit", ft_strlen("exit")))
-			{
-				free(input);
-				ft_malloc(0, FREE);
-				exit(0);
-			}
+			// if (!ft_strncmp(input, "exit", ft_strlen("exit")))
+			// {
+			// 	free(input);
+			// 	ft_malloc(0, FREE);
+			// 	exit(0);
+			// }
 			lexer_1(input, &shell_list->token);
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
@@ -119,6 +120,7 @@ void	minishell(t_shell *shell_list, char **env)
 // 		rl_redisplay();                  // Redisplay the prompt
 // 	}
 // }
+
 int	main(int ac, char **av, char **env)
 {
 	t_shell	*shell_list;

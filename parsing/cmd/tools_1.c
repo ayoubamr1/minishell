@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:31:55 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/05/14 19:40:32 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/04 14:25:07 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ t_cmd *ft_lstnew_cmd(void)
 	node->cmd = NULL;
 	node->file = NULL;
 	// node->outfile = NULL;
-	node->in = -1;
-	node->out = -1;
+	node->in = -1337;
+	node->out = -1337;
 	// node->append = 0;
 	node->heredoc = -1;
 	node->next = NULL;

@@ -300,6 +300,7 @@ char *handle_heredoc(t_shell *shell, char *delimiter)
 		hrc_pid++;
 	id_str = ft_itoa(hrc_pid);
 	filepath = ft_strjoin("/tmp/", id_str);
+	// printf("filepath = %s\n", filepath);
 	free(id_str);
 	fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)

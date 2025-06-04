@@ -1,3 +1,6 @@
 expande : $a && "$a"
 export  : multiple var iable, export a=hello b=world c=9alwa d=somethig
 shell lvl ;
+expande in heredoc 
+hundle CD
+
