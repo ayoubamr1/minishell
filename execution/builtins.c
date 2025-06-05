@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:30:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/05 16:55:36 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/05 18:52:20 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ void	run_builtins(t_shell *main, char **cmd, t_cmd *cur)
 			exite_status = 0;
 			return ;
 		}
+		// else
 		my_echo(cmd, cur);
+		// exite_status = 0;
 	}	
 	if (!ft_strcmp(cmd[0], "exit"))
 		my_exit(main);
