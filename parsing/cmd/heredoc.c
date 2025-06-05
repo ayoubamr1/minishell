@@ -286,7 +286,7 @@ static char *ft_dolar(char *str)
 // 	return (ft_dolar(res));
 // }
 
-char *handle_heredoc(t_shell *shell, char *delimiter)
+int handle_heredoc(t_shell *shell, char *delimiter)
 {
 	// static size_t	hrc_pid;
 	char			*id_str;
@@ -303,10 +303,11 @@ char *handle_heredoc(t_shell *shell, char *delimiter)
 	// printf("filepath = %s\n", filepath);
 	free(id_str);
 	fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	// unlink(file);
 	if (fd < 0)
 	{
 		perror("open");
-		return (NULL);
+		return (-1);
 	}
 	while (1)
 	{
@@ -332,6 +333,8 @@ char *handle_heredoc(t_shell *shell, char *delimiter)
 		write(fd, "\n", 1);
 		free(line);
 	}
-	// lseek(fd, 0, SEEK_SET);
-	return (filepath);
+	// close(fd);
+	lseek(fd, 0, SEEK_SET);
+	// printf();
+	return (fd);
 }

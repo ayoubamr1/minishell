@@ -9,6 +9,16 @@ static void	ft_null(t_shell *shell)
 	shell->token = NULL;
 	shell->cmd = NULL;
 }
+void pp(t_token **tok)
+{
+	t_token *tmp = *tok;
+	while (tmp && tmp->content)
+	{
+		printf("[%s] || type[%d]\n", tmp->content, tmp->type);
+		tmp = tmp->next;
+	}
+	
+}
 
 void	print_node(t_shell *shell_list, char **env)
 {
@@ -82,9 +92,11 @@ void	minishell(t_shell *shell_list, char **env)
 			{
 				
 				ft_expand(shell_list);
+				// pp(&shell_list->token);
+				// exit(0);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd, shell_list->env);
-				print_node(shell_list, env);
+				// print_node(shell_list, env);
 				// printf("||||||||||||||||||||||||||||||||\n");
 				execution(shell_list);
 			}
@@ -126,10 +138,19 @@ int	main(int ac, char **av, char **env)
 {
 	t_shell	*shell_list;
 
+	// printf("\033[1;32m");
+	// printf("███╗   ███╗██╗███╗  ██╗██╗ ██████╗██╗  ██╗███████╗██╗     ██╗     \n");
+	// printf("████╗ ████║██║████╗ ██║██║██╔════╝██║  ██║██╔════╝██║     ██║     \n");
+	// printf("██╔████╔██║██║██╔██╗██║██║╚█████╗ ███████║█████╗  ██║     ██║     \n");
+	// printf("██║╚██╔╝██║██║██║╚████║██║ ╚═══██╗██╔══██║██╔══╝  ██║     ██║\n");
+	// printf("██║ ╚═╝ ██║██║██║ ╚███║██║██████╔╝██║  ██║███████╗███████╗███████╗\n");
+	// printf("╚═╝     ╚═╝╚═╝╚═╝  ╚══╝╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝\n");
+	// printf("\033[0m");
 	(void)ac;
 	(void)av;
-	printf("-------------------------------------\n");
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
+	// if (isatty(0) == 0)
+	// 	exit(0);
 	// signal(SIGINT, handle_sigint);  // This assumes you have a signal handler
 	// signal(SIGQUIT, SIG_IGN);
 	

@@ -1,0 +1,111 @@
+<< $""
+>> $
+
+// cret directory 1/2/3 and "rm -rf 1" in other shell and try to run pwd should print error
+minishell> pwd
+---------------------------------------------
+{cmd[pwd] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+(null)
+
+//when i (unset HOME) should print error S
+minishell> unset HOME
+minishell> cd
+---------------------------------------------
+{cmd[cd] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+cd
+: Success
+
+//just print error in exit
+minishell> exit 13 313
+minishell> exit 545456456456456456456465464646
+minishell> exit dwwddw dwldw
+
+EXPORT
+-------------------------------------------------
+//khssha tban fexport
+minishell> export a
+---------------------------------------------
+{cmd[export] ,cmd[a] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+minishell> export
+
+//print error export: `3fd': not a valid identifier
+nbougrin@e1r13p4:~/minishell/test$ export 3fd
+bash: export: `3fd': not a valid identifier
+
+//print error export: `3fd': not a valid identifier
+minishell> export d+w=dwdw
+declare -x d+w="dwdw"
+------------------------------------------------------
+
+
+//remove newline when do -nnnn
+minishell> echo -nnn -nnnn -nd dwdw
+---------------------------------------------
+{cmd[echo] ,cmd[-nnn] ,cmd[-nnnn] ,cmd[-nd] ,cmd[dwdw] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+-nnn -nnnn -nd dwdw
+
+
+//mllli katmss7 Path and run any command segggg
+minishell> unset PATH
+---------------------------------------------
+{cmd[unset] ,cmd[PATH] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+============
+minishell> ls
+---------------------------------------------
+{cmd[ls] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+[1]    350328 segmentation fault (core dumped)  ./mini
+
+
+//command lwla print error tania khss ls
+-------------------------------------
+minishell> > ggr | ls
+---------------------------------------------
+{file[ggr] infd[-1] outfd[3] is_bultins[0]}
+---------------------------------------------
+{cmd[ls] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+'""'        d      execution   FILE            ggr       ls         mini          parsing   test   tools
+'""'        d      execution   FILE            ggr       ls         mini          parsing   test   tools
+ builtins   dilw   fefe        Get_Next_Line   leaks.h   Makefile   minishell.h   sss       todo
+ builtins   dilw   fefe        Get_Next_Line   leaks.h   Makefile   minishell.h   sss       todo
+
+
+///////////////////////////////////////////
+ minishell> $wddw
+---------------------------------------------
+{cmd[] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+execve: Permission denied
+minishell> "$wddw"
+---------------------------------------------
+{cmd[""] ,file[(null)] infd[-1] outfd[-1] is_bultins[0]}
+---------------------------------------------
+execve: Permission denied
+----------------------------------------------------------------------
+minishell> cat | >fii | ls
+---------------------------------------------
+{cmd[/usr/bin/cat] ,file[(null)] infd[5] outfd[-1337] is_bultins[0]}
+---------------------------------------------
+{file[fii] infd[-1337] outfd[3] is_bultins[0]}
+---------------------------------------------
+{cmd[/usr/bin/ls] ,file[(null)] infd[8] outfd[6] is_bultins[0]}
+---------------------------------------------
+1  3  builtins  execution  fii  fil  Get_Next_Line  leaks.h  Makefile  mini  minishell.h  parsing  todo  tools
+1  3  builtins  execution  fii  fil  Get_Next_Line  leaks.h  Makefile  mini  minishell.h  parsing  todo  tools
+
+exite_status = 0
+minishell> 
+
+
+
+declare -x a="file -la"
+declare -x b=""
+minishell> $b
+execve: Permission denied
+minishell> export b=$hj

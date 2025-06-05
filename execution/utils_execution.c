@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:34:59 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/04 14:18:58 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/05 11:42:43 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	wait_children(t_shell *main)
 			// printf("childe killed by signal %d\n", WTERMSIG(status));
 		i++;
 	}
-	printf("exite_status = %d\n", exite_status);
+	// printf("exite_status = %d\n", exite_status);
 }
 
 void ft_creat_pipe(t_cmd *cmd)

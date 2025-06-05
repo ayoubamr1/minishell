@@ -21,16 +21,12 @@ extern int exite_status;
 typedef enum e_token_type
 {
 	SI_QUOTE,  //  ''
-	// d_quote,  //	""
-    STRING,
     WORD,
     PIPE,
     REDIR_IN,   // <
     REDIR_OUT,  // >
     APPEND,     // >>
     HEREDOC,   // << 
-    // FILE_IN,   // << 
-    // FILE_OUT,   // <<
 	VOID     
 } t_token_type;
 //---------------{ tokenization structure }-----------------
@@ -38,6 +34,7 @@ typedef struct s_token
 {
     char *content;
     t_token_type type;
+	// int status_fd;
     int index;
     struct s_token *next;
 } t_token;
@@ -49,7 +46,7 @@ typedef struct s_cmd
 	char 			*file; // file name 
 	int				in; // file fd
 	int				out; //file fd
-	int 			heredoc; // 1 if <<
+	int 			fd_statuts; // 1 if <<
 	int				pipe_fd[2];
 	int				is_builtin;
 	struct s_cmd	*next; // for piped commands
@@ -90,7 +87,7 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
 //---------------{ cmd functions }-----------------
 void	ft_expand(t_shell	*shell_list);
-char *handle_heredoc(t_shell *shell, char *delimiter);
+int handle_heredoc(t_shell *shell, char *delimiter);
 
 
 char	*ft_itoa(int n);
@@ -103,7 +100,7 @@ char	*remove_quotes(char *str);
 
 char	*ft_expand_token(char *str, t_env *env);
 
-
+void pp(t_token **tok);
 void	print_env_list(t_env *lst); /// remove it
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new);

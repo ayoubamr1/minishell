@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/04 20:18:45 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/05 11:21:51 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ void	my_export(t_shell *main, char **cmd)
 		environment(env);
 	while (cmd[i])
 	{
-		// if (!is_valid_var(cmd[i]))
-		// {	
-		// 	printf("export: `%s': not a valid identifier\n", cmd[i]);
-		// 	return ;
-		// }
+		if (!is_valid_var(cmd[i]))
+		{	
+			printf("export: `%s': not a valid identifier\n", cmd[i]);
+			return ;
+		}
 		equal_signe = ft_strchr(cmd[i], '=');
 		// printf("equal signe = %s\n", equal_signe);
 		plus_equal = ft_strstr(cmd[i], "+=");

@@ -6,12 +6,12 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/04 20:20:41 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/05 12:44:21 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-int g_exit_status = 0;
+int exit_status = 0;
 
 int	my_cd(char **str, t_shell *main)
 {
@@ -39,7 +39,7 @@ int	my_cd(char **str, t_shell *main)
 	if (!cwd)
 	{
 		perror("getcwd");
-		g_exit_status = 1;
+		exit_status = 1;
 		// exite_status = 1;
 		return (1);
 	}
@@ -75,7 +75,7 @@ int	my_cd(char **str, t_shell *main)
 			printf("%s\n", cur->content);
 		cur = cur->next;
 	}
-	g_exit_status = 0;
+	exit_status = 0;
 	return (0);
 	// if (setenv("PWD", target_dir, 1) != 0)
 	// {

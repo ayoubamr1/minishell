@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/04 20:20:27 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/05 17:36:40 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static t_token	*handle_redir_in(t_cmd *node, t_token *start)
 {
 	int	fd;
-
+// printf("int\n");
+// exit(0);
 	start = start->next;
 	fd = open(start->content, O_RDONLY);
 	if (fd < 0)
@@ -30,7 +31,19 @@ static t_token	*handle_redir_out(t_cmd *node, t_token *start)
 {
 	int	fd;
 
+	// printf("///////////\n");
+	// printf("[%s]\n", start->content);
 	start = start->next;
+	// printf("[%s]\n", start->content);
+	if (!start ||!start->content[0])
+	{
+		// exit(0);
+		node->out = -1;
+		node->fd_statuts = 1;
+		write(2, "ambiguous redirect\n", 19);
+		return(start);
+	}
+
 	fd = open(start->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 		perror(start->content);
@@ -69,130 +82,9 @@ static	int	len_n(int n)
 	return (len);
 }
 
-// static char	*ft_itoa(int n)
-// {
-// 	char	*res;
-// 	int		len;
-
-// 	len = len_n(n);
-// 	if (n == -2147483648)
-// 		return (ft_strdup("-2147483648"));
-// 	res = malloc(sizeof(char) * (len + 1));
-// 	if (!res)
-// 		return (NULL);
-// 	if (n < 0)
-// 	{
-// 		res[0] = '-';
-// 		n = -n;
-// 	}
-// 	res[len] = '\0';
-// 	if (n == 0)
-// 		res[0] = '0';
-// 	while (n > 0)
-// 	{
-// 		res[--len] = (n % 10) + '0';
-// 		n /= 10;
-// 	}
-// 	return (res);
-// }
-
-// static int	handle_heredoc(char	*delimiter) 
-// {
-// 	static size_t hrc_pid = 0;
-
-// 	if (hrc_pid == 0)
-// 		hrc_pid = getpid();
-// 	else
-// 		hrc_pid++;
-
-// 	// Generate filename
-// 	char *id_str = ft_itoa(hrc_pid);
-// 	char *filepath = ft_strjoin("/tmp/", id_str);
-// 	free(id_str);
-
-// 	int fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
-// 	if (fd < 0)
-// 	{
-// 		perror("open");
-// 		free(filepath);
-// 		return (-1);
-// 	}
-
-// 	while (1)
-// 	{
-// 		char *line = readline("> ");
-// 		if (!line || strcmp(line, delimiter) == 0)
-// 		{
-// 			free(line);
-// 			break;
-// 		}
-// 		write(fd, line, strlen(line));
-// 		write(fd, "\n", 1);
-// 		free(line);
-// 	}
-// 	free(filepath);
-// 	char *str = get_next_line(fd);
-// 	while (str)
-// 	{
-// 		printf("[%s]\n", str);
-// 		str = get_next_line(fd);
-// 	}
-// 	return (fd); // Return file descriptor to read from later
-// }
-
-// char *handle_heredoc(t_shell *shell, char *delimiter) 
-// {
-// 	// static size_t	hrc_pid;
-// 	char			*id_str;
-// 	char			*filepath;
-// 	int				fd;
-
-// 	static size_t hrc_pid = 0;
-// 	if (hrc_pid == 0)
-// 		hrc_pid = getpid();
-// 	else
-// 		hrc_pid++;
-// 	id_str = ft_itoa(hrc_pid);
-// 	filepath = ft_strjoin("/tmp/", id_str);
-// 	free(id_str);
-// 	fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
-// 	if (fd < 0)
-// 	{
-// 		perror("open");
-// 		return (NULL);
-// 	}
-// 	while (1)
-// 	{
-// 		char *line = readline("> ");
-// 		if (!line || strcmp(line, delimiter) == 0)
-// 		{
-// 			free(line);
-// 			break;
-// 		}
-// 		// line = ft_expand_token(line, env);
-// 		int i = 0;
-// 		while (line[i])
-// 		{
-// 			if (line[i] == '$')
-// 			{
-// 				line = ft_expand_token(line, shell->env);
-// 				break;
-// 			}
-// 			i++;
-// 		}
-			
-// 		write(fd, line, strlen(line));
-// 		write(fd, "\n", 1);
-// 		free(line);
-// 	}
-// 	// lseek(fd, 0, SEEK_SET);
-// 	return (filepath);
-// }
-
-
-
 static t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 {
+	t_token *tmp;
 	if (!start)
 		return (NULL);
 	
@@ -205,25 +97,41 @@ static t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *sta
 			start = start->next;
 		}
 		else if (start && start->type == REDIR_IN)
+		{
 			start = handle_redir_in(node_to_fill, start);
+		}
 		else if (start && start->type == REDIR_OUT)
+		{
 			start = handle_redir_out(node_to_fill, start);
+
+			if (!start || !start->content)
+				return(start);
+		}
 		else if (start && start->type == APPEND)
 			start = handle_redir_append(node_to_fill, start);
 		else if (start && start->type == HEREDOC)
 		{
 			start = start->next;
-			
 			if (!start || !start->content || start->content[0] == '\0')
 				start = new_token(ft_strdup(""), HEREDOC);
-			
-			fd = open(handle_heredoc(shell, start->content), O_RDONLY);
+			// fd = open(handle_heredoc(shell, start->content), O_RDONLY);
+			fd = handle_heredoc(shell, start->content);
 			if (fd > 0)
+			{
+				close(node_to_fill->in);
 				node_to_fill->in = fd;
+			}
 			else
 				return (NULL);
 			start = start->next;
 		}
+		if (node_to_fill->fd_statuts )
+		{
+			while (start && start->type != PIPE)
+				start = start->next;
+			
+		}
+
 	}
 	return (start);
 }
@@ -279,13 +187,14 @@ void	ft_edit_redirections(t_cmd *head)
 	}
 }
 
+
 t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env)
 {
 	t_token	*tmp;
 	t_cmd	*head;
 	t_cmd	*cmd_tmp;
 
-	remove_empty_tokens(token);
+	// remove_empty_tokens(token);
 	tmp = *token;
 	cmd_tmp = ft_lstnew_cmd();
 	head = cmd_tmp;
