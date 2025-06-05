@@ -75,8 +75,8 @@ typedef struct s_shell
 	char			**path_splited;
 	int				nbr_cmd;
 	pid_t			*pid;
-	int				in_fd;
-	int				out_fd;
+	int				saved_fdin;
+	int				saved_fdout;
 	int exit_status; 
     struct s_shell 	*next;
 } t_shell;
@@ -147,19 +147,20 @@ char	*ft_strstr(char *str, char *to_find);
 
 int	is_special_char(char c);
 //           BUILTINS
-void	my_export(t_shell *main, char **cmd);
+int		my_export(t_shell *main, char **cmd);
 void	add_to_env(t_shell *main, char *new_var);
 char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
-void	update_env(t_shell *main, char *var_updated);
+// void	update_env(t_shell *main, char *var_updated);
+void	update_env(t_shell *main, char *key, char *value);
 int		my_cd(char **str, t_shell *main);
-void	unset_env(t_shell *main, char *var_name);
+int		unset_env(t_shell *main, char **var_name);
 int		my_echo(char **av, t_cmd *cur);
-void	my_pwd(t_shell *main);
-void	my_exite(t_shell *main);
+int		my_pwd(t_shell *main);
+int		my_exit(t_shell *main);
 // void	builtins(t_shell *main);
 void	run_builtins(t_shell *main, char **cmd, t_cmd *cur);
 int		is_builtin(char *str);
-void 	print_env(t_shell *main);
+int 	print_env(t_shell *main);
 int		is_valid_var(char *str);
 void	environment(t_env *env);
 char	*parse_value(char *str, size_t len);
@@ -182,9 +183,12 @@ void	check_redir(t_shell *main);
 void	wait_children(t_shell *main);
 void	flag_builtins(t_shell *main);
 void	execution(t_shell *main);
+void	setup_signals(void);
+void	reset_signals_inshild(void);
 
 char	*get_next_line(int fd);
 
 void	edit_redir(t_shell *main);
 void	print_node(t_shell *shell_list, char **env);
+
 #endif

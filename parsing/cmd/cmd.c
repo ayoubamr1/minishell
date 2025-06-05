@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/04 17:43:44 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/05 15:49:58 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,7 +265,7 @@ void	ft_edit_redirections(t_cmd *head)
 			if (current->in == -1)
 				perror("open");
 		} 
-		if (!current->next && current->out == -1337) 
+		if (!current->next && current->out == -1337)
 		{
 			current->out = open("/dev/stdout", O_CREAT | O_RDWR | O_TRUNC, 0644);
 			if (current->out == -1)

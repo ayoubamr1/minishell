@@ -6,13 +6,13 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 18:57:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/19 18:58:17 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/05 14:17:40 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void print_env(t_shell *main)
+int	print_env(t_shell *main)
 {
 	t_env *env = main->env;
 	while (env)
@@ -20,4 +20,5 @@ void print_env(t_shell *main)
 		printf("%s\n", env->content);
 		env = env->next;
 	}
+	return (0);
 }

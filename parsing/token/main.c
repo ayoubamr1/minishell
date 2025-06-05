@@ -63,6 +63,7 @@ void	minishell(t_shell *shell_list, char **env)
 	shell_list->env = ft_env(shell_list->env, env);
 	while (TRUE)
 	{
+		setup_signals();
 		input = readline("minishell> ");
 		if (!input)
 			exit(0);

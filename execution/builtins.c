@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:30:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/04 18:04:16 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/05 16:55:36 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,19 @@ void	run_builtins(t_shell *main, char **cmd, t_cmd *cur)
 	if (!ft_strcmp(cmd[0], "pwd"))
 		my_pwd(main);
 	if (!ft_strcmp(cmd[0], "unset"))
-		unset_env(main, cmd[1]);
+		unset_env(main, cmd);
 	if (!ft_strcmp(cmd[0], "echo"))
+	{
+		if (cmd[1] && ft_strcmp(cmd[1], "$?") == 0)
+		{
+			printf("%d\n", exite_status);
+			exite_status = 0;
+			return ;
+		}
 		my_echo(cmd, cur);
+	}	
 	if (!ft_strcmp(cmd[0], "exit"))
-		my_exite(main);
+		my_exit(main);
 }
 
 int	is_builtin(char *str)

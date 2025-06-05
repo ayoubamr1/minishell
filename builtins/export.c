@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/02 14:07:57 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/05 17:46:17 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_plus_equal(t_env *env, char **cmd, int len, char *value, int i)
 	printf("old value = %s\n", old_value);
 	new_value = ft_strjoin(old_value, value);
 	// printf("new value = %s\n", new_value);
-	new_content = malloc(len + 1 + ft_strlen(new_value) + 1);
+	new_content = ft_malloc(len + 1 + ft_strlen(new_value) + 1, MALLOC);
 	ft_strncpy(new_content, cmd[i], len);
 	new_content[len] = '=';
 	// printf("new content befor = %s\n", new_content);
@@ -64,7 +64,7 @@ int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
 	return (flag);
 }
 
-void	my_export(t_shell *main, char **cmd)
+int	my_export(t_shell *main, char **cmd)
 {
 	char	*value;
 	char	*equal_signe;
@@ -135,6 +135,7 @@ void	my_export(t_shell *main, char **cmd)
 		}
 		i++;
 	}
+	return (0);
 }
 
 char	**arrange_array(char **array)

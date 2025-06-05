@@ -6,13 +6,13 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:20:33 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/04 18:05:45 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/05 14:24:07 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	my_exite(t_shell *main)
+int	my_exit(t_shell *main)
 {
 	t_cmd *curr;
 	
@@ -25,4 +25,5 @@ void	my_exite(t_shell *main)
 	}
 	else
 		exite_status = 1;
+	return (0);
 }
