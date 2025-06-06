@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/06 17:16:38 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/06 20:42:18 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,140 +302,17 @@ char **ft_join2d(char **s1, char **s2)
 
 // static t_token *split_token_ex(t_token *toke, char *str)
 // {
-// 	char **spl = ft_split(str, ' ');
-// 	t_token *head = NULL;
-// 	t_token *current = NULL;
-// 	t_token *new_tok;
-// 	int i = 0;
-
-// 	if (!spl || !spl[0])
-// 		return toke; // Nothing to split
-
-// 	while (spl[i])
-// 	{
-// 		new_tok = new_token(spl[i], WORD);
-// 		if (!head)
-// 		{
-// 			head = new_tok;
-// 			current = head;
-// 		}
-// 		else
-// 		{
-// 			current->next = new_tok;
-// 			current = current->next;
-// 		}
-// 		i++;
-// 	}
-// 	current->next = toke->next;
-// 	return head;
-// }
-
-static t_token *split_token_ex(t_token *toke, char *str)
-{
-	t_token *head;
-	t_token *current;
-	int		i;
-	char	**spl;
-
-	spl = ft_split(str, ' ');
-	if (!spl || !spl[0])
-		return (toke);
-
-	head = new_token(spl[0], WORD);
-	current = head;
-	i = 1;
-	while (spl[i])
-	{
-		current->next = new_token(spl[i], WORD);
-		current = current->next;
-		i++;
-	}
-	current->next = toke->next;
-	return (head);
-}
-
-static t_token	*handle_expand_token(t_token *tok, t_token **prev, t_shell *shell)
-{
-	t_token	*next;
-	t_token	*new_head;
-	t_token	*last;
-	char	*expanded;
-
-	next = tok->next;
-	expanded = remove_quotes(ft_expand_token(tok->content, shell->env));
-	if (!expanded || expanded[0] == '\0')
-	{
-		tok->content = expanded;
-		*prev = tok;
-		return (next);
-	}
-	new_head = split_token_ex(tok, expanded);
-	last = new_head;
-	while (last->next && last->next != tok->next)
-		last = last->next;
-	last->next = next;
-	if (*prev)
-		(*prev)->next = new_head;
-	else
-		shell->token = new_head;
-	*prev = last;
-	return (next);
-}
-
-void	ft_expand(t_shell *shell)
-{
-	t_token	*tok;
-	t_token	*prev;
-
-	tok = shell->token;
-	prev = NULL;
-	while (tok)
-	{
-		if ((tok->type == WORD || tok->type == SI_QUOTE)
-			&& ft_strchr(tok->content, '$'))
-				tok = handle_expand_token(tok, &prev, shell);
-		else
-		{
-			if (tok->type == WORD || tok->type == SI_QUOTE
-				|| tok->type == DILIMITER)
-				tok->content = remove_quotes(tok->content);
-			prev = tok;
-			tok = tok->next;
-		}
-	}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// t_token	*split_token_ex(t_token *tok, char *str, t_token *prev, t_shell *shell)
-// {
-// 	char	**spl;
-// 	t_token	*head;
-// 	t_token	*current;
+// 	t_token *head;
+// 	t_token *current;
 // 	int		i;
+// 	char	**spl;
 
 // 	spl = ft_split(str, ' ');
 // 	if (!spl || !spl[0])
-// 		return (tok);
-// 	// free(tok->content);
-// 	tok->content = ft_strdup(spl[0]);
-// 	head = tok;
-// 	current = tok;
+// 		return (toke);
+
+// 	head = new_token(spl[0], WORD);
+// 	current = head;
 // 	i = 1;
 // 	while (spl[i])
 // 	{
@@ -443,43 +320,106 @@ void	ft_expand(t_shell *shell)
 // 		current = current->next;
 // 		i++;
 // 	}
-// 	current->next = tok->next;
-// 	if (prev)
-// 		prev->next = head;
+// 	current->next = toke->next;
+// 	return (head);
+// }
+
+// static t_token	*handle_expand_token(t_token *tok, t_token **prev, t_shell *shell)
+// {
+// 	t_token	*next;
+// 	t_token	*new_head;
+// 	t_token	*last;
+// 	char	*expanded;
+
+// 	next = tok->next;
+// 	expanded = remove_quotes(ft_expand_token(tok->content, shell->env));
+// 	if (!expanded || expanded[0] == '\0')
+// 	{
+// 		tok->content = expanded;
+// 		*prev = tok;
+// 		return (next);
+// 	}
+// 	new_head = split_token_ex(tok, expanded);
+// 	last = new_head;
+// 	while (last->next && last->next != tok->next)
+// 		last = last->next;
+// 	last->next = next;
+// 	if (*prev)
+// 		(*prev)->next = new_head;
 // 	else
-// 		shell->token = head;
-// 	// free_split(spl);
-// 	return (current);
+// 		shell->token = new_head;
+// 	*prev = last;
+// 	return (next);
 // }
 
 // void	ft_expand(t_shell *shell)
 // {
 // 	t_token	*tok;
 // 	t_token	*prev;
-// 	char	*exp;
 
 // 	tok = shell->token;
 // 	prev = NULL;
 // 	while (tok)
 // 	{
-// 		// if ((tok->type == WORD || tok->type == SI_QUOTE)
-// 		// 	&& ft_strchr(tok->content, '$'))
-// 		// {
-// 		// 	exp = remove_quotes(ft_expand_token(tok->content, shell->env));
-// 		// 	if (!exp || !*exp)
-// 		// 	{
-// 		// 		// free(tok->content);
-// 		// 		tok->content = ft_strdup("");
-// 		// 	}
-// 		// 	else
-// 		// 		tok = split_token_ex(tok, exp, prev, shell);
-// 		// }
-// 		// else if (tok->type == WORD || tok->type == SI_QUOTE
-// 		// 	|| tok->type == DILIMITER)
-// 		// 	tok->content = remove_quotes(tok->content);
-// 		prev = tok;
-// 		tok = tok->next;
+// 		if ((tok->type == WORD || tok->type == SI_QUOTE)
+// 			&& ft_strchr(tok->content, '$'))
+// 				tok = handle_expand_token(tok, &prev, shell);
+// 		else
+// 		{
+// 			if (tok->type == WORD || tok->type == SI_QUOTE
+// 				|| tok->type == DILIMITER)
+// 				tok->content = remove_quotes(tok->content);
+// 			prev = tok;
+// 			tok = tok->next;
+// 		}
 // 	}
 // }
 
 
+t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell)
+{
+	char	**spl = ft_split(str, ' ');
+	t_token	*first_new = NULL;
+	t_token	*last = NULL;
+	t_token	*save;
+	int		i;
+
+	if (!spl || !spl[0])
+		return (tok);
+	save = tok->next;
+	tok->content = spl[0];
+	i = 1;
+	last = tok;
+	while (spl[i])
+	{
+		tok->next = new_token(spl[i++], WORD);
+		tok = tok->next;
+	}
+	tok->next = save;
+	return last;
+}
+
+void	ft_expand(t_shell *shell)
+{
+	t_token	*tok = shell->token;
+	char	*expanded;
+
+	while (tok)
+	{
+		if ((tok->type == WORD || tok->type == SI_QUOTE) && ft_strchr(tok->content, '$'))
+		{
+			expanded = remove_quotes(ft_expand_token(tok->content, shell->env));
+			
+			if (!expanded || !expanded[0])
+				tok->content = ft_strdup("");
+			else if (!ft_strchr(expanded, ' '))
+				tok->content = expanded;
+			else
+				tok = split_token_ex(tok, expanded, shell);
+		}
+		else if (tok->type == WORD || tok->type == SI_QUOTE || tok->type == DILIMITER)
+			tok->content = remove_quotes(tok->content);
+
+			tok = tok->next;
+	}	
+}
