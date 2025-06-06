@@ -163,3 +163,22 @@ int	main(int ac, char **av, char **env)
 	// ft_malloc(0, FREE);
 	return (0);
 }
+
+// static t_token *split_token_ex(t_token *toke, char *str)
+// {
+// 	int i;
+// 	char *spl;
+// 	t_token *tmp;
+// 	t_token *tmp;
+
+// 	tmp = toke;
+// 	spl = ft_split(str, ' ');
+// 	i = 0;
+// 	while (spl && spl[i])
+// 	{
+// 		tmp->next = new_token(spl[i], WORD);
+// 		// tmp->next =
+// 	}
+// 	tmp->next = toke;
+// 	return (toke);
+// }

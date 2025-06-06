@@ -116,7 +116,7 @@ char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res);
 char	*ft_expand_token(char *str, t_env *env);
 void	ft_expand(t_shell *shell);
 
-
+size_t	ft_count_2d(char **arr);
 char	*id_itoa(int n);
 char	*remove_quotes(char *str);
 // static int	is_special_char(char c);
@@ -138,7 +138,7 @@ t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
 int	token_str(t_token **token, char *input, int *i, int *index);
 // void	ft_quote(t_token **tokens, char *input, int *i, int *index);
-
+char **ft_join2d(char **s1, char **s2);
 //                **  token_tools  **
 void	add_token(t_token **lst, char *content, t_token_type type, int index);
 t_token	*new_token(char *content, t_token_type type);
