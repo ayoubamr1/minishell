@@ -83,6 +83,39 @@ char	*ft_itoa(int n)
 // 	return (fd); // Return file descriptor to read from later
 // }
 
+
+// char	*ft_expand_token(char *str, t_env *env)
+// {
+// 	int		i;
+// 	char	*res;
+// 	char	*tmp;
+
+// 	i = 0;
+// 	res = ft_strdup("");
+// 	while (str[i])
+// 	{
+// 		if (str[i] == '$' && str[i + 1] == '$')
+// 		{
+// 			res = expand_pid(res, str, i);
+// 			i += 2;
+// 		}
+// 		else if (str[i] && (str[i] == '$') && str[i + 1] && ft_isalpha(str[i + 1]) && !ft_quote(str[i + 1]))
+// 		{
+// 			res = expand_env_var_her(str, &i, env, res);
+// 		}
+			
+// 		else if(str[i] && i > 0 && (str[i] == '$' && str[i - 1] != '$') && str[i + 1] && !ft_isalpha(str[i + 1]) && !ft_quote(str[i + 1]))
+// 			i += 2;
+// 		else
+// 		{
+// 			res = strjoin_char(res, str[i]);
+// 			i++;
+// 		}
+// 	}
+// 	return (ft_dolar_her(res));
+// }
+
+
 static char	*expand_pid(char *res, char *str, int i)
 {
 	pid_t	pid;
@@ -112,7 +145,7 @@ static char	*expand_pid(char *res, char *str, int i)
 	return (tmp);
 }
 
-static char	*cher_env(char *key, t_env *env)
+static char	*cher_env_her(char *key, t_env *env)
 {
 	t_env	*tmp;
 	char	*search;
@@ -143,7 +176,7 @@ static int	is_special_charr(char c)
 	return (c == '|' || c == '<' || c == '>' || c == ' ' || c == '$');
 }
 
-static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
+static char	*expand_env_var_her(char *str, int *i, t_env *env, char *res)
 {
 	int		start;
 	char	*key;
@@ -168,7 +201,7 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	while (str[*i] && ft_isalpha(str[*i]) && !is_special_charr(str[*i]))
 		(*i)++;
 	key = substr(str, start, *i - start);
-	val = cher_env(key, env);
+	val = cher_env_her(key, env);
 	if (quot == '\'')
 		return(ft_strjoin(res, ft_strjoin("$", key)));
 	if (val)
@@ -188,7 +221,7 @@ static char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	return (tmp);
 }
 
-static char *ft_dolar(char *str)
+static char *ft_dolar_her(char *str)
 {
 	int i;
 	int p;

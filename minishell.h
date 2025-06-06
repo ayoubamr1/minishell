@@ -87,21 +87,36 @@ void 	lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
 //---------------{ cmd functions }-----------------
-t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env);
-void	ft_expand(t_shell	*shell_list);
-void handle_heredoc(t_shell *shell, char *delimiter, int fd);
-t_token	*handle_redir_in(t_cmd *node, t_token *start);
-t_token	*handle_redir_out(t_cmd *node, t_token *start);
-t_token	*handle_redir_append(t_cmd *node, t_token *start);
-t_token *store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start);
-t_token *process_token_type(t_cmd *node, t_token *start);
-t_token *handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start);
-void remove_empty_tokens(t_token **head);
-void	ft_edit_redirections(t_cmd *head);
-int get_random_int(void);
+t_cmd		*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env);
+void		ft_expand(t_shell	*shell_list);
+void		handle_heredoc(t_shell *shell, char *delimiter, int fd);
+t_token		*handle_redir_in(t_cmd *node, t_token *start);
+t_token		*handle_redir_out(t_cmd *node, t_token *start);
+t_token		*handle_redir_append(t_cmd *node, t_token *start);
+t_token 	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start);
+t_token 	*process_token_type(t_cmd *node, t_token *start);
+t_token 	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start);
+void 		remove_empty_tokens(t_token **head);
+void		ft_edit_redirections(t_cmd *head);
+int 		get_random_int(void);
 
 char	*ft_itoa(int n);
 //---------------{ expand functions }-----------------
+char	*cher_env(char *key, t_env *env);
+int		is_special_char2(char c);
+char	*expand_env_var(char *str, int *i, t_env *env, char *res);
+char	*ft_dolar(char *str);
+int		ft_quote(char c);
+char	*strjoin_char(char *str, char c);
+char	*handle_ansi_c_quote(char *str, int *i, char *res);
+char	*handle_regular_quotes(char *str, int *i, char *res, char *quot);
+int		ft_check_sp(char *str);
+char	*remove_multi_space(char *str);
+char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res);
+char	*ft_expand_token(char *str, t_env *env);
+void	ft_expand(t_shell *shell);
+
+
 char	*id_itoa(int n);
 char	*remove_quotes(char *str);
 // static int	is_special_char(char c);

@@ -68,7 +68,7 @@ int	syntax_error(t_token **tokens)
 	{
 		if (close_quote(tmp->content))
 		{
-			printf("Syntax error: unclosed quote\n");
+			printf("1Syntax error: unclosed quote\n");
 			return (FALSE);
 		}
 		if (is_general_syntax_error(tmp))
