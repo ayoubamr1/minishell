@@ -90,7 +90,7 @@ void	minishell(t_shell *shell_list, char **env)
 			lexer_1(input, &shell_list->token);
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
-				
+				ft_skipe_delimiter(shell_list->token);
 				ft_expand(shell_list);
 				// pp(&shell_list->token);
 				// exit(0);

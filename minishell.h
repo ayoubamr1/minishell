@@ -27,6 +27,7 @@ typedef enum e_token_type
     REDIR_OUT,  // >
     APPEND,     // >>
     HEREDOC,   // << 
+	DILIMITER,
 	VOID     
 } t_token_type;
 //---------------{ tokenization structure }-----------------
@@ -86,16 +87,25 @@ void 	lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
 //---------------{ cmd functions }-----------------
+t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env);
 void	ft_expand(t_shell	*shell_list);
-int handle_heredoc(t_shell *shell, char *delimiter);
-
+void handle_heredoc(t_shell *shell, char *delimiter, int fd);
+t_token	*handle_redir_in(t_cmd *node, t_token *start);
+t_token	*handle_redir_out(t_cmd *node, t_token *start);
+t_token	*handle_redir_append(t_cmd *node, t_token *start);
+t_token *store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start);
+t_token *process_token_type(t_cmd *node, t_token *start);
+t_token *handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start);
+void remove_empty_tokens(t_token **head);
+void	ft_edit_redirections(t_cmd *head);
+int get_random_int(void);
 
 char	*ft_itoa(int n);
 //---------------{ expand functions }-----------------
 char	*id_itoa(int n);
 char	*remove_quotes(char *str);
 // static int	is_special_char(char c);
-
+void	ft_skipe_delimiter(t_token *token);
 
 
 char	*ft_expand_token(char *str, t_env *env);
@@ -105,8 +115,7 @@ void	print_env_list(t_env *lst); /// remove it
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 t_env	*ft_lstlast(t_env *lst);
-// t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list);
-t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env);
+
 t_cmd	*ft_lstnew_cmd(void);
 // int		ft_lstsize_cmd(t_cmd *lst);
 void	clear_cmd(t_cmd **lst);

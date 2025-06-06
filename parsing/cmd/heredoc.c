@@ -22,9 +22,7 @@ char	*ft_itoa(int n)
 	len = len_n(n);
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	res = malloc(sizeof(char) * (len + 1));
-	if (!res)
-		return (NULL);
+	res = ft_malloc(sizeof(char) * (len + 1), MALLOC);
 	if (n < 0)
 	{
 		res[0] = '-';
@@ -221,97 +219,13 @@ static char *ft_dolar(char *str)
 	return(new);
 }
 
-// static char *ft_dolar(char *str)
-// {
-//     int i = 0;
-//     int p = 0;
-//     char *new;
-//     char qout;
-
-//     new = ft_malloc(ft_strlen(str) + 1, MALLOC);
-//     if (!new)
-//         return NULL;
-
-//     while (str[i])
-//     {
-//         if (str[i] == '"' || str[i] == '\'')
-//         {
-//             qout = str[i++];
-//             while (str[i] && str[i] != qout)
-//                 new[p++] = str[i++];
-//             if (str[i] == qout)
-//                 i++; // skip closing quote
-//         }
-//         else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
-//         {
-//             i++; // skip the dollar sign
-//         }
-//         else
-//         {
-//             new[p++] = str[i++];
-//         }
-//     }
-//     new[p] = '\0';
-//     printf("new>[%s]\n", new);
-
-//     return new;
-// }
-
-
-// char	*ft_expand_token(char *str, t_env *env)
-// {
-// 	int		i;
-// 	char	*res;
-// 	char	*tmp;
-
-// 	i = 0;
-// 	res = ft_strdup("");
-// 	while (str[i])
-// 	{
-// 		if (str[i] == '$' && str[i + 1] == '$')
-// 		{
-// 			res = expand_pid(res, str, i);
-// 			i += 2;
-// 		}
-// 		else if (str[i] && (str[i] == '$') && str[i + 1] && ft_isalpha(str[i + 1]))
-// 			res = expand_env_var(str, &i, env, res);
-// 		else
-// 		{
-// 			tmp = substr(str, i, 1);
-// 			res = ft_strjoin(res, tmp);
-// 			i++;
-// 		}
-// 	}
-// 		// printf("res=>[%s]\n", res);
-// 	return (ft_dolar(res));
-// }
-
-int handle_heredoc(t_shell *shell, char *delimiter)
+void handle_heredoc(t_shell *shell, char *delimiter, int fd)
 {
-	// static size_t	hrc_pid;
-	char			*id_str;
-	char			*filepath;
-	int				fd;
+	char *line;
 
-	static size_t hrc_pid = 0;
-	if (hrc_pid == 0)
-		hrc_pid = getpid();
-	else
-		hrc_pid++;
-	id_str = ft_itoa(hrc_pid);
-	filepath = ft_strjoin("/tmp/", id_str);
-	// printf("filepath = %s\n", filepath);
-	free(id_str);
-	fd = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	// unlink(file);
-	if (fd < 0)
-	{
-		perror("open");
-		return (-1);
-	}
 	while (1)
 	{
-		char *line = readline("> ");
+		line = readline("> ");
 		if (!line || strcmp(line, delimiter) == 0)
 		{
 			free(line);
@@ -333,8 +247,5 @@ int handle_heredoc(t_shell *shell, char *delimiter)
 		write(fd, "\n", 1);
 		free(line);
 	}
-	// close(fd);
-	lseek(fd, 0, SEEK_SET);
-	// printf();
-	return (fd);
+	close (fd);
 }
