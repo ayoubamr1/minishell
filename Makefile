@@ -34,7 +34,7 @@ SRC =   parsing/token/main.c \
         builtins/my_exit.c \
 		parsing/cmd/heredoc.c \
 		parsing/cmd/redirection.c \
-		# Get_Next_Line/get_next_line.c \
+		parsing/expand/tools_2.c 
 
 OBJ = $(SRC:.c=.o)
 
