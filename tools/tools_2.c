@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:17:27 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/05/18 14:36:39 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/06 15:48:30 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,34 @@ char	**env_in_2D(t_shell *main)
 	return (env);
 }
 
+int	ft_atoi(const char *str)
+{
+	int					i;
+	int					signe;
+	unsigned long int	check;
+	unsigned long		res;
 
+	i = 0;
+	signe = 1;
+	res = 0;
+	while (str[i] && ((str[i] >= 9 && str[i] <= 13) || (str[i] == ' ')))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+		if (str[i++] == '-')
+			signe *= -1;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		check = res;
+		res = res * 10 + str[i++] - 48;
+		if (res < check)
+		{
+			if (signe == -1)
+				return (0);
+			return (-1);
+		}
+	}
+	return (res * signe);
+}
 
 
 

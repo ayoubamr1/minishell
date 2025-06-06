@@ -144,6 +144,8 @@ int     ft_isdigit(int c);
 int     ft_isalpha(int c);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strstr(char *str, char *to_find);
+char	*ft_itoa(int n);
+int		ft_atoi(const char *str);
 
 int	is_special_char(char c);
 //           BUILTINS
@@ -161,7 +163,7 @@ int		my_exit(t_shell *main);
 void	run_builtins(t_shell *main, char **cmd, t_cmd *cur);
 int		is_builtin(char *str);
 int 	print_env(t_shell *main);
-int		is_valid_var(char *str);
+int		is_valid_var(char **str);
 void	environment(t_env *env);
 char	*parse_value(char *str, size_t len);
 int		search_equal(char **array, int i);
@@ -185,6 +187,7 @@ void	flag_builtins(t_shell *main);
 void	execution(t_shell *main);
 void	setup_signals(void);
 void	reset_signals_inshild(void);
+void	hundle_shlvl(t_shell *main);
 
 char	*get_next_line(int fd);
 

@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/05 12:25:03 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/06 17:38:39 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,32 @@ void	execution(t_shell *main)
 	check_if_access(main);
 	// edit_redir(main);
 	print_node(main, NULL);
+	hundle_shlvl(main);
 	exec_cmd(main);
+}
+
+void	hundle_shlvl(t_shell *main)
+{
+	t_env *curr;
+	t_cmd *cmd;
+	char	*new_shlvl;
+
+	curr = main->env;
+	cmd = main->cmd;
+	if (cmd->cmd && cmd && !ft_strcmp(cmd->cmd[0], "./mini"))
+	{
+		while (curr)
+		{
+			if (!ft_strncmp(curr->content, "SHLVL=", 6))
+			{
+				new_shlvl = ft_itoa(ft_atoi(curr->content + 6) + 1);
+				free(curr->content);
+				curr->content = ft_strjoin("SHLVL=", new_shlvl);
+				break ;
+			}
+			curr = curr->next;
+		}
+	}
 }
 
 void edit_redir(t_shell *main)

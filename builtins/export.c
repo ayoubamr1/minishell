@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/05 17:46:17 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/06 14:30:10 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,11 @@ int	my_export(t_shell *main, char **cmd)
 		environment(env);
 	while (cmd[i])
 	{
-		// if (!is_valid_var(cmd[i]))
-		// {	
-		// 	printf("export: `%s': not a valid identifier\n", cmd[i]);
-		// 	return ;
-		// }
+		if (!is_valid_var(cmd))
+		{	
+			printf("export: `%s': not a valid identifier\n", cmd[i]);
+			return (0);
+		}
 		equal_signe = ft_strchr(cmd[i], '=');
 		// printf("equal signe = %s\n", equal_signe);
 		plus_equal = ft_strstr(cmd[i], "+=");
@@ -101,6 +101,11 @@ int	my_export(t_shell *main, char **cmd)
 			// printf("len = %ld\n", len);
 			value = plus_equal + 2;
 			// printf("value = %s\n", value);
+			if (len == 0)
+			{
+				printf("export: `%s': not a valid identifier\n", cmd[i]);
+				return (0);
+			}
 			env = main->env;
 			while (env)
 			{
@@ -129,6 +134,11 @@ int	my_export(t_shell *main, char **cmd)
 		{
 			// printf("dkhalt hnaaaaa\n");
 			len = equal_signe - cmd[i];
+			if (len == 0)
+			{
+				printf("export: `%s': not a valid identifier\n", cmd[i]);
+				return (0);
+			}
 			flag = ft_equal(main, cmd, len, i, flag);
 			if (!flag)
 				add_to_env(main, cmd[i]);
@@ -268,19 +278,27 @@ int	search_equal(char **array, int i)
 // 	}
 // }
 
-int	is_valid_var(char *str)
+int	is_valid_var(char **str)
 {
 	int i;
+	int	j;
 	
 	i = 1;
 	if (!str || !*str)
 		return (0);
-	if (!ft_isalpha(str[0]) && str[0] != '_')
-		return (0);
-	while (str[i] && str[i] != '=')
+	// if (!ft_isalpha(str[0][0]) && str[0][0] != '_')
+	// 	return (0);
+	while (str[i])
 	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
+		j = 0;
+		while (str[i][j] && str[i][j] != '=' && str[i][j] != '+' && str[i][j] != '_')
+		{
+			// if (str[i][0] == '_')
+			// 	j++;
+			if (!ft_isalpha(str[i][j]))
+				return (0);
+			j++;
+		}
 		i++;
 	}
 	return (1);
