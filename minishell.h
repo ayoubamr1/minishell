@@ -59,6 +59,7 @@ typedef struct s_env
 	// char			*value;
 	char			*content;
 	int				index;
+	int				flag;
 	struct s_env	*next;
 } t_env ;
 //---------------{ main structure }-----------------
