@@ -3,6 +3,7 @@
 		"minishell.h": "c",
 		"gbc.h": "c",
 		"random": "c",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"cstdlib": "c"
 	}
 }
