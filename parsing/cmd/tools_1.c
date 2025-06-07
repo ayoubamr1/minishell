@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:31:55 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/05 17:31:13 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:08:20 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,60 +28,6 @@ t_cmd *ft_lstnew_cmd(void)
 	// node->heredoc = -1;
 	node->next = NULL;
 	return node;
-}
-
-int	ft_lstsize_cmd(t_cmd *lst)
-{
-	int		count;
-	t_cmd	*sin;
-
-	sin = lst;
-	count = 0;
-	while (sin)
-	{
-		sin = sin->next;
-		count++;
-	}
-	return (count);
-}
-
-// void	clear_cmd(t_cmd **lst)
-// {
-// 	t_cmd	*n;
-
-// 	if (!lst)
-// 		return ;
-// 	while (*lst)
-// 	{
-// 		n = (*lst)->next;
-// 		free2d((*lst)->cmd);
-// 		(*lst)->cmd = NULL;
-// 		free((*lst));
-// 		*lst = NULL;
-// 		*lst = n;
-// 	}
-// 	*lst = NULL;
-// }
-void	clear_cmd(t_cmd **lst)
-{
-	t_cmd	*current;
-	t_cmd	*next;
-
-	if (!lst || !*lst)
-		return ;
-	current = *lst;
-	while (current)
-	{
-		next = current->next;
-		if (current->cmd)
-			free2d(current->cmd);
-		if (current->file)
-			free(current->file), current->file = NULL;
-		free(current);
-		current = NULL;
-		current = next;
-	}
-	*lst = NULL;
 }
 
 t_cmd	*ft_lstlast_cmd(t_cmd *lst)
@@ -109,4 +55,17 @@ void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new)
 	final = ft_lstlast_cmd(*lst);
 	final->next = new;
 	return ;
+}
+int get_random_int(void)
+{
+	int				fd;
+	unsigned int	num;
+
+	fd = open("/dev/urandom", O_RDONLY);
+	num = 0;
+	if (fd < 0)
+		return -1;
+	read(fd, &num, sizeof(num));
+	close(fd);
+	return ((int)(num % 100));
 }

@@ -6,46 +6,35 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:13:18 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 16:29:42 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:16:02 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static int	ft_numlen(int n)
+int	is_special_char2(char c)
 {
-	int	len;
-
-	if (n == 0)
-		return (1);
-	len = 0;
-	while (n != 0)
-	{
-		n /= 10;
-		len++;
-	}
-	return (len);
+	return (c == '|' || c == '<' || c == '>' || c == ' ' || c == '$');
 }
 
-char	*id_itoa(int n)
+int ft_quote(char c)
 {
-	char	*str;
-	int		len;
+	return (c == '"' || c == '\'');
+}
 
-	len = ft_numlen(n);
-	str = (char *)malloc(len + 1);
-	if (!str)
-		return (NULL);
-	str[len] = '\0';
-	if (n == 0)
-		str[0] = '0';
-	while (n != 0)
-	{
-		len--;
-		str[len] = (n % 10) + '0';
-		n /= 10;
-	}
-	return (str);
+char *strjoin_char(char *str, char c)
+{
+	size_t len;
+
+	len = 0;
+	if (str)
+		len = ft_strlen(str);
+	char *new_str = ft_malloc(len + 2, MALLOC);
+	if (str)
+		memcpy(new_str, str, len);
+	new_str[len] = c;
+	new_str[len + 1] = '\0';
+	return (new_str);
 }
 
 char	*remove_quotes(char *str)
@@ -76,4 +65,30 @@ char	*remove_quotes(char *str)
 			res[j++] = str[i++];
 	}
 	return (res[j] = '\0', res);
+}
+
+char **ft_join2d(char **s1, char **s2)
+{
+	int		i;
+	int		p;
+	int		len;
+	char	**new;
+
+	if ((!s1 || !s1[0]) && s2)
+		return s2;
+	if ((!s2 || !s2[0]) && s1)
+		return s1;
+	i = 0;
+	p = 0;
+	len = ft_count_2d(s1) + ft_count_2d(s2);
+	new = ft_malloc(sizeof(char *) * (len +1), MALLOC);
+	while (s1 && s1[i])
+	{
+		new[i] = s1[i];
+		i++;
+	}
+	while (s2 && s2[p])
+		new[i++] = s2[p++];
+	new[i] = NULL;
+	return (new);
 }

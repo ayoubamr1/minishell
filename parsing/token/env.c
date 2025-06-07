@@ -11,38 +11,6 @@ static t_env	*ft_lstnew_env(char *content)
 	return (node);
 }
 
-// static int	ft_lstsize(t_env *lst)
-// {
-// 	int		count;
-// 	t_env	*sin;
-
-// 	sin = lst;
-// 	count = 0;
-// 	while (sin)
-// 	{
-// 		sin = sin->next;
-// 		count++;
-// 	}
-// 	return (count);
-// }
-
-// static void	clear_env(t_env **lst)
-// {
-// 	t_env	*n;
-
-// 	if (!lst)
-// 		return ;
-// 	while (*lst)
-// 	{
-// 		n = (*lst)->next;
-// 		free((*lst)->content);
-// 		((*lst)->content) = NULL;
-// 		free(*lst);
-// 		*lst = n;
-// 	}
-// 	*lst = NULL;
-// }
-
 t_env	*ft_lstlast(t_env *lst)
 {
 	if (!lst)

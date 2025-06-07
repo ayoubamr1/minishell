@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 09:06:13 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/06 09:07:46 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:11:44 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,33 +71,6 @@ t_token	*handle_redir_append(t_cmd *node, t_token *start)
 	close(node->out);
 	node->out = fd;
 	return (start->next);
-}
-
-static	int	len_n(int n)
-{
-	int	len;
-
-	len = 0;
-	if (n <= 0)
-		len = 1;
-	while (n != 0)
-	{
-		n /= 10;
-		len++;
-	}
-	return (len);
-}
-
-int get_random_int(void)
-{
-	int fd = open("/dev/urandom", O_RDONLY);
-	unsigned int num = 0;
-
-	if (fd < 0)
-		return -1;
-	read(fd, &num, sizeof(num));
-	close(fd);
-	return ((int)(num % 100));
 }
 
 void remove_empty_tokens(t_token **head)

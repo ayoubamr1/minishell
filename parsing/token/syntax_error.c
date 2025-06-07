@@ -1,6 +1,5 @@
 #include "../../minishell.h"
 
-
 static int	is_redirection(t_token *token)
 {
 	return (token->type == REDIR_IN || token->type == REDIR_OUT
@@ -62,7 +61,6 @@ int	syntax_error(t_token **tokens)
 {
 	t_token	*tmp;
 
-	// handle  > .
 	tmp = *tokens;
 	while (tmp)
 	{

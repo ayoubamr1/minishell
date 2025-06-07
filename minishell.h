@@ -52,6 +52,17 @@ typedef struct s_cmd
 	int				is_builtin;
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
+
+typedef struct s_parm
+{
+	t_token	**token;
+	char	*input;
+	// int		*i;
+	int		*index;
+	char	*str;
+	char 	quote;
+	char	*s1;
+}	t_parm;
 //---------------{ env structure }-----------------
 typedef struct s_env 
 {
@@ -87,6 +98,7 @@ int		lexer_1(char *input, t_token **tokens);
 void 	lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
+int	skip_quote_block(char *input, int *i, char quote);
 //---------------{ cmd functions }-----------------
 t_cmd		*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env);
 void		ft_expand(t_shell	*shell_list);
@@ -104,7 +116,6 @@ int 		get_random_int(void);
 char	*ft_itoa(int n);
 //---------------{ expand functions }-----------------
 char	*cher_env(char *key, t_env *env);
-int		is_special_char2(char c);
 char	*expand_env_var(char *str, int *i, t_env *env, char *res);
 char	*ft_dolar(char *str);
 int		ft_quote(char c);
@@ -112,17 +123,24 @@ char	*strjoin_char(char *str, char c);
 char	*handle_ansi_c_quote(char *str, int *i, char *res);
 char	*handle_regular_quotes(char *str, int *i, char *res, char *quot);
 int		ft_check_sp(char *str);
-char	*remove_multi_space(char *str);
 char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res);
 char	*ft_expand_token(char *str, t_env *env);
 void	ft_expand(t_shell *shell);
+int	is_special_char2(char c);
+int ft_quote(char c);
+char *strjoin_char(char *str, char c);
+int ft_check_sp(char *str);
+t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell);
+char *ft_dolar(char *str);
+char *cher_env(char *key, t_env *env);
+
+
 
 size_t	ft_count_2d(char **arr);
 char	*id_itoa(int n);
 char	*remove_quotes(char *str);
-// static int	is_special_char(char c);
 void	ft_skipe_delimiter(t_token *token);
-
+int	len_n(int n);
 
 char	*ft_expand_token(char *str, t_env *env);
 
@@ -158,7 +176,6 @@ char	*ft_strcpy(const char *str, char *dest);
 int 	ft_isspace(int c);
 void 	free2d(char **str);
 char	**ft_strjoin2d(char **s1, char *s2);
-int     ft_isspace(int c);
 char	**ft_split(const char *str, char c);
 int     ft_isalnum(int c);
 void	ft_putchar(char c);

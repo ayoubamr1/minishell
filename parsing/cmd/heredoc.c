@@ -1,6 +1,6 @@
 #include "../../minishell.h"
 
-static	int	len_n(int n)
+int	len_n(int n)
 {
 	int	len;
 
@@ -14,6 +14,7 @@ static	int	len_n(int n)
 	}
 	return (len);
 }
+
 char	*ft_itoa(int n)
 {
 	char	*res;

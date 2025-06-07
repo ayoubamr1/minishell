@@ -3,7 +3,7 @@ NAME = minishell
 CC = cc #-g3 -fsanitize=address
 RM = rm -f
 
-SRC =   parsing/token/main.c \
+SRC =   minishell.c \
         parsing/token/tools.c \
         parsing/token/syntax_error.c \
         parsing/token/token.c \
@@ -34,7 +34,8 @@ SRC =   parsing/token/main.c \
         builtins/my_exit.c \
 		parsing/cmd/heredoc.c \
 		parsing/cmd/redirection.c \
-		parsing/expand/tools_2.c 
+		parsing/expand/tools_2.c \
+		parsing/expand/expand2.c
 
 OBJ = $(SRC:.c=.o)
 
