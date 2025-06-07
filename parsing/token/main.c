@@ -81,12 +81,6 @@ void	minishell(t_shell *shell_list, char **env)
 		{
 			ft_null(shell_list);
 			add_history(input);
-			// if (!ft_strncmp(input, "exit", ft_strlen("exit")))
-			// {
-			// 	free(input);
-			// 	ft_malloc(0, FREE);
-			// 	exit(0);
-			// }
 			lexer_1(input, &shell_list->token);
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
@@ -96,7 +90,8 @@ void	minishell(t_shell *shell_list, char **env)
 				// exit(0);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd, shell_list->env);
-				// print_node(shell_list, env);
+				print_node(shell_list, env);
+				// pp()
 				// printf("||||||||||||||||||||||||||||||||\n");
 				execution(shell_list);
 			}
@@ -149,8 +144,8 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
-	// if (isatty(0) == 0)
-	// 	exit(0);
+	if (isatty(0) == 0)
+		exit(0);
 	// signal(SIGINT, handle_sigint);  // This assumes you have a signal handler
 	// signal(SIGQUIT, SIG_IGN);
 	
@@ -163,22 +158,3 @@ int	main(int ac, char **av, char **env)
 	// ft_malloc(0, FREE);
 	return (0);
 }
-
-// static t_token *split_token_ex(t_token *toke, char *str)
-// {
-// 	int i;
-// 	char *spl;
-// 	t_token *tmp;
-// 	t_token *tmp;
-
-// 	tmp = toke;
-// 	spl = ft_split(str, ' ');
-// 	i = 0;
-// 	while (spl && spl[i])
-// 	{
-// 		tmp->next = new_token(spl[i], WORD);
-// 		// tmp->next =
-// 	}
-// 	tmp->next = toke;
-// 	return (toke);
-// }
