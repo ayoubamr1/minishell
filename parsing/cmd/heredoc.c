@@ -40,36 +40,36 @@ char	*ft_itoa(int n)
 	return (res);
 }
 
-static char *check_delimiter(char *str)
+static	char	*check_delimiter(char *str)
 {
-	int i;
-	int p;
-	char *new;
-	char qout;
+	char	*new;
+	char	qout;
+	int		p;
+	int		i;
 
 	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
 	i = 0;
 	p = 0;
 	while (str[i])
 	{
-		if (str[i] &&  (str[i] == '"' || str[i] == '\''))
+		if (str[i] && (str[i] == '"' || str[i] == '\''))
 		{
 			(1) && (new[p++] = str[i], qout = str[i++]);
 			while (str[i] && str[i] != qout)
 				new[p++] = str[i++];
 			if (str[i] == qout)
 				new[p++] = str[i++];
-			new[p] = '\0';	
+			new[p] = '\0';
 		}
 		else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
 			i++;
 		else
 			new[p++] = str[i++];
 	}
-	return(new[p] = '\0', remove_quotes (new));
+	return (new[p] = '\0', remove_quotes (new));
 }
 
-void handle_heredoc(t_shell *shell, char *delimiter, int fd)
+void	handle_heredoc(t_shell *shell, char *delimiter, int fd)
 {
 	char	*line;
 	char	*tmp;
@@ -80,7 +80,7 @@ void handle_heredoc(t_shell *shell, char *delimiter, int fd)
 		if (!line || strcmp(line, check_delimiter(delimiter)) == 0)
 		{
 			free(line);
-			break;
+			break ;
 		}
 		if (ft_strchr(line, '$'))
 		{

@@ -6,18 +6,16 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:51:58 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 19:14:24 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-
-t_token *store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
+t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 {
-	
 	if (!start)
-	return (NULL);
+		return (NULL);
 	while (start && start->type != PIPE)
 	{
 		if (start->type == HEREDOC)
@@ -28,38 +26,36 @@ t_token *store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 		{
 			while (start && start->type != PIPE)
 				start = start->next;
-			break;
+			break ;
 		}
 	}
 	return (start);
 }
 
-t_token *process_token_type(t_cmd *node, t_token *start)
+t_token	*process_token_type(t_cmd *node, t_token *start)
 {
 	if (start->type == WORD || start->type == SI_QUOTE)
 	{
-		// spl = ft_split(start->content, ' ');
-		// node->cmd = ft_join2d(node->cmd, spl);
 		node->cmd = ft_strjoin2d(node->cmd, start->content);
 		return (start->next);
 	}
 	else if (start->type == REDIR_IN)
-		return handle_redir_in(node, start);
+		return (handle_redir_in(node, start));
 	else if (start->type == REDIR_OUT)
-		return handle_redir_out(node, start);
+		return (handle_redir_out(node, start));
 	else if (start->type == APPEND)
-		return handle_redir_append(node, start);
-	return start->next;
+		return (handle_redir_append(node, start));
+	return (start->next);
 }
 
-t_token *handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
+t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 {
 	int		fd[2];
 	char	*filepath;
 
 	start = start->next;
 	if (!start || !start->content || start->content[0] == '\0')
-		start = new_token(ft_strdup(""), HEREDOC);	
+		start = new_token(ft_strdup(""), HEREDOC);
 	filepath = ft_strjoin("/tmp/", ft_itoa(get_random_int()));
 	fd[0] = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	fd[1] = open(filepath, O_RDONLY);
@@ -81,20 +77,21 @@ t_token *handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 
 void	ft_edit_redirections(t_cmd *head)
 {
-	t_cmd *current;
-	
+	t_cmd	*current;
+
 	current = head;
-	while (current) 
+	while (current)
 	{
 		if (current == head && current->in == -1337)
 		{
 			current->in = open("/dev/stdin", O_RDONLY);
 			if (current->in == -1)
 				perror("open");
-		} 
-		if (!current->next && current->out == -1337) 
+		}
+		if (!current->next && current->out == -1337)
 		{
-			current->out = open("/dev/stdout", O_CREAT | O_RDWR | O_TRUNC, 0644);
+			current->out = open("/dev/stdout",
+					O_CREAT | O_RDWR | O_TRUNC, 0644);
 			if (current->out == -1)
 				perror("open");
 		}
