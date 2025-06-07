@@ -65,7 +65,7 @@ void	print_node(t_shell *shell_list, char **env)
 void	minishell(t_shell *shell_list, char **env)
 {
 	char	*input;
-	int i = 0;
+	// int i = 0;
 	// if (shell_list->token != NULL)
 	// 	clear_token(&shell_list->token);
 	// if (shell_list->cmd != NULL)
@@ -89,7 +89,7 @@ void	minishell(t_shell *shell_list, char **env)
 				// pp(&shell_list->token);
 				// exit(0);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
-				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd, shell_list->env);
+				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd);
 				// print_node(shell_list, env);
 				// pp()
 				// printf("||||||||||||||||||||||||||||||||\n");
@@ -151,7 +151,7 @@ int	main(int ac, char **av, char **env)
 	
 	// while (1)
 	// {
-		minishell(shell_list, env);
+	minishell(shell_list, env);
 	// }
 	
 	// This part would only be reached if the loop is broken

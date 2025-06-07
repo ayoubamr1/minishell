@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 18:17:29 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:17:41 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:58:30 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ char *ft_dolar(char *str)
 	p = 0;
 	while (str[i])
 	{
-		if (str[i] &&  str[i] == '"' || str[i] == '\'')
+		if (str[i] &&  (str[i] == '"' || str[i] == '\''))
 		{
 			(1) && (new[p++] = str[i], qout = str[i++]);
 			while (str[i] && str[i] != qout)

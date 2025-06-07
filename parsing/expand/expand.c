@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:20:09 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:52:36 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,6 @@ void	ft_expand(t_shell *shell)
 		else if (tok->type == WORD || tok->type == SI_QUOTE)
 			tok->content = remove_quotes(tok->content);
 
-			tok = tok->next;
+		tok = tok->next;
 	}	
 }

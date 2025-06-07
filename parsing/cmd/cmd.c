@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/06 18:19:49 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:51:58 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,6 @@ t_token *store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 
 t_token *process_token_type(t_cmd *node, t_token *start)
 {
-	char **spl;
-
 	if (start->type == WORD || start->type == SI_QUOTE)
 	{
 		// spl = ft_split(start->content, ' ');
@@ -104,7 +102,7 @@ void	ft_edit_redirections(t_cmd *head)
 	}
 }
 
-t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env)
+t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 {
 	t_token	*tmp;
 	t_cmd	*head;

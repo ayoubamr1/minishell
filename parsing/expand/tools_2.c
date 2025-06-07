@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 10:03:54 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:20:12 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:59:27 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ int ft_check_sp(char *str)
 
 t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell)
 {
-	char	**spl = ft_split(str, ' ');
-	t_token	*first_new = NULL;
-	t_token	*last = NULL;
+	char	**spl;
+	t_token	*last;
 	t_token	*save;
 	int		i;
-	
+
+	spl = ft_split(str, ' ');
 	shell->env->flag = 0;
 	if (!spl || !spl[0])
 		return (tok);

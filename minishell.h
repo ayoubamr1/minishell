@@ -100,7 +100,7 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
 int	skip_quote_block(char *input, int *i, char quote);
 //---------------{ cmd functions }-----------------
-t_cmd		*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list, t_env *env);
+t_cmd		*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list);
 void		ft_expand(t_shell	*shell_list);
 void		handle_heredoc(t_shell *shell, char *delimiter, int fd);
 t_token		*handle_redir_in(t_cmd *node, t_token *start);

@@ -52,7 +52,7 @@ static char *check_delimiter(char *str)
 	p = 0;
 	while (str[i])
 	{
-		if (str[i] &&  str[i] == '"' || str[i] == '\'')
+		if (str[i] &&  (str[i] == '"' || str[i] == '\''))
 		{
 			(1) && (new[p++] = str[i], qout = str[i++]);
 			while (str[i] && str[i] != qout)
@@ -77,7 +77,7 @@ void handle_heredoc(t_shell *shell, char *delimiter, int fd)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || strcmp(line, delimiter) == 0)
+		if (!line || strcmp(line, check_delimiter(delimiter)) == 0)
 		{
 			free(line);
 			break;

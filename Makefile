@@ -1,6 +1,6 @@
 NAME = minishell
 
-CC = cc #-g3 -fsanitize=address
+CC = cc #-Wall -Werror -Wextra #-g3 -fsanitize=address
 RM = rm -f
 
 SRC =   minishell.c \
@@ -41,7 +41,7 @@ SRC =   minishell.c \
 
 OBJ = $(SRC:.c=.o)
 
-# CFLAGS = -g3 -fsanitize=address
+ CFLAGS = -g3 -fsanitize=address
 # CFLAGS = -Wall -Wextra -Werror
 # CFLAGS =  #-g3 -fsanitize=address #-Wall -Wextra -Werror
 
