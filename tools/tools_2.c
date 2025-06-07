@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:17:27 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/05/18 14:36:39 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/07 18:45:30 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,22 +83,20 @@ char	**env_in_2D(t_shell *main)
 	return (env);
 }
 
+char	*ft_strncpy(char *dest, char *src, size_t n)
+{
+	size_t	i;
 
-
-
-
-
-
-// int	ft_isalnum(int c)
-// {
-// 	if (((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-// 		|| (c >= 48 && c <= 57))
-// 		return (1);
-// 	return (0);
-// }
-// int	ft_isalpha(int c)
-// {
-// 	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
-// 		return (1);
-// 	return (0);
-// }
+	i = 0;
+	while (src[i] != '\0' && i < n)
+	{
+		dest[i] = src[i];
+		++i;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}

@@ -35,7 +35,9 @@ SRC =   minishell.c \
 		parsing/cmd/heredoc.c \
 		parsing/cmd/redirection.c \
 		parsing/expand/tools_2.c \
-		parsing/expand/expand2.c
+		parsing/expand/expand2.c \
+		tools/tools_4.c \
+		tools/tools_5.c 
 
 OBJ = $(SRC:.c=.o)
 

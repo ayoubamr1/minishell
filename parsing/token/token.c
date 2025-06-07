@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:36:16 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:43:47 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,16 @@ int	token_str(t_token **token, char *input, int *i, int *index)
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)
 {
-	if (input[*i] == '>')
-		{
-			add_token(tokens, ft_strdup(">"), REDIR_OUT, *index);
-			((*i)++, (*index)++);
-		}
+	if (input[*i] == '<' && input[*i + 1] == '<')
+	{
+		add_token(tokens, ft_strdup("<<"), HEREDOC, *index);
+		((*i) += 2, (*index)++);
+	}
+	else if (input[*i] == '>')
+	{
+		add_token(tokens, ft_strdup(">"), REDIR_OUT, (*index));
+		((*i)++, (*index)++);
+	}
 	else if (input[(*i)] == '|')
 	{
 		add_token(tokens, ft_strdup("|"), PIPE, (*index));
@@ -115,11 +120,6 @@ int lexer_1(char *input, t_token **tokens)
 		else if (input[i] == '>' && input[i + 1] == '>')
 		{
 			add_token(tokens, ft_strdup(">>"), APPEND, index);
-			(i += 2, index++);
-		}
-		else if (input[i] == '<' && input[i + 1] == '<')
-		{
-			add_token(tokens, ft_strdup("<<"), HEREDOC, index);
 			(i += 2, index++);
 		}
 		else

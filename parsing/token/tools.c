@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:36:13 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 18:44:48 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ char	*substr(char *s, int start, int len)
 	return (out);
 }
 
-
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
 {
 	int start;
@@ -66,10 +65,6 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index)
 		(*index)++;
 }
 
-int	is_special_char(char c)
-{
-	return (c == '|' || c == '<' || c == '>' || c == '"' || c == '\'' || c == ' ');
-}
 int	skip_quote_block(char *input, int *i, char quote)
 {
 	while (input[*i])

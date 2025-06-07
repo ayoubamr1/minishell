@@ -83,21 +83,3 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
 }
 
-char	*ft_strncpy(char *dest, char *src, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (src[i] != '\0' && i < n)
-	{
-		dest[i] = src[i];
-		++i;
-	}
-	while (i < n)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-	return (dest);
-}
-
