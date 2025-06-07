@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:34:59 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/05 11:42:43 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 19:59:51 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	wait_children(t_shell *main)
 {
 	int	i;
+	int sig;
 	int	status;
 	
 	i = 0;
@@ -27,8 +28,16 @@ void	wait_children(t_shell *main)
 			exite_status = WEXITSTATUS(status);
 			// printf("childe exited with %d\n", WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
-			exite_status = 128 + WTERMSIG(status);
+		{	
+			
+			sig = WTERMSIG(status);
+			exite_status = 128 + sig;
+			if (sig == SIGINT)
+				write (1, "\n", 1);
+			else if (sig == SIGQUIT)
+				write (1, "Quit (core dumped)\n", 19);
 			// printf("childe killed by signal %d\n", WTERMSIG(status));
+		}
 		i++;
 	}
 	// printf("exite_status = %d\n", exite_status);
@@ -58,4 +67,17 @@ void ft_fork_process(t_shell *main, int i)
 void	signal_hundler(int sig)
 {
 	write (1, "\nminishell>", 11);
+	// exite_status = 130;
+}
+
+void	setup_signals(void)
+{
+	signal(SIGINT, signal_hundler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void reset_signals_inshild(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }

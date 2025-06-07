@@ -72,8 +72,10 @@ void	minishell(t_shell *shell_list, char **env)
 	// 	clear_cmd(&shell_list->cmd);
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	shell_list->env = ft_env(shell_list->env, env);
+	// hundle_shlvl(shell_list);
 	while (TRUE)
 	{
+		// reset_signals_inshild();
 		input = readline("minishell> ");
 		if (!input)
 			exit(0);

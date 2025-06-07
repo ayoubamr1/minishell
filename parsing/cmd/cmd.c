@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 19:14:24 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/07 20:05:01 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	ft_edit_redirections(t_cmd *head)
 			current->in = open("/dev/stdin", O_RDONLY);
 			if (current->in == -1)
 				perror("open");
-		}
+		} 
 		if (!current->next && current->out == -1337)
 		{
 			current->out = open("/dev/stdout",
