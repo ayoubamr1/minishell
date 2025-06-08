@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/05 11:42:22 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/08 20:24:49 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 
 void	execution(t_shell *main)
 {
+	t_cmd *tmp;
+	tmp = main->cmd;
+	while (tmp)
+	{
+		if (tmp->fd_statuts == 911)
+			return;
+		tmp = tmp->next;
+	}
 	nbr_cmd(main);
 	get_path(main);
 	check_redir(main);

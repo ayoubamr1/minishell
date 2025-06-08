@@ -118,16 +118,16 @@ void	minishell(t_shell *shell_list, char **env)
 
 }
 
-// static void	handle_sigint(int sig)
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		write(STDOUT_FILENO, "\n", 1);      // Move to a new line
-// 		rl_on_new_line();                  // Notify readline about the new line
-// 		rl_replace_line("", 0);           // Clear the current input line
-// 		rl_redisplay();                  // Redisplay the prompt
-// 	}
-// }
+void	handle_sigint(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -146,8 +146,8 @@ int	main(int ac, char **av, char **env)
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	if (isatty(0) == 0)
 		exit(0);
-	// signal(SIGINT, handle_sigint);  // This assumes you have a signal handler
-	// signal(SIGQUIT, SIG_IGN);
+signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	
 	// while (1)
 	// {

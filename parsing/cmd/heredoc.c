@@ -69,29 +69,97 @@ static	char	*check_delimiter(char *str)
 	return (new[p] = '\0', remove_quotes (new));
 }
 
-void	handle_heredoc(t_shell *shell, char *delimiter, int fd)
+// void	handle_heredoc(t_shell *shell, char *delimiter, int fd)
+// {
+// 	char	*line;
+// 	char	*tmp;
+
+// 	while (1)
+// 	{
+// 		line = readline("> ");
+// 		if (!line || strcmp(line, check_delimiter(delimiter)) == 0)
+// 		{
+// 			free(line);
+// 			break ;
+// 		}
+// 		if (ft_strchr(line, '$'))
+// 		{
+// 			tmp = line;
+// 			line = ft_expand_token(line, shell->env);
+// 			free(tmp);
+// 			tmp = NULL;
+// 		}
+// 		write(fd, line, strlen(line));
+// 		write(fd, "\n", 1);
+// 		free(line);
+// 	}
+// 	close (fd);
+// }
+
+void	run_heredoc_child(char *delimiter, int write_fd)
 {
 	char	*line;
-	char	*tmp;
+
+	// Restore default SIGINT to allow Ctrl+C kill
+	signal(SIGINT, SIG_DFL);
 
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || strcmp(line, check_delimiter(delimiter)) == 0)
+		if (!line)
+			exit(0);  // Ctrl+D or error
+
+		if (strcmp(line, delimiter) == 0)
 		{
 			free(line);
-			break ;
+			break;
 		}
-		if (ft_strchr(line, '$'))
-		{
-			tmp = line;
-			line = ft_expand_token(line, shell->env);
-			free(tmp);
-			tmp = NULL;
-		}
-		write(fd, line, strlen(line));
-		write(fd, "\n", 1);
+
+		write(write_fd, line, strlen(line));
+		write(write_fd, "\n", 1);
 		free(line);
 	}
-	close (fd);
+	close(write_fd);
+	exit(0);
+}
+
+void	handle_heredoc(t_shell *shell, char *delimiter, int write_fd, t_cmd *node)
+{
+	pid_t	pid;
+	int		status;
+
+	// Ignore SIGINT in parent during heredoc
+	signal(SIGINT, SIG_IGN);
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		close(write_fd);
+		return;
+	}
+
+	if (pid == 0)
+	{
+		// Child process: handle heredoc input
+		run_heredoc_child(delimiter, write_fd);
+	}
+	else
+	{
+		// Parent waits for child
+		waitpid(pid, &status, 0);
+
+		// Close write_fd from parent (child used it)
+		close(write_fd);
+
+		// Restore signal handler for main prompt
+		signal(SIGINT, handle_sigint);  // Your custom handler
+		signal(SIGQUIT, SIG_IGN);
+
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			write(1, "\n", 1);
+			node->fd_statuts = 911;  // Example flag to abort exec
+		}
+	}
 }
