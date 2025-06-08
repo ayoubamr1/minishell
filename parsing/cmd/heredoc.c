@@ -160,6 +160,7 @@ void	handle_heredoc(t_shell *shell, char *delimiter, int write_fd, t_cmd *node)
 		{
 			write(1, "\n", 1);
 			node->fd_statuts = 911;  // Example flag to abort exec
+			exite_status = 130;
 		}
 	}
 }
