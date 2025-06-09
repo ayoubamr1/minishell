@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/07 19:56:24 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/09 18:59:32 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,17 +92,11 @@ int	my_export(t_shell *main, char **cmd)
 			return (0);
 		}
 		equal_signe = ft_strchr(cmd[i], '=');
-		// printf("equal signe = %s\n", equal_signe);
 		plus_equal = ft_strstr(cmd[i], "+=");
-		// printf("plus equal = %s\n", plus_equal);
-		// printf("plus equal = %p\n", plus_equal);
-		// printf("plus equal = %s\n", equal_signe - 1);
 		if (plus_equal && plus_equal == equal_signe - 1)
 		{
 			len = plus_equal - cmd[i];
-			// printf("len = %ld\n", len);
 			value = plus_equal + 2;
-			// printf("value = %s\n", value);
 			if (len == 0)
 			{
 				printf("export: `%s': not a valid identifier\n", cmd[i]);
@@ -121,8 +115,6 @@ int	my_export(t_shell *main, char **cmd)
 			}
 			if (!flag)
 			{
-				// printf("cmd[%d] = %s\n", i ,cmd[i]);
-				// new_value = parse_value(cmd[i], len);
 				int eq = find_equal(cmd[i]);
 				// chb3ana leaks
 				new_value = substr(cmd[i], 0, eq -1);

@@ -73,6 +73,13 @@ typedef struct s_env
 	int				flag;
 	struct s_env	*next;
 } t_env ;
+
+typedef struct s_export
+{
+	char *content;
+	struct s_export *next;
+}	t_export ;
+
 //---------------{ main structure }-----------------
 typedef struct s_shell
 {
@@ -80,6 +87,7 @@ typedef struct s_shell
     t_token_type 	type;
 	t_token 		*token;
 	t_env			*env;
+	t_export		*export;
 	// char 			*original;
 	t_cmd			*cmd;
 	char			**path_splited;
@@ -165,6 +173,10 @@ char	*substr(char *s, int start, int len);
 void	clear_token(t_token **lst);
 // void	syntax_error(t_token **tokens);
 t_env	*ft_env(t_env *env_list, char **env);
+void	ft_lstadd_back_export(t_export **lst, t_export *new);
+t_export	*ft_lstlast_export(t_export *lst);
+t_export	*ft_lstnew_export(char *content);
+
 // ---------------general tools -----------------
 char	*ft_strdup(const char *s1);	
 size_t	ft_strlen(const char *s);
