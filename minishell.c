@@ -14,7 +14,8 @@ void pp(t_token **tok)
 	t_token *tmp = *tok;
 	while (tmp && tmp->content)
 	{
-		printf("[%s] || type[%d]\n", tmp->content, tmp->type);
+		// printf("[%s] || type[%d]\n", tmp->content, tmp->type);
+		printf("[%s]\n", tmp->content);
 		tmp = tmp->next;
 	}
 	
@@ -60,21 +61,45 @@ void	print_node(t_shell *shell_list, char **env)
 	// printf("---------------------------------------------\n");
 }
 
+static void ft_update_token(t_token *tok)
+{
+	t_token	*tmp;
+	t_token	*save;
+	char	**spl;
+	int		i;
 
+	tmp = tok;
+	while (tmp)
+	{
+		if (tmp->type == WORD)
+		{
+			spl = ft_split(tmp->content, ' ');
+			if (spl || spl[0])
+			{
+				(1) && (i = 1, save = tmp->next);
+				tmp->content = spl[0];
+				while (spl[i])
+				{
+					tmp->next = new_token(spl[i++], WORD);
+					tmp = tmp->next;
+				}
+				tmp->next = save;
+			}
+		}
+		tmp = tmp->next;
+	}
+}
 
 void	minishell(t_shell *shell_list, char **env)
 {
 	char	*input;
-	// int i = 0;
-	// if (shell_list->token != NULL)
-	// 	clear_token(&shell_list->token);
-	// if (shell_list->cmd != NULL)
-	// 	clear_cmd(&shell_list->cmd);
+
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	shell_list->env = ft_env(shell_list->env, env);
 	while (TRUE)
 	{
 		input = readline("minishell> ");
+
 		if (!input)
 			exit(0);
 		if (input)
@@ -82,17 +107,14 @@ void	minishell(t_shell *shell_list, char **env)
 			ft_null(shell_list);
 			add_history(input);
 			lexer_1(input, &shell_list->token);
+
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
 				ft_skipe_delimiter(shell_list->token);
 				ft_expand(shell_list);
-				// pp(&shell_list->token);
-				// exit(0);
+				ft_update_token(shell_list->token);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd);
-				// print_node(shell_list, env);
-				// pp()
-				// printf("||||||||||||||||||||||||||||||||\n");
 				execution(shell_list);
 			}
 			// while (shell_list->env)
@@ -145,16 +167,9 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	if (isatty(0) == 0)
-		exit(0);
-signal(SIGINT, handle_sigint);
+	exit(0);
+	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
-	
-	// while (1)
-	// {
 	minishell(shell_list, env);
-	// }
-	
-	// This part would only be reached if the loop is broken
-	// ft_malloc(0, FREE);
 	return (0);
 }

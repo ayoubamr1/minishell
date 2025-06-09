@@ -126,13 +126,13 @@ int		ft_check_sp(char *str);
 char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res);
 char	*ft_expand_token(char *str, t_env *env);
 void	ft_expand(t_shell *shell);
-int	is_special_char2(char c);
-int ft_quote(char c);
-char *strjoin_char(char *str, char c);
-int ft_check_sp(char *str);
+int		is_special_char2(char c);
+int 	ft_quote(char c);
+char 	*strjoin_char(char *str, char c);
+int 	ft_check_sp(char *str);
 t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell);
-char *ft_dolar(char *str);
-char *cher_env(char *key, t_env *env);
+char 	*ft_dolar(char *str);
+char 	*cher_env(char *key, t_env *env);
 
 
 
@@ -141,7 +141,7 @@ char	*id_itoa(int n);
 char	*remove_quotes(char *str);
 void	ft_skipe_delimiter(t_token *token);
 int	len_n(int n);
-
+char *heredoc_expand(char *str, t_env *env);
 char	*ft_expand_token(char *str, t_env *env);
 
 void pp(t_token **tok);
