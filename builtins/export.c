@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/09 18:59:32 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/11 11:38:59 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
 	env = main->env;
 	while (env)
 	{
-		if (!ft_strncmp(env->content, cmd[i], len) && env->content[len] == '=')
+		if (!ft_strncmp(env->content, cmd[i], len))
 		{
 			flag = 1;
 			free(env->content);
@@ -137,8 +137,20 @@ int	my_export(t_shell *main, char **cmd)
 			if (!flag)
 				add_to_env(main, cmd[i]);
 		}
-		// else
-			// add_to_export(main, cmd[i]);
+		else
+		{
+			env = main->env;
+			len = ft_strlen(cmd[i]);
+			while (env)
+			{
+				if (!ft_strncmp(env->content, cmd[i], i) && env->content[len] == '=')
+					break ;
+				env = env->next;
+			}
+			if (!env)
+				add_to_env(main, cmd[i]);
+		}	
+		// add_to_export(main, cmd[i]);
 		//// hna blan diyal export ahello or a"hello" , i need to add it in export
 		i++;
 	}

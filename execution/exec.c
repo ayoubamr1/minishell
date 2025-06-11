@@ -6,20 +6,14 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/07 19:58:37 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/11 16:19:38 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_child(t_shell *main, t_cmd *cmd)
+void	child_dup_in(t_cmd *cmd)
 {
-	// printf("in childe : in_fd = %d, out_fd = %d\n", cmd->in, cmd->out);
-	if (cmd->in == -1 || cmd->out == -1 || !cmd->cmd)
-		exit(1);
-	close(cmd->pipe_fd[0]);
-	if (cmd->out == -1337)
-		cmd->out = cmd->pipe_fd[1];
 	if (cmd->in != -1)
 	{
 		if (dup2(cmd->in, 0) == -1)
@@ -29,6 +23,10 @@ void ft_child(t_shell *main, t_cmd *cmd)
 		}
 		close(cmd->in);
 	}
+}
+
+void	child_dup_out(t_cmd *cmd)
+{
 	if (cmd->out != -1)
 	{
 		if (dup2(cmd->out, 1) == -1)
@@ -38,20 +36,64 @@ void ft_child(t_shell *main, t_cmd *cmd)
 		}
 		close(cmd->out);
 	}
-	if (cmd->is_builtin == TRUE)
-	{
-		// printf("is builtins : %s\n", cmd->cmd[0]);
-		run_builtins(main, cmd->cmd, cmd);
-		exit(1);
-	}
-	// printf("mini dazet men hna\n");
-	reset_signals_inshild();
+}
+
+void	execut_child_cmd(t_shell *main, t_cmd *cmd)
+{
+	if (access(cmd->cmd[0], F_OK))
+		printf("%s : command not found\n", cmd->cmd[0]), exit(127);
 	if (cmd->cmd && execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
 	{
 		perror("execve");
 		// exite_status;
 		exit(1);
 	}
+}
+
+void ft_child(t_shell *main, t_cmd *cmd)
+{
+	// printf("in childe : in_fd = %d, out_fd = %d\n", cmd->in, cmd->out);
+	if (cmd->in == -1 || cmd->out == -1 || !cmd->cmd)
+		exit(1);
+	close(cmd->pipe_fd[0]);
+	if (cmd->out == -1337)
+		cmd->out = cmd->pipe_fd[1];
+	child_dup_in(cmd);
+	child_dup_out(cmd);
+	// if (cmd->in != -1)
+	// {
+	// 	if (dup2(cmd->in, 0) == -1)
+	// 	{
+	// 		perror("dup2\n");
+	// 		exit(1);
+	// 	}
+	// 	close(cmd->in);
+	// }
+	// if (cmd->out != -1)
+	// {
+	// 	if (dup2(cmd->out, 1) == -1)
+	// 	{
+	// 		perror("dup2\n");
+	// 		exit(1);
+	// 	}
+	// 	close(cmd->out);
+	// }
+	if (cmd->is_builtin == TRUE)
+	{
+		// printf("is builtins : %s\n", cmd->cmd[0]);
+		run_builtins(main, cmd->cmd, cmd);
+		exit(1);
+	}
+	execut_child_cmd(main, cmd);
+	// reset_signals_inshild();
+	// if (access(cmd->cmd[0], F_OK))
+	// 	printf("%s : command not found\n", cmd->cmd[0]), exit(127);
+	// if (cmd->cmd && execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
+	// {
+	// 	perror("execve");
+	// 	// exite_status;
+	// 	exit(1);
+	// }
 }
 
 void	ft_parent(t_shell *main, t_cmd *cmd)

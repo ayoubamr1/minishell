@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/07 20:13:14 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/11 15:23:57 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	hundle_shlvl(t_shell *main)
 
 	curr = main->env;
 	cmd = main->cmd;
-	if (cmd->cmd && cmd && !ft_strcmp(cmd->cmd[0], "./mini"))
+	if (cmd->cmd && cmd && !ft_strcmp(cmd->cmd[0], "./minishell"))
 	{
 		while (curr)
 		{

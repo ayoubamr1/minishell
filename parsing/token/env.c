@@ -89,39 +89,3 @@ t_env *ft_env(t_env *env_list, char **env)
 	return (env_list);
 }
 
-t_export	*ft_lstlast_export(t_export *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next != NULL)
-	{
-		lst = lst->next;
-	}
-	return (lst);
-}
-
-void	ft_lstadd_back_export(t_export **lst, t_export *new)
-{
-	t_export	*final;
-
-	if (!new || !lst)
-		return ;
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	final = ft_lstlast(*lst);
-	final->next = new;
-	return ;
-}
-
-t_export	*ft_lstnew_export(char *content)
-{
-	t_export	*node;
-
-	node = ft_malloc(sizeof(t_export), MALLOC);
-	node->content = content;
-	node->next = NULL;
-	return (node);
-}

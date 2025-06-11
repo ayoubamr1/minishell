@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:30:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/05 18:52:20 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/11 11:46:10 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	run_builtins(t_shell *main, char **cmd, t_cmd *cur)
 	if (!ft_strcmp(cmd[0], "cd"))
 		exite_status = my_cd(cmd, main);
 	if (!ft_strcmp(cmd[0], "env"))
-		print_env(main);
+		exite_status = print_env(main);
 	if (!ft_strcmp(cmd[0], "export"))
-		my_export(main, cmd);
+		exite_status = my_export(main, cmd);
 	if (!ft_strcmp(cmd[0], "pwd"))
-		my_pwd(main);
+		exite_status = my_pwd(main);
 	if (!ft_strcmp(cmd[0], "unset"))
-		unset_env(main, cmd);
+		exite_status = unset_env(main, cmd);
 	if (!ft_strcmp(cmd[0], "echo"))
 	{
 		if (cmd[1] && ft_strcmp(cmd[1], "$?") == 0)
@@ -34,11 +34,11 @@ void	run_builtins(t_shell *main, char **cmd, t_cmd *cur)
 			return ;
 		}
 		// else
-		my_echo(cmd, cur);
+		exite_status = my_echo(cmd, cur);
 		// exite_status = 0;
 	}	
 	if (!ft_strcmp(cmd[0], "exit"))
-		my_exit(main);
+		exite_status = my_exit(main, cmd);
 }
 
 int	is_builtin(char *str)
