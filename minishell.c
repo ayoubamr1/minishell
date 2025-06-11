@@ -101,7 +101,7 @@ void	minishell(t_shell *shell_list, char **env)
 		input = readline("minishell> ");
 
 		if (!input)
-			exit(0);
+			(printf("exit\n"),exit(0));
 		if (input)
 		{
 			ft_null(shell_list);
@@ -110,9 +110,11 @@ void	minishell(t_shell *shell_list, char **env)
 
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
+				// pp(&shell_list->token);
+				// exit(0);
 				ft_skipe_delimiter(shell_list->token);
 				ft_expand(shell_list);
-				ft_update_token(shell_list->token);
+				// ft_update_token(shell_list->token);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd);
 				execution(shell_list);
@@ -126,7 +128,6 @@ void	minishell(t_shell *shell_list, char **env)
 			// {
 				// 	printf("[%s]\n", shell_list->cmd->cmd[i]);
 				// 	i++;
-				// }
 
 			// nbr_cmd(shell_list);
 			// get_path(shell_list);
@@ -137,7 +138,6 @@ void	minishell(t_shell *shell_list, char **env)
 		}
 		free(input);
 	}
-
 }
 
 void	handle_sigint(int sig)
