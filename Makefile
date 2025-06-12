@@ -1,6 +1,6 @@
 NAME = minishell
 
-CC = cc #-g3 -fsanitize=address
+CC = cc -g3 -fsanitize=address
 #-Wall -Werror -Wextra 
 RM = rm -f
 

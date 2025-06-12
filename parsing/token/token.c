@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:43:47 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:53:21 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	token_str(t_token **token, char *input, int *i, int *index)
 	char	*value;
 	t_parm	*parm;
 
-	parm = malloc(sizeof(t_parm));
+	parm = ft_malloc(sizeof(t_parm), MALLOC);
 	start = *i;
 	while (input[*i] && !is_special_char(input[*i]))
 		(*i)++;

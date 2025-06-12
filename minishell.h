@@ -14,6 +14,8 @@
 #include "tools/gbc.h"
 #include <fcntl.h>  // open function 
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <errno.h>
 // #include "Get_Next_Line/get_next_line.h"
 // #include "leaks.h"
 extern int exite_status;
@@ -210,7 +212,9 @@ char	*parse_value(char *str, size_t len);
 int		search_equal(char **array, int i);
 void	add_to_export(t_shell *main, char *cmd);
 
-
+void	handle_sigint(int sig);
+void	printf_error(char *var, char* code, int sta);
+void	ft_exit(t_shell *main, char *cmd);
 
 //            EXECUTION
 void	get_path(t_shell *main);
@@ -230,6 +234,7 @@ void	execution(t_shell *main);
 void	setup_signals(void);
 void	reset_signals_inshild(void);
 void	hundle_shlvl(t_shell *main);
+void	cleanup(t_shell *main, int status);
 
 char	*get_next_line(int fd);
 

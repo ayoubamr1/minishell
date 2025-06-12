@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:38:40 by ayameur           #+#    #+#             */
-/*   Updated: 2025/05/30 13:03:37 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:45:52 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	add_to_env(t_shell *main, char *new_var)
 	t_env	*new_node;
 	t_env	*cur;
 	
-	new_node = malloc(sizeof(t_env));
-	if (!new_node)
-		return ;
+	new_node = ft_malloc(sizeof(t_env), MALLOC);
+	// if (!new_node)
+	// 	return ;
 	new_node->content = ft_strdup(new_var);
 	new_node->next = NULL;
 	// printf("new_nod = %s\n", new_node->content);
@@ -33,7 +33,7 @@ void	add_to_env(t_shell *main, char *new_var)
 			// printf("%s\n", cur->content);
 			if (!ft_strcmp(cur->content, new_var))
 			{
-				free(cur->content);
+				// free(cur->content);
 				cur->content = new_node->content;
 				return ;
 			}

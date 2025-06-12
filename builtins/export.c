@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/11 11:38:59 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:56:37 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ void	add_to_export(t_shell *main, char *cmd)
 		count++;
 		env = env->next;
 	}
-	new_array = malloc(sizeof(char *) * (count + 2));
+	new_array = ft_malloc(sizeof(char *) * (count + 2), MALLOC);
 	env = main->env;
 	count = 0;
 	while (env)
@@ -227,7 +227,7 @@ void	environment(t_env *env)
 		count++;
 		tmp = tmp->next;
 	}
-	array = malloc(sizeof (char *) * (count + 1));
+	array = ft_malloc(sizeof (char *) * (count + 1), MALLOC);
 	if (!array)
 		return ;
 	tmp = env;
@@ -271,7 +271,7 @@ char	*parse_value(char *str, size_t len)
 	i = 0;
 	j = 0;
 	printf("str = %s\n", str);
-	new_value = malloc(len + 2);
+	new_value = ft_malloc((len + 2), MALLOC);
 	if (!new_value)
 		return (NULL);
 	while (str[i])
@@ -344,82 +344,3 @@ int	is_valid_var(char **str)
 	}
 	return (1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// void	export(char	*input, char **env)//t_shell *main_struct)
-// {
-// 	char	var_name[100];
-// 	char	*value;
-// 	int 	i;
-// 	int		j;
-	
-// 	j = 0;
-// 	while (input[j])
-// 	{
-// 		if (input[j] == '$')
-// 		{	
-// 			j++;
-// 			i = 0;
-// 			while (input[j] && (ft_isalnum(input[j]) || input[j] == '_' ))
-// 				var_name[i++] = input[j++];
-// 			var_name[i] = '\0';
-// 			value = my_getenv(env, var_name); // main_struct
-// 			if (value)
-// 				printf("%s", value);
-// 		}
-// 		else
-// 		{
-// 			ft_putchar(input[j]);
-// 			j++;
-// 		}
-// 	}
-// 	printf("\n");
-// 	// if (av[1] == NULL)
-// 	// {
-// 	// 	fprintf(stderr, "missigne argument"); // need to change
-// 	// 	return (NULL);
-// 	// }
-// 	// name = ft_split(av[1], '='); // if we need to export a lot of variable int the same commande line, 
-// 	// 							 //	we need to creat a 3D array
-// 	// 							 // and allocate for each 2D array that return split inside 
-// 	// 							 // 3D array
-// 	// if (name == NULL || name[0] == NULL || name[1] == NULL)
-// 	// {
-// 	// 	fprintf(stderr, "export : invalid format"); // need to change 
-// 	// 	return (NULL);
-// 	// }
-// 	// return (name);
-// 	// // need to update in my enviroment variable
-// }
-
-// int main (int ac, char **av, char **env)
-// {
-// 	(void)ac;
-// 	(void)av;
-// 	// t_shell *env = NULL;
-// 	// (void)ac;
-// 	// export("hello $USER, you home is $HOME");
-// 	export("somethis=ayoub", env);
-// 	// int i = 0;
-// 	// while (s[i])
-// 	// {
-// 	// 	printf("[%s][%p]\n", s[i], &s[i]);
-// 	// 	i++;
-// 	// }
-// }

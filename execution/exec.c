@@ -6,33 +6,41 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/11 16:19:38 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 19:10:21 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	child_dup_in(t_cmd *cmd)
+void	child_dup_in(t_shell *main ,t_cmd *cmd)
 {
 	if (cmd->in != -1)
 	{
 		if (dup2(cmd->in, 0) == -1)
 		{
 			perror("dup2\n");
-			exit(1);
+			exite_status = 1;
+			if (main)
+				cleanup(main, exite_status);
+			ft_malloc(0, FREE);
+			exit(exite_status);
 		}
 		close(cmd->in);
 	}
 }
 
-void	child_dup_out(t_cmd *cmd)
+void	child_dup_out(t_shell *main ,t_cmd *cmd)
 {
 	if (cmd->out != -1)
 	{
 		if (dup2(cmd->out, 1) == -1)
 		{
 			perror("dup2\n");
-			exit(1);
+			exite_status = 1;
+			if (main)
+				cleanup(main, exite_status);
+			ft_malloc(0, FREE);
+			exit(exite_status);
 		}
 		close(cmd->out);
 	}
@@ -41,12 +49,17 @@ void	child_dup_out(t_cmd *cmd)
 void	execut_child_cmd(t_shell *main, t_cmd *cmd)
 {
 	if (access(cmd->cmd[0], F_OK))
-		printf("%s : command not found\n", cmd->cmd[0]), exit(127);
+		ft_exit(main, cmd->cmd[0]);
+		// printf_error(cmd->cmd[0], "command not found", 127);
 	if (cmd->cmd && execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
 	{
-		perror("execve");
-		// exite_status;
-		exit(1);
+		ft_exit(main, cmd->cmd[0]);
+		// perror("execve");
+		// exite_status = 1;
+		// if (main)
+		// 	cleanup(main, exite_status);
+		ft_malloc(0, FREE);
+		exit(exite_status);
 	}
 }
 
@@ -54,46 +67,25 @@ void ft_child(t_shell *main, t_cmd *cmd)
 {
 	// printf("in childe : in_fd = %d, out_fd = %d\n", cmd->in, cmd->out);
 	if (cmd->in == -1 || cmd->out == -1 || !cmd->cmd)
-		exit(1);
+	{	
+		cleanup(main, exite_status);
+		exit(exite_status);
+		ft_malloc(0, FREE);
+	}
 	close(cmd->pipe_fd[0]);
 	if (cmd->out == -1337)
 		cmd->out = cmd->pipe_fd[1];
-	child_dup_in(cmd);
-	child_dup_out(cmd);
-	// if (cmd->in != -1)
-	// {
-	// 	if (dup2(cmd->in, 0) == -1)
-	// 	{
-	// 		perror("dup2\n");
-	// 		exit(1);
-	// 	}
-	// 	close(cmd->in);
-	// }
-	// if (cmd->out != -1)
-	// {
-	// 	if (dup2(cmd->out, 1) == -1)
-	// 	{
-	// 		perror("dup2\n");
-	// 		exit(1);
-	// 	}
-	// 	close(cmd->out);
-	// }
+	child_dup_in(main, cmd);
+	child_dup_out(main,cmd);
+
 	if (cmd->is_builtin == TRUE)
 	{
 		// printf("is builtins : %s\n", cmd->cmd[0]);
 		run_builtins(main, cmd->cmd, cmd);
-		exit(1);
+		exit(exite_status);
 	}
 	execut_child_cmd(main, cmd);
 	// reset_signals_inshild();
-	// if (access(cmd->cmd[0], F_OK))
-	// 	printf("%s : command not found\n", cmd->cmd[0]), exit(127);
-	// if (cmd->cmd && execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
-	// {
-	// 	perror("execve");
-	// 	// exite_status;
-	// 	exit(1);
-	// }
 }
 
 void	ft_parent(t_shell *main, t_cmd *cmd)
@@ -130,23 +122,28 @@ void	execute_shild(t_shell *main)
 	int		i;
 	t_cmd	*cur;
 
-	main->pid = malloc(main->nbr_cmd * sizeof(pid_t));
+	main->pid = ft_malloc(main->nbr_cmd * sizeof(pid_t), MALLOC);
 	if (main->pid == NULL)
 		return;
 	i = 0;
 	cur = main->cmd;
 	while (i < main->nbr_cmd && cur)
 	{
-		if (cur->next)
-			ft_creat_pipe(cur);
-		ft_fork_process(main, i);
-		if (main->pid[i] == 0)
-			ft_child(main, cur);
+		if (cur->fd_statuts == 1)
+			cur = cur->next;
 		else
-			ft_parent(main, cur);
-		// system("lsof -p $(echo $$)");
-		cur = cur->next;
-		i++;
+		{
+			if (cur->next)
+				ft_creat_pipe(cur);
+			ft_fork_process(main, i);
+			if (main->pid[i] == 0)
+				ft_child(main, cur);
+			else
+				ft_parent(main, cur);
+			// system("lsof -p $(echo $$)");
+			cur = cur->next;
+			i++;
+		}
 	}
 }
 

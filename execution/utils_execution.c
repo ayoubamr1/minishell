@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:34:59 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/11 16:13:10 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:14:34 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,27 @@ void ft_fork_process(t_shell *main, int i)
 	// printf("forked pid[%d] : %d\n", i, main->pid[i]);
 }
 
-void	signal_hundler(int sig)
+// void	signal_hundler(int sig)
+// {
+// 	write (1, "\nminishell>", 11);
+	
+// 	// exite_status = 130;
+// }
+
+void	handle_sigint(int sig)
 {
-	write (1, "\nminishell>", 11);
-	// exite_status = 130;
+	if (sig == SIGINT)
+	{
+		write(STDOUT_FILENO, "\n", 1);      // Move to a new line
+		rl_on_new_line();                  // Notify readline about the new line
+		rl_replace_line("", 0);           // Clear the current input line
+		rl_redisplay();                  // Redisplay the prompt
+	}
 }
 
 void	setup_signals(void)
 {
-	signal(SIGINT, signal_hundler);
+	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }
 
