@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/12 17:39:30 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:45:25 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 	fd[1] = open(filepath, O_RDONLY);
 	if (fd[0] == -1 || fd[1] == -1)
 	{
-		node->fd_statuts = 1;
+		// node->fd_statuts = 1;
 		perror(start->content);
 		return (start->next);
 	}
