@@ -17,7 +17,7 @@
 // #include "Get_Next_Line/get_next_line.h"
 // #include "leaks.h"
 extern int exite_status;
-
+void	handle_sigint(int sig);
 typedef enum e_token_type
 {
 	SI_QUOTE,  //  ''
@@ -47,22 +47,13 @@ typedef struct s_cmd
 	char 			*file; // file name 
 	int				in; // file fd
 	int				out; //file fd
-	int 			fd_statuts; // 1 if <<
+	int 			fd_statuts;
+	int				heredoc_statuts; // 1 if <<
 	int				pipe_fd[2];
 	int				is_builtin;
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 
-typedef struct s_parm
-{
-	t_token	**token;
-	char	*input;
-	// int		*i;
-	int		*index;
-	char	*str;
-	char 	quote;
-	char	*s1;
-}	t_parm;
 //---------------{ env structure }-----------------
 typedef struct s_env 
 {
@@ -102,7 +93,7 @@ int	skip_quote_block(char *input, int *i, char quote);
 //---------------{ cmd functions }-----------------
 t_cmd		*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list);
 void		ft_expand(t_shell	*shell_list);
-void		handle_heredoc(t_shell *shell, char *delimiter, int fd);
+void		handle_heredoc(t_shell *shell, char *delimiter, int fd, t_cmd *node);
 t_token		*handle_redir_in(t_cmd *node, t_token *start);
 t_token		*handle_redir_out(t_cmd *node, t_token *start);
 t_token		*handle_redir_append(t_cmd *node, t_token *start);
@@ -126,13 +117,13 @@ int		ft_check_sp(char *str);
 char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res);
 char	*ft_expand_token(char *str, t_env *env);
 void	ft_expand(t_shell *shell);
-int	is_special_char2(char c);
-int ft_quote(char c);
-char *strjoin_char(char *str, char c);
-int ft_check_sp(char *str);
+int		is_special_char2(char c);
+int 	ft_quote(char c);
+char 	*strjoin_char(char *str, char c);
+int 	ft_check_sp(char *str);
 t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell);
-char *ft_dolar(char *str);
-char *cher_env(char *key, t_env *env);
+char 	*ft_dolar(char *str);
+char 	*cher_env(char *key, t_env *env);
 
 
 
@@ -141,7 +132,7 @@ char	*id_itoa(int n);
 char	*remove_quotes(char *str);
 void	ft_skipe_delimiter(t_token *token);
 int	len_n(int n);
-
+char *heredoc_expand(char *str, t_env *env);
 char	*ft_expand_token(char *str, t_env *env);
 
 void pp(t_token **tok);

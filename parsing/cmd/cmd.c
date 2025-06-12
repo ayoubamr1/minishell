@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 20:05:01 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:39:30 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 			start = handle_heredoc_token(shell, node_to_fill, start);
 		else
 			start = process_token_type(node_to_fill, start);
-		if (node_to_fill->fd_statuts == 1)
+		if (node_to_fill->fd_statuts == 1 || shell->env->flag == 911)
 		{
 			while (start && start->type != PIPE)
 				start = start->next;
@@ -66,7 +66,7 @@ t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 		return (start->next);
 	}
 	unlink(filepath);
-	handle_heredoc(shell, start->content, fd[0]);
+	handle_heredoc(shell, start->content, fd[0], node);
 	if (fd[1] > 0)
 	{
 		close(node->in);
@@ -105,7 +105,6 @@ t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 	t_cmd	*head;
 	t_cmd	*cmd_tmp;
 
-	remove_empty_tokens(token);
 	tmp = *token;
 	cmd_tmp = ft_lstnew_cmd();
 	head = cmd_tmp;

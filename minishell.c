@@ -14,7 +14,8 @@ void pp(t_token **tok)
 	t_token *tmp = *tok;
 	while (tmp && tmp->content)
 	{
-		printf("[%s] || type[%d]\n", tmp->content, tmp->type);
+		// printf("[%s] || type[%d]\n", tmp->content, tmp->type);
+		printf("[%s]\n", tmp->content);
 		tmp = tmp->next;
 	}
 	
@@ -60,16 +61,39 @@ void	print_node(t_shell *shell_list, char **env)
 	// printf("---------------------------------------------\n");
 }
 
+static void ft_update_token(t_token *tok)
+{
+	t_token	*tmp;
+	t_token	*save;
+	char	**spl;
+	int		i;
 
+	tmp = tok;
+	while (tmp)
+	{
+		if (tmp->type == WORD)
+		{
+			spl = ft_split(tmp->content, ' ');
+			if (spl || spl[0])
+			{
+				(1) && (i = 1, save = tmp->next);
+				tmp->content = spl[0];
+				while (spl[i])
+				{
+					tmp->next = new_token(spl[i++], WORD);
+					tmp = tmp->next;
+				}
+				tmp->next = save;
+			}
+		}
+		tmp = tmp->next;
+	}
+}
 
 void	minishell(t_shell *shell_list, char **env)
 {
 	char	*input;
-	// int i = 0;
-	// if (shell_list->token != NULL)
-	// 	clear_token(&shell_list->token);
-	// if (shell_list->cmd != NULL)
-	// 	clear_cmd(&shell_list->cmd);
+
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	shell_list->env = ft_env(shell_list->env, env);
 	// hundle_shlvl(shell_list);
@@ -77,24 +101,25 @@ void	minishell(t_shell *shell_list, char **env)
 	{
 		// reset_signals_inshild();
 		input = readline("minishell> ");
+
 		if (!input)
-			exit(0);
+			(printf("exit\n"),exit(0));
 		if (input)
 		{
 			ft_null(shell_list);
 			add_history(input);
 			lexer_1(input, &shell_list->token);
+
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
-				ft_skipe_delimiter(shell_list->token);
-				ft_expand(shell_list);
 				// pp(&shell_list->token);
 				// exit(0);
+				ft_skipe_delimiter(shell_list->token);
+				ft_expand(shell_list);
+				// ft_update_token(shell_list->token);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd);
 				// print_node(shell_list, env);
-				// pp()
-				// printf("||||||||||||||||||||||||||||||||\n");
 				execution(shell_list);
 			}
 			// while (shell_list->env)
@@ -106,7 +131,6 @@ void	minishell(t_shell *shell_list, char **env)
 			// {
 				// 	printf("[%s]\n", shell_list->cmd->cmd[i]);
 				// 	i++;
-				// }
 
 			// nbr_cmd(shell_list);
 			// get_path(shell_list);
@@ -117,19 +141,18 @@ void	minishell(t_shell *shell_list, char **env)
 		}
 		free(input);
 	}
-
 }
 
-// static void	handle_sigint(int sig)
-// {
-// 	if (sig == SIGINT)
-// 	{
-// 		write(STDOUT_FILENO, "\n", 1);      // Move to a new line
-// 		rl_on_new_line();                  // Notify readline about the new line
-// 		rl_replace_line("", 0);           // Clear the current input line
-// 		rl_redisplay();                  // Redisplay the prompt
-// 	}
-// }
+void	handle_sigint(int sig)
+{
+	if (sig == SIGINT)
+	{
+		write(1, "\n", 1);
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -147,16 +170,9 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	if (isatty(0) == 0)
-		exit(0);
-	// signal(SIGINT, handle_sigint);  // This assumes you have a signal handler
-	// signal(SIGQUIT, SIG_IGN);
-	
-	// while (1)
-	// {
+	exit(0);
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	minishell(shell_list, env);
-	// }
-	
-	// This part would only be reached if the loop is broken
-	// ft_malloc(0, FREE);
 	return (0);
 }

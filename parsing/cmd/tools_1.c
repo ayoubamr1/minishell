@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:31:55 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 20:07:43 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:39:48 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_cmd *ft_lstnew_cmd(void)
 	node->in = -1337;
 	node->out = -1337;
 	node->fd_statuts = -1337;
+	node->heredoc_statuts = -1337;
 	
 	// node->append = 0;
 	// node->heredoc = -1;

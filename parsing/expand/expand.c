@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:52:36 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 15:37:20 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,12 @@ char	*handle_regular_quotes(char *str, int *i, char *res, char *quot)
 char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res)
 {
 	if (str[*i] == '$' && str[*i + 1] == '$')
-	{
-		// res = expand_pid(res, str, *i);
 		*i += 2;
+	else if(str[*i] == '$' && str[*i + 1] && !ft_isalpha(str[*i + 1]) 
+		&& !ft_quote(str[*i + 1]))
+	{
+		*i += 2;
+		res = strjoin_char(res, str[*i]);
 	}
 	else if (str[*i] == '$' && str[*i + 1] && ft_isalpha(str[*i + 1]) 
 	&& !ft_quote(str[*i + 1]))

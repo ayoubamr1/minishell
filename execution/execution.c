@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/07 20:13:14 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:39:13 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 
 void	execution(t_shell *main)
 {
+	t_cmd *tmp;
+
+	tmp = main->cmd;
+	while (tmp)
+	{
+		if (tmp->heredoc_statuts == 911)
+			return;
+		tmp = tmp->next;
+	}
 	nbr_cmd(main);
 	get_path(main);
 	check_redir(main);
