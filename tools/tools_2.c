@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:17:27 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 20:08:38 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 17:22:22 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	**env_in_2D(t_shell *main)
 		count++;
 		cur = cur->next;		
 	}
-	env = (char **)malloc(sizeof(char *) * (count + 1));
+	env = (char **)ft_malloc(sizeof(char *) * (count + 1), MALLOC);
 	count = 0;
 	cur = main->env;
 	while (cur)

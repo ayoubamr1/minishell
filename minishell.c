@@ -141,17 +141,7 @@ void	minishell(t_shell *shell_list, char **env)
 		}
 		free(input);
 	}
-}
 
-void	handle_sigint(int sig)
-{
-	if (sig == SIGINT)
-	{
-		write(1, "\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -170,9 +160,17 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	if (isatty(0) == 0)
-	exit(0);
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+		exit(0);
+	setup_signals();
+	// signal(SIGINT, handle_sigint);  // This assumes you have a signal handler
+	// signal(SIGQUIT, SIG_IGN);
+	
+	// while (1)
+	// {
 	minishell(shell_list, env);
+	// }
+	
+	// This part would only be reached if the loop is broken
+	ft_malloc(0, FREE);
 	return (0);
 }

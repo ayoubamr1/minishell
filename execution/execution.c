@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/12 17:39:13 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:25:28 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	hundle_shlvl(t_shell *main)
 
 	curr = main->env;
 	cmd = main->cmd;
-	if (cmd->cmd && cmd && !ft_strcmp(cmd->cmd[0], "./mini"))
+	if (cmd->cmd && cmd && !ft_strcmp(cmd->cmd[0], "./minishell"))
 	{
 		while (curr)
 		{

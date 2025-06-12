@@ -3,40 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 21:15:44 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/12 17:26:08 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 19:27:26 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int token_str(t_token **tokens, char *input, int *i, int *index)
+static int	is_special_q(char c)
 {
-	int start;
-	char quote_char;
+	return (c == '|' || c == '<' || c == '>' || c == ' ');
+}
 
-	start = *i;
-	quote_char = 0; 
-	while (input[*i] && input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+static int	handle_quoted_token(t_parm *parm, char *input, int *i)
+{
+	int		start;
+	char	quote;
+
+	(1) && (start = *i, quote = input[(*i)++]);
+	if (!skip_quote_block(input, i, quote))
 	{
-		if ((input[*i] == '\'' || input[*i] == '\"'))
-		{
-			if (quote_char == 0)
-				quote_char = input[*i];
-			else if (input[*i] == quote_char)
-				quote_char = 0;
-		}
-		else if (input[*i] == ' ' && quote_char == 0)
-			break;
-		(*i)++;
+		printf("Syntax error: unclosed quote\n");
+		return (1);
 	}
-	if (*i > start)
-		add_token(tokens, substr(input, start, (*i) - start), WORD, (*index)++);
-	while (input[*i] == ' ' && quote_char == 0)
+	while (input[*i] && !is_special_q(input[*i]))
 		(*i)++;
-	return 0;
+	while (input[*i] && !is_special_q(input[*i]))
+	{
+		quote = input[(*i)++];
+		if (!skip_quote_block(input, i, quote))
+		{
+			printf("Syntax error: unclosed quote\n");
+			return (1);
+		}
+		while (input[*i] && !is_special_q(input[*i]))
+			(*i)++;
+	}
+	parm->s1 = ft_strjoin(parm->str, substr(input, start, *i - start));
+	return (0);
+}
+
+int	token_str(t_token **token, char *input, int *i, int *index)
+{
+	int		start;
+	char	*value;
+	t_parm	*parm;
+
+	parm = ft_malloc(sizeof(t_parm), MALLOC);
+	start = *i;
+	while (input[*i] && !is_special_char(input[*i]))
+		(*i)++;
+	if (input[*i] == '"' || input[*i] == '\'')
+	{
+		parm->str = substr(input, start, *i - start);
+		if (handle_quoted_token(parm, input, i))
+			return (1);
+		else
+		{
+			if (parm->quote == '\'')
+				add_token(token, parm->s1, SI_QUOTE, (*index)++);
+			else
+				add_token(token, parm->s1, WORD, (*index)++);
+		}
+		return (0);
+	}
+	value = substr(input, start, *i - start);
+	add_token(token, value, WORD, (*index)++);
+	return (0);
 }
 
 void lexer_2(t_token **tokens, char *input, int *i, int *index)

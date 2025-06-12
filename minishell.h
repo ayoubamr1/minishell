@@ -14,6 +14,8 @@
 #include "tools/gbc.h"
 #include <fcntl.h>  // open function 
 #include <sys/wait.h>
+#include <sys/stat.h>
+#include <errno.h>
 // #include "Get_Next_Line/get_next_line.h"
 // #include "leaks.h"
 extern int exite_status;
@@ -64,6 +66,7 @@ typedef struct s_env
 	int				flag;
 	struct s_env	*next;
 } t_env ;
+
 //---------------{ main structure }-----------------
 typedef struct s_shell
 {
@@ -156,6 +159,7 @@ char	*substr(char *s, int start, int len);
 void	clear_token(t_token **lst);
 // void	syntax_error(t_token **tokens);
 t_env	*ft_env(t_env *env_list, char **env);
+
 // ---------------general tools -----------------
 char	*ft_strdup(const char *s1);	
 size_t	ft_strlen(const char *s);
@@ -188,7 +192,7 @@ int		my_cd(char **str, t_shell *main);
 int		unset_env(t_shell *main, char **var_name);
 int		my_echo(char **av, t_cmd *cur);
 int		my_pwd(t_shell *main);
-int		my_exit(t_shell *main);
+int		my_exit(t_shell *main, char **cmd);
 // void	builtins(t_shell *main);
 void	run_builtins(t_shell *main, char **cmd, t_cmd *cur);
 int		is_builtin(char *str);
@@ -199,7 +203,9 @@ char	*parse_value(char *str, size_t len);
 int		search_equal(char **array, int i);
 void	add_to_export(t_shell *main, char *cmd);
 
-
+void	handle_sigint(int sig);
+void	printf_error(char *var, char* code, int sta);
+void	ft_exit(t_shell *main, char *cmd);
 
 //            EXECUTION
 void	get_path(t_shell *main);
@@ -219,6 +225,7 @@ void	execution(t_shell *main);
 void	setup_signals(void);
 void	reset_signals_inshild(void);
 void	hundle_shlvl(t_shell *main);
+void	cleanup(t_shell *main, int status);
 
 char	*get_next_line(int fd);
 

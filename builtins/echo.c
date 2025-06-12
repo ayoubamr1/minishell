@@ -6,11 +6,33 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:01:30 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/04 15:25:53 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/11 16:07:17 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	if_flag_true(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (0);
+	i = 0;
+	if (str[i] == '-' && str[i + 1] == 'n')
+	{
+		i++;
+		while (str[i])
+		{
+			if (str[i] != 'n')
+				return (0);
+			i++;
+		}
+	}
+	else
+		return (0);
+	return (1);
+}
 
 int	my_echo(char **av, t_cmd *cur)
 {
@@ -18,21 +40,23 @@ int	my_echo(char **av, t_cmd *cur)
 	// printf("==============\n");
 	// printf("%s\n", av[1]);
 	int	i;
-	int	j;
+	int	flag;
 
 	i = 1;
-	while (av[i])
+	flag = 0;
+	while (if_flag_true(av[i]))
 	{
-		j = 0;
-		while (av[i][j])
-		{
-			write(1, &av[i][j], 1);
-			j++;
-		}
-		if (av[i + 1])
-			write (1, " ", 1);
+		flag = 1;
 		i++;
 	}
-	write (1, "\n", 1);
+	while (av[i])
+	{
+		printf("%s", av[i]);
+		if (av[i + 1])
+			printf(" ");
+		i++;
+	}
+	if (!flag)
+		printf("\n");	
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/07 19:56:24 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:56:37 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
 	env = main->env;
 	while (env)
 	{
-		if (!ft_strncmp(env->content, cmd[i], len) && env->content[len] == '=')
+		if (!ft_strncmp(env->content, cmd[i], len))
 		{
 			flag = 1;
 			free(env->content);
@@ -92,17 +92,11 @@ int	my_export(t_shell *main, char **cmd)
 			return (0);
 		}
 		equal_signe = ft_strchr(cmd[i], '=');
-		// printf("equal signe = %s\n", equal_signe);
 		plus_equal = ft_strstr(cmd[i], "+=");
-		// printf("plus equal = %s\n", plus_equal);
-		// printf("plus equal = %p\n", plus_equal);
-		// printf("plus equal = %s\n", equal_signe - 1);
 		if (plus_equal && plus_equal == equal_signe - 1)
 		{
 			len = plus_equal - cmd[i];
-			// printf("len = %ld\n", len);
 			value = plus_equal + 2;
-			// printf("value = %s\n", value);
 			if (len == 0)
 			{
 				printf("export: `%s': not a valid identifier\n", cmd[i]);
@@ -121,8 +115,6 @@ int	my_export(t_shell *main, char **cmd)
 			}
 			if (!flag)
 			{
-				// printf("cmd[%d] = %s\n", i ,cmd[i]);
-				// new_value = parse_value(cmd[i], len);
 				int eq = find_equal(cmd[i]);
 				// chb3ana leaks
 				new_value = substr(cmd[i], 0, eq -1);
@@ -145,8 +137,20 @@ int	my_export(t_shell *main, char **cmd)
 			if (!flag)
 				add_to_env(main, cmd[i]);
 		}
-		// else
-			// add_to_export(main, cmd[i]);
+		else
+		{
+			env = main->env;
+			len = ft_strlen(cmd[i]);
+			while (env)
+			{
+				if (!ft_strncmp(env->content, cmd[i], i) && env->content[len] == '=')
+					break ;
+				env = env->next;
+			}
+			if (!env)
+				add_to_env(main, cmd[i]);
+		}	
+		// add_to_export(main, cmd[i]);
 		//// hna blan diyal export ahello or a"hello" , i need to add it in export
 		i++;
 	}
@@ -167,7 +171,7 @@ void	add_to_export(t_shell *main, char *cmd)
 		count++;
 		env = env->next;
 	}
-	new_array = malloc(sizeof(char *) * (count + 2));
+	new_array = ft_malloc(sizeof(char *) * (count + 2), MALLOC);
 	env = main->env;
 	count = 0;
 	while (env)
@@ -223,7 +227,7 @@ void	environment(t_env *env)
 		count++;
 		tmp = tmp->next;
 	}
-	array = malloc(sizeof (char *) * (count + 1));
+	array = ft_malloc(sizeof (char *) * (count + 1), MALLOC);
 	if (!array)
 		return ;
 	tmp = env;
@@ -267,7 +271,7 @@ char	*parse_value(char *str, size_t len)
 	i = 0;
 	j = 0;
 	printf("str = %s\n", str);
-	new_value = malloc(len + 2);
+	new_value = ft_malloc((len + 2), MALLOC);
 	if (!new_value)
 		return (NULL);
 	while (str[i])
@@ -340,82 +344,3 @@ int	is_valid_var(char **str)
 	}
 	return (1);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// void	export(char	*input, char **env)//t_shell *main_struct)
-// {
-// 	char	var_name[100];
-// 	char	*value;
-// 	int 	i;
-// 	int		j;
-	
-// 	j = 0;
-// 	while (input[j])
-// 	{
-// 		if (input[j] == '$')
-// 		{	
-// 			j++;
-// 			i = 0;
-// 			while (input[j] && (ft_isalnum(input[j]) || input[j] == '_' ))
-// 				var_name[i++] = input[j++];
-// 			var_name[i] = '\0';
-// 			value = my_getenv(env, var_name); // main_struct
-// 			if (value)
-// 				printf("%s", value);
-// 		}
-// 		else
-// 		{
-// 			ft_putchar(input[j]);
-// 			j++;
-// 		}
-// 	}
-// 	printf("\n");
-// 	// if (av[1] == NULL)
-// 	// {
-// 	// 	fprintf(stderr, "missigne argument"); // need to change
-// 	// 	return (NULL);
-// 	// }
-// 	// name = ft_split(av[1], '='); // if we need to export a lot of variable int the same commande line, 
-// 	// 							 //	we need to creat a 3D array
-// 	// 							 // and allocate for each 2D array that return split inside 
-// 	// 							 // 3D array
-// 	// if (name == NULL || name[0] == NULL || name[1] == NULL)
-// 	// {
-// 	// 	fprintf(stderr, "export : invalid format"); // need to change 
-// 	// 	return (NULL);
-// 	// }
-// 	// return (name);
-// 	// // need to update in my enviroment variable
-// }
-
-// int main (int ac, char **av, char **env)
-// {
-// 	(void)ac;
-// 	(void)av;
-// 	// t_shell *env = NULL;
-// 	// (void)ac;
-// 	// export("hello $USER, you home is $HOME");
-// 	export("somethis=ayoub", env);
-// 	// int i = 0;
-// 	// while (s[i])
-// 	// {
-// 	// 	printf("[%s][%p]\n", s[i], &s[i]);
-// 	// 	i++;
-// 	// }
-// }

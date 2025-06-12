@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools_3.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 16:06:29 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/07 18:47:20 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 16:50:20 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*ft_strndup(const char *str, unsigned int n)
 	char			*ptr;
 
 	i = 0;
-	ptr = malloc(n + 1);
+	ptr = ft_malloc((n + 1), MALLOC);
 	if (!ptr)
 		return (NULL);
 	while (n--)
@@ -83,7 +83,7 @@ char	**ft_split(const char *str, char c)
 	i = 0;
 	word = 0;
 	start = 0;
-	s = malloc ((sizeof(char *)) * (ft_count_word(str, c) + 1));
+	s = ft_malloc((sizeof(char *)) * (ft_count_word(str, c) + 1), MALLOC);
 	if (!s)
 		return (NULL);
 	while (str[i])

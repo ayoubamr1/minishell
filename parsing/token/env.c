@@ -88,3 +88,4 @@ t_env *ft_env(t_env *env_list, char **env)
 		return (ft_hard_env());
 	return (env_list);
 }
+
