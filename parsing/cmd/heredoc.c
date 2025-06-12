@@ -122,7 +122,7 @@ void	handle_heredoc(t_shell *shell, char *delimiter, int fd, t_cmd *node)
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
 			write(1, "\n", 1);
-			node->fd_statuts = 911;
+			node->heredoc_statuts = 911;
 			exite_status = 130;
 		}
 	}

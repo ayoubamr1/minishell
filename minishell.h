@@ -47,7 +47,8 @@ typedef struct s_cmd
 	char 			*file; // file name 
 	int				in; // file fd
 	int				out; //file fd
-	int 			fd_statuts; // 1 if <<
+	int 			fd_statuts;
+	int				heredoc_statuts; // 1 if <<
 	int				pipe_fd[2];
 	int				is_builtin;
 	struct s_cmd	*next; // for piped commands

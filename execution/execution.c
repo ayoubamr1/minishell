@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/12 17:11:31 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:35:53 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	execution(t_shell *main)
 	tmp = main->cmd;
 	while (tmp)
 	{
-		if (tmp->fd_statuts == 911)
+		if (tmp->heredoc_statuts == 911)
 			return;
 		tmp = tmp->next;
 	}

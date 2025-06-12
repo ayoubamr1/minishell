@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 09:06:13 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/12 17:05:50 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:31:41 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_token	*handle_redir_in(t_cmd *node, t_token *start)
 t_token	*handle_redir_out(t_cmd *node, t_token *start)
 {
 	int	fd;
-printf("1\n");
 	start = start->next;
 	if (!start ||!start->content[0] || (start->content && !ft_strchr(start->content, ' ')))
 	{
