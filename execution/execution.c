@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/08 20:24:49 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:11:31 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	execution(t_shell *main)
 {
 	t_cmd *tmp;
+
 	tmp = main->cmd;
 	while (tmp)
 	{

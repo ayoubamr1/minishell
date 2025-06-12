@@ -117,6 +117,7 @@ void	minishell(t_shell *shell_list, char **env)
 				// ft_update_token(shell_list->token);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd);
+				// print_node(shell_list, env);
 				execution(shell_list);
 			}
 			// while (shell_list->env)

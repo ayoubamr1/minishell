@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 09:06:13 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:11:44 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/12 17:05:50 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,14 @@
 t_token	*handle_redir_in(t_cmd *node, t_token *start)
 {
 	int	fd;
-
 	start = start->next;
+	if (start->content && ft_strchr(start->content, ' '))
+	{
+		node->in = -1;
+		node->fd_statuts = 1;
+		write(2, "ambiguous redirect\n", 19);
+		return(start)->next;
+	}
 	fd = open(start->content, O_RDONLY);
 	if (fd == -1)
 	{
@@ -33,9 +39,9 @@ t_token	*handle_redir_in(t_cmd *node, t_token *start)
 t_token	*handle_redir_out(t_cmd *node, t_token *start)
 {
 	int	fd;
-
+printf("1\n");
 	start = start->next;
-	if (!start ||!start->content[0])
+	if (!start ||!start->content[0] || (start->content && !ft_strchr(start->content, ' ')))
 	{
 		node->out = -1;
 		node->fd_statuts = 1;

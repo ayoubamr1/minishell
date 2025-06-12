@@ -53,16 +53,6 @@ typedef struct s_cmd
 	struct s_cmd	*next; // for piped commands
 } t_cmd;
 
-typedef struct s_parm
-{
-	t_token	**token;
-	char	*input;
-	// int		*i;
-	int		*index;
-	char	*str;
-	char 	quote;
-	char	*s1;
-}	t_parm;
 //---------------{ env structure }-----------------
 typedef struct s_env 
 {
