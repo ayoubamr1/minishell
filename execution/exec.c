@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/13 15:44:50 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 16:49:54 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void ft_child(t_shell *main, t_cmd *cmd)
 	if (cmd->in == -1 || cmd->out == -1 || !cmd->cmd)
 	{	
 		cleanup(main, exite_status);
-		exit(exite_status);
+		// exit(exite_status);
 		ft_malloc(0, FREE);
 	}
 	close(cmd->pipe_fd[0]);
@@ -112,7 +112,6 @@ void flag_builtins(t_shell *main)
 			curr->is_builtin = TRUE;
 		else
 			curr->is_builtin = FALSE;
-
 		curr = curr->next;
 	}
 }
@@ -156,8 +155,8 @@ void exec_cmd(t_shell *main)
 
 	i = 0;
 	cur = main->cmd;
-	
-	if (cur->is_builtin && main->nbr_cmd == 1 && cur->fd_statuts == 0)
+	// printf("1*************\n");
+	if (cur->is_builtin && main->nbr_cmd == 1 && cur->fd_statuts != 1)
 	{
 		main->saved_fdout = dup(1);
 		main->saved_fdin = dup(0);
@@ -172,6 +171,11 @@ void exec_cmd(t_shell *main)
 		close(main->saved_fdin);
 		return;
 	}
-	execute_shild(main);
-	wait_children(main);
+	else if (cur->fd_statuts != 1)
+	{
+		// printf("2*************\n");
+		execute_shild(main);
+		// printf("3*************\n");
+		wait_children(main);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 09:06:13 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 15:53:10 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 16:41:26 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*handle_redir_out(t_cmd *node, t_token *start)
 	start = start->next;
 	if (!start ||!start->content[0] || (start->content && ft_strchr(start->content, ' ')))
 	{
-		printf("[%s]\n", start->content);
+		// printf("[%s]\n", start->content);
 		node->out = -1;
 		node->fd_statuts = 1;
 		write(2, "ambiguous redirect\n", 19);
