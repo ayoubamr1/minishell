@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 20:05:01 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 16:01:56 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 	t_cmd	*head;
 	t_cmd	*cmd_tmp;
 
-	remove_empty_tokens(token);
+	// remove_empty_tokens(token);
 	tmp = *token;
 	cmd_tmp = ft_lstnew_cmd();
 	head = cmd_tmp;
