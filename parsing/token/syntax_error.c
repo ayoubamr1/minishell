@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax_error.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 18:38:29 by nbougrin          #+#    #+#             */
+/*   Updated: 2025/06/13 18:40:13 by nbougrin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 static int	is_redirection(t_token *token)
@@ -11,13 +23,13 @@ static int	is_bad_redir_sequence(t_token *t)
 	if (!t->next)
 		return (0);
 	if (t->type == REDIR_IN && (t->next->type == PIPE
-		|| is_redirection(t->next)))
+			|| is_redirection(t->next)))
 		return (1);
 	if (t->type == REDIR_OUT && (t->next->type == PIPE
-		|| is_redirection(t->next)))
+			|| is_redirection(t->next)))
 		return (1);
 	if (t->type == APPEND && (t->next->type == PIPE
-		|| is_redirection(t->next)))
+			|| is_redirection(t->next)))
 		return (1);
 	return (0);
 }
@@ -36,8 +48,8 @@ static int	is_general_syntax_error(t_token *t)
 
 static int	close_quote(char *str)
 {
-	int	i;
-	char quote;
+	int		i;
+	char	quote;
 
 	i = 0;
 	quote = 0;
@@ -49,12 +61,12 @@ static int	close_quote(char *str)
 			i++;
 			while (str[i] && str[i] != quote)
 				i++;
-			if(str[i] != quote)
-			return(1);
+			if (str[i] != quote)
+				return (1);
 		}	
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 int	syntax_error(t_token **tokens)
@@ -66,13 +78,12 @@ int	syntax_error(t_token **tokens)
 	{
 		if (close_quote(tmp->content))
 		{
-			printf("1Syntax error: unclosed quote\n");
+			printf("Syntax error: unclosed quote\n");
 			return (FALSE);
 		}
 		if (is_general_syntax_error(tmp))
 		{
 			printf("syntax error near unexpected token\n");
-			// ft_malloc(0, FREE);
 			return (FALSE);
 		}
 		tmp = tmp->next;

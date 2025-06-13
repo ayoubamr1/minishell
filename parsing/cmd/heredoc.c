@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/13 17:28:48 by nbougrin          #+#    #+#             */
+/*   Updated: 2025/06/13 17:39:25 by nbougrin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 static	char	*check_delimiter(char *str)
@@ -42,23 +54,23 @@ static char	*expand_env_var_her(char *str, int *i, t_env *env, char *res)
 	key = substr(str, start, *i - start);
 	val = cher_env(key, env);
 	if (!val)
-		return(res);
+		return (res);
 	return (ft_strjoin(res, val));
 }
 
-char *heredoc_expand(char *str, t_env *env)
+char	*heredoc_expand(char *str, t_env *env)
 {
-	char *res;
-	int i;
-	
+	char	*res;
+	int		i;
+
 	res = ft_strdup("");
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '$')
-		i += 2;
+			i += 2;
 		else if (str[i] == '$' && str[i + 1] && ft_isalpha(str[i + 1]))
-		res = expand_env_var_her(str, &i, env, res);
+			res = expand_env_var_her(str, &i, env, res);
 		else if (str[i] == '$' && str[i + 1] && !ft_isalpha(str[i + 1]))
 			res = strjoin_char(res, str[i++]);
 		else
@@ -87,8 +99,7 @@ void	heredoc_child(char *delimiter, int fd, t_shell *shell)
 		}
 		if (ft_strchr(line, '$') && i == 0)
 		{
-			tmp = line;
-			line = heredoc_expand(line, shell->env);
+			(1) && (tmp = line, line = heredoc_expand(line, shell->env));
 			(free(tmp), tmp = NULL);
 		}
 		write(fd, line, strlen(line));
@@ -105,8 +116,7 @@ void	handle_heredoc(t_shell *shell, char *delimiter, int fd, t_cmd *node)
 	pid = fork();
 	if (pid == -1)
 	{
-		perror("fork");
-		close(fd);
+		(perror("fork"), close(fd));
 		return ;
 	}
 	if (pid == 0)
@@ -121,9 +131,8 @@ void	handle_heredoc(t_shell *shell, char *delimiter, int fd, t_cmd *node)
 		close(fd);
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
-			write(1, "\n", 1);
+			(1) && (exite_status = 130, write (1, "\n", 1));
 			node->heredoc_statuts = 911;
-			exite_status = 130;
 		}
 	}
 }

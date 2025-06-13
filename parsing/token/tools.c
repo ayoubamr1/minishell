@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 09:02:01 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:50:16 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_token	*new_token(char *content, t_token_type type)
 	t_token	*tok;
 
 	tok = ft_malloc(sizeof(t_token), MALLOC);
-
 	tok->content = content;
 	tok->ex_space_flag = 0;
 	tok->type = type;
@@ -55,27 +54,29 @@ char	*substr(char *s, int start, int len)
 
 void	ft_word(t_token **tokens, char *input, int *i, int *index)
 {
-	int start;
+	int	start;
 
 	start = (*i);
-		while (input[(*i)] && input[(*i)] != ' ' && input[(*i)] != '|' &&
-				input[(*i)] != '<' && input[(*i)] != '>' &&
-				input[(*i)] != '"' && input[(*i)] != '\'')
-			(*i)++;
-		add_token(tokens, substr(input, start, (*i) - start), WORD, (*index));
-		(*index)++;
+	while (input[(*i)] && input[(*i)] != ' ' && input[(*i)] != '|'
+		&& input[(*i)] != '<' && input[(*i)] != '>'
+		&& input[(*i)] != '"' && input[(*i)] != '\'')
+		(*i)++;
+	add_token(tokens, substr(input, start, (*i) - start), WORD, (*index));
+	(*index)++;
 }
 
-// int	skip_quote_block(char *input, int *i, char quote)
-// {
-// 	while (input[*i])
-// 	{
-// 		if (input[*i] == quote)
-// 		{
-// 			(*i)++;
-// 			return (1);
-// 		}
-// 		(*i)++;
-// 	}
-// 	return (0);
-// }
+void	ft_lstadd_back_env(t_env **lst, t_env *new)
+{
+	t_env	*final;
+
+	if (!new || !lst)
+		return ;
+	if (*lst == NULL)
+	{
+		*lst = new;
+		return ;
+	}
+	final = ft_lstlast(*lst);
+	final->next = new;
+	return ;
+}

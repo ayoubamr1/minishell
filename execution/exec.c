@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/13 16:49:54 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 17:19:00 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,9 +171,8 @@ void exec_cmd(t_shell *main)
 		close(main->saved_fdin);
 		return;
 	}
-	else if (cur->fd_statuts != 1)
+	if (cur->fd_statuts != 1)
 	{
-		// printf("2*************\n");
 		execute_shild(main);
 		// printf("3*************\n");
 		wait_children(main);

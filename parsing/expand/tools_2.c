@@ -6,24 +6,24 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 10:03:54 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:59:27 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 18:06:53 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int ft_check_sp(char *str)
+int	ft_check_sp(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '"')
-			return(1);
+			return (1);
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
 t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell)
@@ -47,5 +47,5 @@ t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell)
 		tok = tok->next;
 	}
 	tok->next = save;
-	return last;
+	return (last);
 }
