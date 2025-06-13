@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 09:09:31 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 14:16:49 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,10 @@ char	*handle_var_expand(char *str, int *i, t_shell *shell, char *res)
 {
 	if (str[*i] == '$' && str[*i + 1] == '$')
 		*i += 2;
-	else if(str[*i] == '$' && str[*i + 1] && !ft_isalpha(str[*i + 1])
-		&& !ft_quote(str[*i + 1]))
+	else if(str[*i] == '$' && str[*i + 1] && str[*i + 1] == '?')
 	{
 		*i += 2;
-		res = strjoin_char(res, str[*i]);
+		res = ft_strjoin(res, "$?");
 	}
 	else if (str[*i] == '$' && str[*i + 1] && ft_isalpha(str[*i + 1]) 
 	&& !ft_quote(str[*i + 1]))
@@ -68,8 +67,9 @@ char	*handle_var_expand(char *str, int *i, t_shell *shell, char *res)
 	else if (str[*i] == '$' && str[*i + 1] && !ft_isalpha(str[*i + 1]) 
 		&& !ft_quote(str[*i + 1]))
 	{
+		*i += 2;
 		res = strjoin_char(res, str[*i]);
-		(*i)++;
+		// (*i)++;
 	}
 	else
 	{
