@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/12 19:25:11 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 15:44:50 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,9 @@ void	execute_shild(t_shell *main)
 	while (i < main->nbr_cmd && cur)
 	{
 		if (cur->fd_statuts == 1)
+		{	
 			cur = cur->next;
+		}
 		else
 		{
 			if (cur->next)
@@ -155,7 +157,7 @@ void exec_cmd(t_shell *main)
 	i = 0;
 	cur = main->cmd;
 	
-	if (cur->is_builtin && main->nbr_cmd == 1)
+	if (cur->is_builtin && main->nbr_cmd == 1 && cur->fd_statuts == 0)
 	{
 		main->saved_fdout = dup(1);
 		main->saved_fdin = dup(0);

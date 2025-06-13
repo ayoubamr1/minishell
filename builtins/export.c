@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/12 16:56:37 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 14:28:20 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
 	env = main->env;
 	while (env)
 	{
-		if (!ft_strncmp(env->content, cmd[i], len))
+		if (!ft_strncmp(env->content, cmd[i], len) && env->content[len] == '=')
 		{
 			flag = 1;
 			free(env->content);

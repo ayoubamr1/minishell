@@ -39,7 +39,7 @@ void	print_node(t_shell *shell_list, char **env)
 			printf("cmd[%s] ,", cc->cmd[i]);
 			i++;
 		}
-		printf("file[%s] infd[%d] outfd[%d] is_bultins[%d]}\n", cc->file, cc->in, cc->out, cc->is_builtin);
+		printf("file[%s] infd[%d] outfd[%d] is_bultins[%d]} fd_status[%d]\n", cc->file, cc->in, cc->out, cc->is_builtin, cc->fd_statuts);
 		// char *str = get_next_line(cc->heredoc);
 		// while (cc->heredoc > 0 && str)
 		// {
@@ -119,7 +119,7 @@ void	minishell(t_shell *shell_list, char **env)
 				// ft_update_token(shell_list->token);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd);
-				// print_node(shell_list, env);
+				print_node(shell_list, env);
 				execution(shell_list);
 			}
 			// while (shell_list->env)
