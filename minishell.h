@@ -35,7 +35,7 @@ typedef struct s_token
 {
     char *content;
     t_token_type type;
-	// int status_fd;
+	int ex_space_flag;
     int index;
     struct s_token *next;
 } t_token;
@@ -70,6 +70,7 @@ typedef struct s_shell
     char			*content;
     t_token_type 	type;
 	t_token 		*token;
+	t_token 		*tmp;
 	t_env			*env;
 	// char 			*original;
 	t_cmd			*cmd;
@@ -89,53 +90,42 @@ int		lexer_1(char *input, t_token **tokens);
 void 	lexer_2(t_token **tokens, char *input, int *i, int *index);
 void	ft_word(t_token **tokens, char *input, int *i, int *index);
 int		syntax_error(t_token **tokens);
-int	skip_quote_block(char *input, int *i, char quote);
+// int	skip_quote_block(char *input, int *i, char quote);
 //---------------{ cmd functions }-----------------
 t_cmd		*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list);
-void		ft_expand(t_shell	*shell_list);
 void		handle_heredoc(t_shell *shell, char *delimiter, int fd, t_cmd *node);
 t_token		*handle_redir_in(t_cmd *node, t_token *start);
 t_token		*handle_redir_out(t_cmd *node, t_token *start);
 t_token		*handle_redir_append(t_cmd *node, t_token *start);
 t_token 	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start);
-t_token 	*process_token_type(t_cmd *node, t_token *start);
+t_token 	*handle_token_type(t_cmd *node, t_token *start);
 t_token 	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start);
 void 		remove_empty_tokens(t_token **head);
-void		ft_edit_redirections(t_cmd *head);
+void		ft_redirections(t_cmd *head);
 int 		get_random_int(void);
 
-char	*ft_itoa(int n);
 //---------------{ expand functions }-----------------
 char	*cher_env(char *key, t_env *env);
 char	*expand_env_var(char *str, int *i, t_env *env, char *res);
 char	*ft_dolar(char *str);
-int		ft_quote(char c);
 char	*strjoin_char(char *str, char c);
 char	*handle_ansi_c_quote(char *str, int *i, char *res);
 char	*handle_regular_quotes(char *str, int *i, char *res, char *quot);
 int		ft_check_sp(char *str);
-char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res);
-char	*ft_expand_token(char *str, t_env *env);
+char	*handle_var_expand(char *str, int *i, t_shell *shell, char *res);
+char	*ft_expand_token(char *str, t_shell *shell);
 void	ft_expand(t_shell *shell);
 int		is_special_char2(char c);
 int 	ft_quote(char c);
-char 	*strjoin_char(char *str, char c);
-int 	ft_check_sp(char *str);
 t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell);
-char 	*ft_dolar(char *str);
-char 	*cher_env(char *key, t_env *env);
-
-
 
 size_t	ft_count_2d(char **arr);
-char	*id_itoa(int n);
 char	*remove_quotes(char *str);
 void	ft_skipe_delimiter(t_token *token);
 int	len_n(int n);
 char *heredoc_expand(char *str, t_env *env);
-char	*ft_expand_token(char *str, t_env *env);
 
-void pp(t_token **tok);
+void pp(t_token **tok);/////// remove
 void	print_env_list(t_env *lst); /// remove it
 
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
@@ -147,13 +137,11 @@ void	clear_cmd(t_cmd **lst);
 t_cmd	*ft_lstlast_cmd(t_cmd *lst);
 void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new);
 int	token_str(t_token **token, char *input, int *i, int *index);
-// void	ft_quote(t_token **tokens, char *input, int *i, int *index);
-char **ft_join2d(char **s1, char **s2);
+// char **ft_join2d(char **s1, char **s2);
 //                **  token_tools  **
 void	add_token(t_token **lst, char *content, t_token_type type, int index);
 t_token	*new_token(char *content, t_token_type type);
 char	*substr(char *s, int start, int len);
-void	clear_token(t_token **lst);
 // void	syntax_error(t_token **tokens);
 t_env	*ft_env(t_env *env_list, char **env);
 // ---------------general tools -----------------
@@ -164,16 +152,16 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strncpy(char *dest, char *src, size_t n);
 char	*ft_strcpy(const char *str, char *dest);
-int 	ft_isspace(int c);
-void 	free2d(char **str);
+// int 	ft_isspace(int c);
+// void 	free2d(char **str);
 char	**ft_strjoin2d(char **s1, char *s2);
 char	**ft_split(const char *str, char c);
-int     ft_isalnum(int c);
-void	ft_putchar(char c);
-int     ft_isdigit(int c);
 int     ft_isalpha(int c);
-char	*ft_strchr(const char *s, int c);
 char	*ft_strstr(char *str, char *to_find);
+// int     ft_isalnum(int c); /////////////////
+char	*ft_strchr(const char *s, int c);
+void	ft_putchar(char c); 
+int     ft_isdigit(int c);
 char	*ft_itoa(int n);
 int		ft_atoi(const char *str);
 

@@ -73,7 +73,6 @@ int	syntax_error(t_token **tokens)
 		{
 			printf("syntax error near unexpected token\n");
 			// ft_malloc(0, FREE);
-			// clear_token(tokens);
 			return (FALSE);
 		}
 		tmp = tmp->next;

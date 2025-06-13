@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   tools_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:17:27 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 20:08:38 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 09:15:45 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void free2d(char **str)
-{
-	int i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		str[i] = NULL;
-		i++;
-	}
-	free(str);
-	str = NULL;
-	return ;
-}
+// void free2d(char **str)
+// {
+// 	int i = 0;
+// 	while (str[i])
+// 	{
+// 		free(str[i]);
+// 		str[i] = NULL;
+// 		i++;
+// 	}
+// 	free(str);
+// 	str = NULL;
+// 	return ;
+// }
 
 char	*ft_strchr(const char *s, int c)
 {

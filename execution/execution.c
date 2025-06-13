@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/12 17:39:13 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:39:53 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	execution(t_shell *main)
 	flag_builtins(main);
 	check_if_access(main);
 	// edit_redir(main);
-	print_node(main, NULL);
+	// print_node(main, NULL);
 	hundle_shlvl(main);
 	exec_cmd(main);
 }
