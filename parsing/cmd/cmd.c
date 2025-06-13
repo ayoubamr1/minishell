@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/12 17:39:30 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:07:12 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 		if (start->type == HEREDOC)
 			start = handle_heredoc_token(shell, node_to_fill, start);
 		else
-			start = process_token_type(node_to_fill, start);
-		if (node_to_fill->fd_statuts == 1 || shell->env->flag == 911)
+			start = handle_token_type(node_to_fill, start);
+		if (node_to_fill->fd_statuts == 1)
 		{
 			while (start && start->type != PIPE)
 				start = start->next;
@@ -32,7 +32,7 @@ t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 	return (start);
 }
 
-t_token	*process_token_type(t_cmd *node, t_token *start)
+t_token	*handle_token_type(t_cmd *node, t_token *start)
 {
 	if (start->type == WORD || start->type == SI_QUOTE)
 	{
@@ -61,7 +61,7 @@ t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 	fd[1] = open(filepath, O_RDONLY);
 	if (fd[0] == -1 || fd[1] == -1)
 	{
-		node->fd_statuts = 1;
+		// node->fd_statuts = 1;
 		perror(start->content);
 		return (start->next);
 	}
@@ -75,7 +75,7 @@ t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 	return (start->next);
 }
 
-void	ft_edit_redirections(t_cmd *head)
+void	ft_redirections(t_cmd *head)
 {
 	t_cmd	*current;
 
@@ -119,6 +119,6 @@ t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 			tmp = tmp->next;
 		}
 	}
-	ft_edit_redirections(head);
+	ft_redirections(head);
 	return (head);
 }

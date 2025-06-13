@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:13:18 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:16:02 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:13:43 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,28 +67,28 @@ char	*remove_quotes(char *str)
 	return (res[j] = '\0', res);
 }
 
-char **ft_join2d(char **s1, char **s2)
-{
-	int		i;
-	int		p;
-	int		len;
-	char	**new;
+// char **ft_join2d(char **s1, char **s2)
+// {
+// 	int		i;
+// 	int		p;
+// 	int		len;
+// 	char	**new;
 
-	if ((!s1 || !s1[0]) && s2)
-		return s2;
-	if ((!s2 || !s2[0]) && s1)
-		return s1;
-	i = 0;
-	p = 0;
-	len = ft_count_2d(s1) + ft_count_2d(s2);
-	new = ft_malloc(sizeof(char *) * (len +1), MALLOC);
-	while (s1 && s1[i])
-	{
-		new[i] = s1[i];
-		i++;
-	}
-	while (s2 && s2[p])
-		new[i++] = s2[p++];
-	new[i] = NULL;
-	return (new);
-}
+// 	if ((!s1 || !s1[0]) && s2)
+// 		return s2;
+// 	if ((!s2 || !s2[0]) && s1)
+// 		return s1;
+// 	i = 0;
+// 	p = 0;
+// 	len = ft_count_2d(s1) + ft_count_2d(s2);
+// 	new = ft_malloc(sizeof(char *) * (len +1), MALLOC);
+// 	while (s1 && s1[i])
+// 	{
+// 		new[i] = s1[i];
+// 		i++;
+// 	}
+// 	while (s2 && s2[p])
+// 		new[i++] = s2[p++];
+// 	new[i] = NULL;
+// 	return (new);
+// }

@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/12 15:37:20 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:09:31 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,11 @@ char	*handle_regular_quotes(char *str, int *i, char *res, char *quot)
 	return (res);
 }
 
-char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res)
+char	*handle_var_expand(char *str, int *i, t_shell *shell, char *res)
 {
 	if (str[*i] == '$' && str[*i + 1] == '$')
 		*i += 2;
-	else if(str[*i] == '$' && str[*i + 1] && !ft_isalpha(str[*i + 1]) 
+	else if(str[*i] == '$' && str[*i + 1] && !ft_isalpha(str[*i + 1])
 		&& !ft_quote(str[*i + 1]))
 	{
 		*i += 2;
@@ -62,8 +62,8 @@ char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res)
 	&& !ft_quote(str[*i + 1]))
 	{
 		if (ft_check_sp(str))
-			env->flag = 1;
-		res = expand_env_var(str, i, env, res);
+			shell->tmp->ex_space_flag = 1;
+		res = expand_env_var(str, i, shell->env, res);
 	}
 	else if (str[*i] == '$' && str[*i + 1] && !ft_isalpha(str[*i + 1]) 
 		&& !ft_quote(str[*i + 1]))
@@ -79,7 +79,7 @@ char	*handle_variable_expansion(char *str, int *i, t_env *env, char *res)
 	return (res);
 }
 
-char	*ft_expand_token(char *str, t_env *env)
+char	*ft_expand_token(char *str, t_shell *shell)
 {
 	int		i;
 	char	*res;
@@ -96,7 +96,7 @@ char	*ft_expand_token(char *str, t_env *env)
 		{
 			res = handle_regular_quotes(str, &i, res, &quot);
 			if (str[i])
-				res = handle_variable_expansion(str, &i, env, res);
+				res = handle_var_expand(str, &i, shell, res);
 		}
 	}
 	return (ft_dolar(res));
@@ -111,11 +111,12 @@ void	ft_expand(t_shell *shell)
 	{
 		if ((tok->type == WORD || tok->type == SI_QUOTE) && ft_strchr(tok->content, '$'))
 		{
-			expanded = remove_quotes(ft_expand_token(tok->content, shell->env));
+			shell->tmp = tok;
+			expanded = remove_quotes(ft_expand_token(tok->content, shell));
 			
 			if (!expanded || !expanded[0])
 				tok->content = ft_strdup("");
-			else if (shell->env->flag == 1 || !ft_strchr(expanded, ' '))
+			else if (tok->ex_space_flag == 1 || !ft_strchr(expanded, ' '))
 			{
 				tok->content = expanded;
 				
