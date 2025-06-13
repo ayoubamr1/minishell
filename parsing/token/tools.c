@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:44:48 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 09:02:01 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_token	*new_token(char *content, t_token_type type)
 	tok = ft_malloc(sizeof(t_token), MALLOC);
 
 	tok->content = content;
+	tok->ex_space_flag = 0;
 	tok->type = type;
 	tok->next = NULL;
 	return (tok);
@@ -65,16 +66,16 @@ void	ft_word(t_token **tokens, char *input, int *i, int *index)
 		(*index)++;
 }
 
-int	skip_quote_block(char *input, int *i, char quote)
-{
-	while (input[*i])
-	{
-		if (input[*i] == quote)
-		{
-			(*i)++;
-			return (1);
-		}
-		(*i)++;
-	}
-	return (0);
-}
+// int	skip_quote_block(char *input, int *i, char quote)
+// {
+// 	while (input[*i])
+// 	{
+// 		if (input[*i] == quote)
+// 		{
+// 			(*i)++;
+// 			return (1);
+// 		}
+// 		(*i)++;
+// 	}
+// 	return (0);
+// }

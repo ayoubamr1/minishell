@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 18:17:29 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/07 18:58:30 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/13 08:56:09 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,7 @@ char *ft_dolar(char *str)
 		else
 			new[p++] = str[i++];
 	}
-	return(new[p] = '\0', new);
+	new[p] = '\0';
+	// printf("[%s]\n", new);
+	return(new);
 }

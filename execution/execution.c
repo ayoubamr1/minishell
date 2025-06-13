@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/11 15:23:57 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 14:00:19 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,22 @@
 
 void	execution(t_shell *main)
 {
+	t_cmd *tmp;
+
+	tmp = main->cmd;
+	while (tmp)
+	{
+		if (tmp->heredoc_statuts == 911)
+			return;
+		tmp = tmp->next;
+	}
 	nbr_cmd(main);
 	get_path(main);
 	check_redir(main);
 	flag_builtins(main);
 	check_if_access(main);
 	// edit_redir(main);
-	print_node(main, NULL);
+	// print_node(main, NULL);
 	hundle_shlvl(main);
 	exec_cmd(main);
 }

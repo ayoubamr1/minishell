@@ -1,45 +1,5 @@
 #include "../../minishell.h"
 
-int	len_n(int n)
-{
-	int	len;
-
-	len = 0;
-	if (n <= 0)
-		len = 1;
-	while (n != 0)
-	{
-		n /= 10;
-		len++;
-	}
-	return (len);
-}
-
-char	*ft_itoa(int n)
-{
-	char	*res;
-	int		len;
-
-	len = len_n(n);
-	if (n == -2147483648)
-		return (ft_strdup("-2147483648"));
-	res = ft_malloc(sizeof(char) * (len + 1), MALLOC);
-	if (n < 0)
-	{
-		res[0] = '-';
-		n = -n;
-	}
-	res[len] = '\0';
-	if (n == 0)
-		res[0] = '0';
-	while (n > 0)
-	{
-		res[--len] = (n % 10) + '0';
-		n /= 10;
-	}
-	return (res);
-}
-
 static	char	*check_delimiter(char *str)
 {
 	char	*new;
@@ -69,11 +29,54 @@ static	char	*check_delimiter(char *str)
 	return (new[p] = '\0', remove_quotes (new));
 }
 
-void	handle_heredoc(t_shell *shell, char *delimiter, int fd)
+static char	*expand_env_var_her(char *str, int *i, t_env *env, char *res)
+{
+	int		start;
+	char	*key;
+	char	*val;
+
+	start = 0;
+	start = ++(*i);
+	while (str[*i] && ft_isalpha(str[*i]) && !is_special_char2(str[*i]))
+		(*i)++;
+	key = substr(str, start, *i - start);
+	val = cher_env(key, env);
+	if (!val)
+		return(res);
+	return (ft_strjoin(res, val));
+}
+
+char *heredoc_expand(char *str, t_env *env)
+{
+	char *res;
+	int i;
+	
+	res = ft_strdup("");
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '$' && str[i + 1] == '$')
+		i += 2;
+		else if (str[i] == '$' && str[i + 1] && ft_isalpha(str[i + 1]))
+		res = expand_env_var_her(str, &i, env, res);
+		else if (str[i] == '$' && str[i + 1] && !ft_isalpha(str[i + 1]))
+			res = strjoin_char(res, str[i++]);
+		else
+			res = strjoin_char(res, str[i++]);
+	}
+	return (res);
+}
+
+void	heredoc_child(char *delimiter, int fd, t_shell *shell)
 {
 	char	*line;
 	char	*tmp;
+	int		i;
 
+	i = 0;
+	if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))
+		i = 1;
+	signal(SIGINT, SIG_DFL);
 	while (1)
 	{
 		line = readline("> ");
@@ -82,16 +85,45 @@ void	handle_heredoc(t_shell *shell, char *delimiter, int fd)
 			free(line);
 			break ;
 		}
-		if (ft_strchr(line, '$'))
+		if (ft_strchr(line, '$') && i == 0)
 		{
 			tmp = line;
-			line = ft_expand_token(line, shell->env);
-			free(tmp);
-			tmp = NULL;
+			line = heredoc_expand(line, shell->env);
+			(free(tmp), tmp = NULL);
 		}
 		write(fd, line, strlen(line));
-		write(fd, "\n", 1);
-		free(line);
+		(write(fd, "\n", 1), free(line));
 	}
-	close (fd);
+	(close(fd), exit(0));
+}
+
+void	handle_heredoc(t_shell *shell, char *delimiter, int fd, t_cmd *node)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		close(fd);
+		return ;
+	}
+	if (pid == 0)
+		heredoc_child(delimiter, fd, shell);
+	else
+	{
+		if (waitpid(pid, &status, 0) == -1)
+		{
+			perror("waitpid");
+			return ;
+		}
+		close(fd);
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			write(1, "\n", 1);
+			node->heredoc_statuts = 911;
+			exite_status = 130;
+		}
+	}
 }
