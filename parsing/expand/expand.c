@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 14:16:49 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 17:48:55 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	*handle_ansi_c_quote(char *str, int *i, char *res)
 {
-	res = strjoin_char(res, str[*i]); // Add $
+	res = strjoin_char(res, str[*i]);
 	(*i)++;
-	res = strjoin_char(res, str[*i]); // Add '
+	res = strjoin_char(res, str[*i]);
 	(*i)++;
 	while (str[*i] && str[*i] != '\'')
 	{
@@ -52,30 +52,26 @@ char	*handle_var_expand(char *str, int *i, t_shell *shell, char *res)
 {
 	if (str[*i] == '$' && str[*i + 1] == '$')
 		*i += 2;
-	else if(str[*i] == '$' && str[*i + 1] && str[*i + 1] == '?')
+	else if (str[*i] == '$' && str[*i + 1] && str[*i + 1] == '?')
 	{
 		*i += 2;
 		res = ft_strjoin(res, "$?");
 	}
-	else if (str[*i] == '$' && str[*i + 1] && ft_isalpha(str[*i + 1]) 
-	&& !ft_quote(str[*i + 1]))
+	else if (str[*i] == '$' && str[*i + 1] && ft_isalpha(str[*i + 1])
+		&& !ft_quote(str[*i + 1]))
 	{
 		if (ft_check_sp(str))
 			shell->tmp->ex_space_flag = 1;
 		res = expand_env_var(str, i, shell->env, res);
 	}
-	else if (str[*i] == '$' && str[*i + 1] && !ft_isalpha(str[*i + 1]) 
+	else if (str[*i] == '$' && str[*i + 1] && !ft_isalpha(str[*i + 1])
 		&& !ft_quote(str[*i + 1]))
 	{
 		*i += 2;
 		res = strjoin_char(res, str[*i]);
-		// (*i)++;
 	}
 	else
-	{
-		res = strjoin_char(res, str[*i]);
-		(*i)++;
-	}
+		res = strjoin_char(res, str[(*i)++]);
 	return (res);
 }
 
@@ -104,29 +100,26 @@ char	*ft_expand_token(char *str, t_shell *shell)
 
 void	ft_expand(t_shell *shell)
 {
-	t_token	*tok = shell->token;
+	t_token	*tok;
 	char	*expanded;
 
+	tok = shell->token;
 	while (tok)
 	{
-		if ((tok->type == WORD || tok->type == SI_QUOTE) && ft_strchr(tok->content, '$'))
+		if ((tok->type == WORD || tok->type == SI_QUOTE)
+			&& ft_strchr(tok->content, '$'))
 		{
 			shell->tmp = tok;
 			expanded = remove_quotes(ft_expand_token(tok->content, shell));
-			
 			if (!expanded || !expanded[0])
 				tok->content = ft_strdup("");
 			else if (tok->ex_space_flag == 1 || !ft_strchr(expanded, ' '))
-			{
 				tok->content = expanded;
-				
-			}
 			else
 				tok = split_token_ex(tok, expanded, shell);
 		}
 		else if (tok->type == WORD || tok->type == SI_QUOTE)
 			tok->content = remove_quotes(tok->content);
-
 		tok = tok->next;
 	}	
 }
