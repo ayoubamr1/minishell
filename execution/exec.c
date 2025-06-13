@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/13 16:49:54 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/13 18:02:59 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,23 +128,20 @@ void	execute_shild(t_shell *main)
 	cur = main->cmd;
 	while (i < main->nbr_cmd && cur)
 	{
-		if (cur->fd_statuts == 1)
-		{	
-			cur = cur->next;
-		}
-		else
-		{
 			if (cur->next)
 				ft_creat_pipe(cur);
 			ft_fork_process(main, i);
 			if (main->pid[i] == 0)
+			{	
+				if (cur->fd_statuts == 1)
+					exit(exite_status);
 				ft_child(main, cur);
+			}
 			else
 				ft_parent(main, cur);
 			// system("lsof -p $(echo $$)");
 			cur = cur->next;
 			i++;
-		}
 	}
 }
 
@@ -155,7 +152,6 @@ void exec_cmd(t_shell *main)
 
 	i = 0;
 	cur = main->cmd;
-	// printf("1*************\n");
 	if (cur->is_builtin && main->nbr_cmd == 1 && cur->fd_statuts != 1)
 	{
 		main->saved_fdout = dup(1);
@@ -171,11 +167,9 @@ void exec_cmd(t_shell *main)
 		close(main->saved_fdin);
 		return;
 	}
-	else if (cur->fd_statuts != 1)
-	{
-		// printf("2*************\n");
+	else
+	{ 
 		execute_shild(main);
-		// printf("3*************\n");
 		wait_children(main);
 	}
 }
