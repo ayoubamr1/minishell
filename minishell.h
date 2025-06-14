@@ -162,7 +162,7 @@ char	**ft_strjoin2d(char **s1, char *s2);
 char	**ft_split(const char *str, char c);
 int     ft_isalpha(int c);
 char	*ft_strstr(char *str, char *to_find);
-// int     ft_isalnum(int c); /////////////////
+int     ft_isalnum(int c); /////////////////
 char	*ft_strchr(const char *s, int c);
 void	ft_putchar(char c); 
 int     ft_isdigit(int c);
@@ -172,6 +172,8 @@ int		ft_atoi(const char *str);
 int	is_special_char(char c);
 //           BUILTINS
 int		my_export(t_shell *main, char **cmd);
+void	ft_plus_equal(t_env *env, char **cmd, int len, char *value, int i);
+int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag);
 void	add_to_env(t_shell *main, char *new_var);
 char	*my_getenv( t_shell *main, char *var_name); // t_shell *main
 // void	update_env(t_shell *main, char *var_updated);
@@ -190,6 +192,7 @@ void	environment(t_env *env);
 char	*parse_value(char *str, size_t len);
 int		search_equal(char **array, int i);
 void	add_to_export(t_shell *main, char *cmd);
+char	**arrange_array(char **array);
 
 void	handle_sigint(int sig);
 void	printf_error(char *var, char* code, int sta);

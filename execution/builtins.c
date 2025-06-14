@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:30:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/11 11:46:10 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:38:53 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,14 @@ void	run_builtins(t_shell *main, char **cmd, t_cmd *cur)
 	if (!ft_strcmp(cmd[0], "cd"))
 		exite_status = my_cd(cmd, main);
 	if (!ft_strcmp(cmd[0], "env"))
+	{
+		if (!ft_strcmp(cmd[0], "env") && !main->path_splited)
+		{
+			printf("%s: No such file or directory\n", cmd[0]);
+			return ;			
+		}
 		exite_status = print_env(main);
+	}
 	if (!ft_strcmp(cmd[0], "export"))
 		exite_status = my_export(main, cmd);
 	if (!ft_strcmp(cmd[0], "pwd"))

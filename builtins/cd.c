@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/07 19:57:52 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:42:32 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	my_cd(char **str, t_shell *main)
 	// printf("{%s}\n", target_dir);
 	// get the currect working directory
 	oldpwd = getcwd(NULL, 0);
-	printf("{cwd = %s}\n", oldpwd);
+	// printf("{cwd = %s}\n", oldpwd);
 	if (!oldpwd)
 	{
 		perror("getcwd");
@@ -65,7 +65,7 @@ int	my_cd(char **str, t_shell *main)
 	update_env(main, "PWD", newpwd); // PWD become target_dir
 	free(oldpwd);
 	free(newpwd);
-	printf("target_dir = %s\n", target_dir);
+	// printf("target_dir = %s\n", target_dir);
 	return (0);
 	
 }

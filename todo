@@ -7,3 +7,5 @@ hundle CD
 
 
 shelle lvl : double free
+
+hundle export : export aaaa && export aaaaa 4char vs 5char 

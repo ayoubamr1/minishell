@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/13 14:00:19 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/14 18:07:26 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	execution(t_shell *main)
 	check_if_access(main);
 	// edit_redir(main);
 	// print_node(main, NULL);
-	hundle_shlvl(main);
+	// hundle_shlvl(main);
 	exec_cmd(main);
 }
 
