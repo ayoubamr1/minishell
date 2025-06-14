@@ -7,3 +7,12 @@ hundle CD
 
 
 shelle lvl : double free
+
+
+minishell> env | grep SHLVL
+SHLVL=-2147483647
+minishell> 
+
+export a="a                            b"
+nbougrin@e1r13p4:~/pull$  echo $a"$a"$a'$a'
+a ba                            ba b$a
