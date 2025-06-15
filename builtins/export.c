@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/14 18:02:32 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/15 16:40:31 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ int	plus_equal_hundle_case(t_shell *main, char **cmd, int i)
 	env = main->env;
 	while (env)
 	{
-		if (!ft_strncmp(env->content, cmd[i], len) && env->content[len] == '=')
+		if (!ft_strncmp(env->content, cmd[i], len) && 
+			(env->content[len] == '=' || env->content[len] == '\0'))
 		{
 			// flag = 1;
 			ft_plus_equal(env, cmd, len, value, i);
@@ -82,10 +83,15 @@ int	plus_equal_hundle_case(t_shell *main, char **cmd, int i)
 int	hundle_equal_case(t_shell *main, char **cmd, int i)
 {
 	int		flag;
+	char	*eq_pos;
 	size_t	len;
 
 	flag = 0;
-	len = ft_strchr(cmd[i], '=') - cmd[i];
+	eq_pos = ft_strchr(cmd[i], '=');
+	if (eq_pos)
+		len = eq_pos - cmd[i];
+	else
+		len = ft_strlen(cmd[i]);
 	if (len == 0)
 		return (printf("export: `%s': not a valid identifier\n", cmd[i]), 0);
 	flag = ft_equal(main, cmd, len, i, 0);
@@ -138,7 +144,8 @@ int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
 	env = main->env;
 	while (env)
 	{
-		if (!ft_strncmp(env->content, cmd[i], len) && env->content[len] == '=')
+		if (!ft_strncmp(env->content, cmd[i], len) && 
+			(env->content[len] == '=' || env->content[len] == '\0'))
 		{
 			printf("dkhal hna\n");
 			flag = 1;
