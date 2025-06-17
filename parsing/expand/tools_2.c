@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 10:03:54 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 18:06:53 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/14 15:45:57 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell)
 	i = 1;
 	last = tok;
 	while (spl[i])
-	{
+	{	
 		tok->next = new_token(spl[i++], WORD);
 		tok = tok->next;
 	}
