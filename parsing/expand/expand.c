@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/17 12:55:15 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/17 12:56:12 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,9 +191,12 @@ void    ft_expand(t_shell *shell)
 				tok->content = remove_quotes(tok->content);
 			else if (!ft_strchr(expanded, ' '))
 				tok->content = remove_quotes(expanded);
-			else 
+			else
+			{
+
 				new = ft_split_space(expanded);
 				tok = split_token_exx(tok, new);
+			}
 		}
 		tok = tok->next;
 	}    
