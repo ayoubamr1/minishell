@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 14:17:27 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 14:00:59 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/17 11:51:41 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	ft_atoi(const char *str)
 {
 	int					i;
 	int					signe;
-	unsigned long int	check;
+	unsigned long 		check;
 	unsigned long		res;
 
 	i = 0;

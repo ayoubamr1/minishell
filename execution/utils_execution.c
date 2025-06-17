@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:34:59 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/13 16:29:42 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/17 11:31:14 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	wait_children(t_shell *main)
 		// printf("6*************\n");
 		if (waitpid(main->pid[i], &status, 0) == -1)
 		{	
-			printf("[%d]\n", main->pid[i]);
-			// ft_exit(main, main->cmd->cmd[0]);
-			printf("7*************\n");
+			// printf("[%d]\n", main->pid[i]);
+			ft_exit(main, main->cmd->cmd[0]);
+			// printf("7*************\n");
 			// exit(1);
 		}
 		if (WIFEXITED(status))
