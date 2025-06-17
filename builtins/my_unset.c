@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:06:40 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/05 17:12:03 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/14 18:08:31 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ int	unset_env(t_shell *main, char **var_name)
 	int		i;
 
 	i = 0;
-	// equal_signel = ft_strchr(var_name, '=');
-	// len = equal_signel - var_name;
-	// printf("len = %ld\n", len);
 	while (var_name[i])
 	{
 		cur = main->env;
@@ -34,7 +31,6 @@ int	unset_env(t_shell *main, char **var_name)
 			if (ft_strncmp(cur->content, var_name[i], var_len) == 0 
 				&& cur->content[var_len] == '=')
 			{
-				printf("============\n");
 				if (prev)                // case where prev != NULL
 					prev->next = cur->next;
 				else					 // case where we we want to remove the first node

@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:48:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/05 18:57:36 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:44:12 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	update_env(t_shell *main, char *key, char *value)
 		{
 			free(cur->content);
 			cur->content = new_pwd;
-			printf("%s\n", cur->content);
+			// printf("%s\n", cur->content);
 			return ;
 		}
 		cur = cur->next;

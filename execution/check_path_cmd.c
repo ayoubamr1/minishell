@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/11 16:20:52 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/14 16:38:59 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	get_path(t_shell *main)
 	}
 	if (path == NULL || *(path + 5) == '\0')
 	{	
-		printf("commande not found\n");
+		// printf("commande not found\n");
 		main->path_splited = NULL;
 		// exit(1);
 		return ;

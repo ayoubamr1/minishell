@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:20:33 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/12 18:26:03 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/14 18:56:53 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int my_exit(t_shell *main, char **cmd)
 	
 void	printf_error(char *var, char* msg, int status)
 {
-	write(2, "minishell> : ", 13);
+	write(2, "minishell> ", 11);
 	if (var)
 	{
 		ft_putstr_fd(var, 2);

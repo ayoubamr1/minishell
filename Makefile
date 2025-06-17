@@ -27,6 +27,7 @@ SRC =   minishell.c \
         builtins/cd.c \
         builtins/echo.c \
         builtins/export.c \
+        builtins/export_utils.c \
         builtins/my_getenv.c \
         builtins/my_unset.c \
         builtins/update_env.c \
