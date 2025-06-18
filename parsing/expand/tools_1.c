@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:13:18 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 18:04:42 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:19:13 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*remove_quotes(char *str)
 
 	if (!str)
 		return (NULL);
-	(1) && (i = 0, j = 0, res = ft_malloc(strlen(str) + 1, MALLOC));
+	(1) && (i = 0, j = 0, res = ft_malloc(ft_strlen(str) + 1, MALLOC));
 	quote = 0;
 	while (str[i])
 	{

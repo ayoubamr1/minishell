@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/17 13:45:53 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/18 19:01:46 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ void flag_builtins(t_shell *main)
 	curr = main->cmd;
 	while (curr)
 	{
-		if (curr->cmd && is_builtin(curr->cmd[0]))
+		if (curr->cmd && curr->cmd[0] && is_builtin(curr->cmd[0]))
 			curr->is_builtin = TRUE;
 		else
 			curr->is_builtin = FALSE;

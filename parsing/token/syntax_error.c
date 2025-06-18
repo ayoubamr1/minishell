@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:38:29 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 18:40:13 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:06:13 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,13 @@ int	syntax_error(t_token **tokens)
 		if (close_quote(tmp->content))
 		{
 			printf("Syntax error: unclosed quote\n");
+			exite_status = 1;
 			return (FALSE);
 		}
 		if (is_general_syntax_error(tmp))
 		{
 			printf("syntax error near unexpected token\n");
+			exite_status = 1;
 			return (FALSE);
 		}
 		tmp = tmp->next;

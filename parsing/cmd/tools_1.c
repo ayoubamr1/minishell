@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:31:55 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 17:45:19 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:33:31 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,28 @@ int	get_random_int(void)
 	read(fd, &num, sizeof(num));
 	close(fd);
 	return ((int)(num % 100));
+}
+
+void	ft_redirections(t_cmd *head)
+{
+	t_cmd	*current;
+
+	current = head;
+	while (current)
+	{
+		if (current == head && current->in == -1337)
+		{
+			current->in = open("/dev/stdin", O_RDONLY);
+			if (current->in == -1)
+				perror("open");
+		}
+		if (!current->next && current->out == -1337)
+		{
+			current->out = open("/dev/stdout",
+					O_CREAT | O_RDWR | O_TRUNC, 0644);
+			if (current->out == -1)
+				perror("open");
+		}
+		current = current->next;
+	}
 }

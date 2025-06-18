@@ -109,3 +109,6 @@ declare -x b=""
 minishell> $b
 execve: Permission denied
 minishell> export b=$hj
+
+
+exit status

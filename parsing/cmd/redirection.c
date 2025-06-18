@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 09:06:13 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 17:42:43 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 16:58:40 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ t_token	*handle_redir_in(t_cmd *node, t_token *start)
 		node->in = -1;
 		node->fd_statuts = 1;
 		write(2, "ambiguous redirect\n", 19);
+		exite_status = 1;
 		return ((start)->next);
 	}
 	fd = open(start->content, O_RDONLY);
 	if (fd == -1)
 	{
 		node->fd_statuts = 1;
+		exite_status = 1;
 		perror(start->content);
 		return (start->next);
 	}
@@ -48,12 +50,14 @@ t_token	*handle_redir_out(t_cmd *node, t_token *start)
 		node->out = -1;
 		node->fd_statuts = 1;
 		write(2, "ambiguous redirect\n", 19);
+		exite_status = 1;
 		return ((start)->next);
 	}
 	fd = open(start->content, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd == -1)
 	{
 		node->fd_statuts = 1;
+		exite_status = 1;
 		perror(start->content);
 		return (start->next);
 	}
@@ -72,6 +76,7 @@ t_token	*handle_redir_append(t_cmd *node, t_token *start)
 	if (fd == -1)
 	{
 		node->fd_statuts = 1;
+		exite_status = 1;
 		perror(start->content);
 		return (start->next);
 	}

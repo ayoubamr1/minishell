@@ -30,8 +30,8 @@ typedef enum e_token_type
     APPEND,     // >>
     HEREDOC,   // << 
 	DILIMITER,
-	VOID     
-} t_token_type;
+	SKIP     
+} t_token_type;	
 //---------------{ tokenization structure }-----------------
 typedef struct s_token
 {
@@ -64,6 +64,7 @@ typedef struct s_env
 	char			*content;
 	int				index;
 	int				flag;
+	int 			quot;
 	struct s_env	*next;
 } t_env ;
 
@@ -73,12 +74,13 @@ typedef struct s_shell
     char			*content;
     t_token_type 	type;
 	t_token 		*token;
-	t_token 		*tmp;
+	char 		*tmp;
 	t_env			*env;
 	// char 			*original;
 	t_cmd			*cmd;
 	char			**path_splited;
 	int				nbr_cmd;
+	int				fd;
 	pid_t			*pid;
 	int				saved_fdin;
 	int				saved_fdout;
@@ -106,9 +108,11 @@ t_token 	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start);
 void 		remove_empty_tokens(t_token **head);
 void		ft_redirections(t_cmd *head);
 int 		get_random_int(void);
-
+void	ft_redirections(t_cmd *head);
+void ft_cmd_2(t_shell *shell, t_token *tmp, t_cmd *cmd_tmp);
+char	*heredoc_expand(char *str, t_env *env);
 //---------------{ expand functions }-----------------
-char	*cher_env(char *key, t_env *env);
+char	*cher_env(char *key, t_env *env, char	quot);
 char	*expand_env_var(char *str, int *i, t_env *env, char *res);
 char	*ft_dolar(char *str);
 char	*strjoin_char(char *str, char c);
@@ -121,6 +125,9 @@ void	ft_expand(t_shell *shell);
 int		is_special_char2(char c);
 int 	ft_quote(char c);
 t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell);
+t_token    *split_to_token_list(t_token *tok, char **spl);
+char	**ft_split_space(char *str);
+char	*expand_env_var_her(char *str, int *i, t_env *env, char *res);
 
 size_t	ft_count_2d(char **arr);
 char	*remove_quotes(char *str);
