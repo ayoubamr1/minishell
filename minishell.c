@@ -103,7 +103,7 @@ void	minishell(t_shell *shell_list, char **env)
 		input = readline("minishell> ");
 
 		if (!input)
-			(printf("exit\n"),exit(0));
+			(exite_status = 1, printf("exit\n"),exit(0));
 		if (input)
 		{
 			ft_null(shell_list);

@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 15:59:49 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:34:03 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,6 @@ t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 		return (NULL);
 	while (start && start->type != PIPE)
 	{
-		// if (start->type == HEREDOC)
-		// 	start = handle_heredoc_token(shell, node_to_fill, start);
-		// else
 		start = handle_token_type(node_to_fill, start);
 		if (node_to_fill->fd_statuts == 1)
 		{
@@ -67,6 +64,7 @@ t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 	{
 		(close(fd[0]), close(fd[1]));
 		node->fd_statuts = 1;
+		exite_status = 1;
 		perror(start->content);
 		return (start->next);
 	}
@@ -80,29 +78,6 @@ t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 	return (start->next);
 }
 
-void	ft_redirections(t_cmd *head)
-{
-	t_cmd	*current;
-
-	current = head;
-	while (current)
-	{
-		if (current == head && current->in == -1337)
-		{
-			current->in = open("/dev/stdin", O_RDONLY);
-			if (current->in == -1)
-				perror("open");
-		}
-		if (!current->next && current->out == -1337)
-		{
-			current->out = open("/dev/stdout",
-					O_CREAT | O_RDWR | O_TRUNC, 0644);
-			if (current->out == -1)
-				perror("open");
-		}
-		current = current->next;
-	}
-}
 t_token	*heredoc_while(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 {
 	
@@ -116,19 +91,6 @@ t_token	*heredoc_while(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 			start = start->next;
 	}
 	return(start);
-}
-
-void ft_cmd_2(t_shell *shell, t_token *tmp, t_cmd *cmd_tmp)
-{
-	while (tmp)
-	{
-		tmp = store_cmd_node(shell, cmd_tmp, tmp);
-		if (tmp && tmp->type == PIPE)
-		{
-			cmd_tmp = cmd_tmp->next;
-			tmp = tmp->next;
-		}
-	}
 }
 
 t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)

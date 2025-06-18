@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:28:48 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 14:28:31 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:36:17 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,25 @@ static char	*expand_env_var_her(char *str, int *i, t_env *env, char *res)
 	return (ft_strjoin(res, val));
 }
 
-char	*heredoc_expand(char *str, t_env *env)
+int	heredoc_p2(char *delimiter, char *line, int i, t_shell *s)
 {
-	char	*res;
-	int		i;
+	char	*tmp;
 
-	res = ft_strdup("");
-	i = 0;
-	while (str[i])
+	if (ft_strcmp(line, check_delimiter(delimiter)) == 0)
 	{
-		if (str[i] == '$' && str[i + 1] == '$')
-			i += 2;
-		else if (str[i] == '$' && str[i + 1] && ft_isalpha(str[i + 1]))
-			res = expand_env_var_her(str, &i, env, res);
-		else if (str[i] == '$' && str[i + 1] && !ft_isalpha(str[i + 1]))
-			res = strjoin_char(res, str[i++]);
-		else
-			res = strjoin_char(res, str[i++]);
+		free(line);
+		return (1);
 	}
-	return (res);
+	if (ft_strchr(line, '$') && i == 0)
+	{
+		tmp = line;
+		line = heredoc_expand(line, s->env);
+		free(tmp);
+	}
+	write(s->fd, line, ft_strlen(line));
+	write(s->fd, "\n", 1);
+	free(line);
+	return (0);
 }
 
 void	heredoc_child(char *delimiter, int fd, t_shell *shell)
@@ -92,21 +92,55 @@ void	heredoc_child(char *delimiter, int fd, t_shell *shell)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line || strcmp(line, check_delimiter(delimiter)) == 0)
+		if (!line)
 		{
-			free(line);
+			printf("warning: here-document delimited by end-of-file");
+			printf(" wanted `%s')\n", check_delimiter(delimiter));
+			exite_status = 0;
 			break ;
 		}
-		if (ft_strchr(line, '$') && i == 0)
-		{
-			(1) && (tmp = line, line = heredoc_expand(line, shell->env));
-			(free(tmp), tmp = NULL);
-		}
-		write(fd, line, strlen(line));
-		(write(fd, "\n", 1), free(line));
+		shell->fd = fd;
+		if (heredoc_p2(delimiter, line, i, shell) == 1)
+			break ;
 	}
-	(close(fd), exit(0));
+	close(fd);
+	exit(0);
 }
+// void	heredoc_child(char *delimiter, int fd, t_shell *shell)
+// {
+// 	char	*line;
+// 	char	*tmp;
+// 	int		i;
+
+// 	i = 0;
+// 	if (ft_strchr(delimiter, '\'') || ft_strchr(delimiter, '"'))
+// 		i = 1;
+// 	signal(SIGINT, SIG_DFL);
+// 	while (1)
+// 	{
+// 		line = readline("> ");
+// 		if(!line)
+// 		{
+// 			printf("warning: here-document delimited by end-of-file (wanted `%s')\n\
+// 				", check_delimiter(delimiter));
+// 			exite_status = 0;
+// 			break ;
+// 		}
+// 		if (ft_strcmp(line, check_delimiter(delimiter)) == 0)
+// 		{
+// 			free(line);
+// 			break ;
+// 		}
+// 		if (ft_strchr(line, '$') && i == 0)
+// 		{
+// 			(1) && (tmp = line, line = heredoc_expand(line, shell->env));
+// 			(free(tmp), tmp = NULL);
+// 		}
+// 		write(fd, line, ft_strlen(line));
+// 		(write(fd, "\n", 1), free(line));
+// 	}
+// 	(close(fd), exit(0));
+// }
 
 void	handle_heredoc(t_shell *shell, char *delimiter, int fd, t_cmd *node)
 {
@@ -116,7 +150,7 @@ void	handle_heredoc(t_shell *shell, char *delimiter, int fd, t_cmd *node)
 	pid = fork();
 	if (pid == -1)
 	{
-		(perror("fork"), close(fd));
+		(exite_status = 1, perror("fork"), close(fd));
 		return ;
 	}
 	if (pid == 0)

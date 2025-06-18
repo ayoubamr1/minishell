@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:05:51 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/04/27 10:13:03 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 17:08:27 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,11 @@ void	*ft_malloc(size_t size, t_call call)
 	{
 		ptr = malloc(size);
 		if (!ptr)
-			(clear_all(&head), exit(1));
+		{
+			clear_all(&head);
+			exite_status = 1;
+			exit(1);
+		}
 		tmp = new_node(ptr);
 		if (!tmp)
 			(clear_all(&head), free(ptr), exit(1));

@@ -74,12 +74,13 @@ typedef struct s_shell
     char			*content;
     t_token_type 	type;
 	t_token 		*token;
-	t_token 		*tmp;
+	char 		*tmp;
 	t_env			*env;
 	// char 			*original;
 	t_cmd			*cmd;
 	char			**path_splited;
 	int				nbr_cmd;
+	int				fd;
 	pid_t			*pid;
 	int				saved_fdin;
 	int				saved_fdout;
@@ -107,7 +108,9 @@ t_token 	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start);
 void 		remove_empty_tokens(t_token **head);
 void		ft_redirections(t_cmd *head);
 int 		get_random_int(void);
-
+void	ft_redirections(t_cmd *head);
+void ft_cmd_2(t_shell *shell, t_token *tmp, t_cmd *cmd_tmp);
+char	*heredoc_expand(char *str, t_env *env);
 //---------------{ expand functions }-----------------
 char	*cher_env(char *key, t_env *env, char	quot);
 char	*expand_env_var(char *str, int *i, t_env *env, char *res);
