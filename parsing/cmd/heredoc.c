@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:28:48 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 18:46:08 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:58:03 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static	char	*check_delimiter(char *str)
 	return (new[p] = '\0', remove_quotes (new));
 }
 
-static char	*expand_env_var_her(char *str, int *i, t_env *env, char *res)
+char	*expand_env_var_her(char *str, int *i, t_env *env, char *res)
 {
 	int		start;
 	char	*key;
