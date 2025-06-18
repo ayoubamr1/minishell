@@ -37,6 +37,7 @@ SRC =   minishell.c \
 		parsing/cmd/redirection.c \
 		parsing/expand/tools_2.c \
 		parsing/expand/expand2.c \
+		parsing/cmd/tools_2.c \
 		tools/tools_4.c \
 		tools/tools_5.c 
 
