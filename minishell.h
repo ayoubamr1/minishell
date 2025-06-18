@@ -30,8 +30,8 @@ typedef enum e_token_type
     APPEND,     // >>
     HEREDOC,   // << 
 	DILIMITER,
-	VOID     
-} t_token_type;
+	SKIP     
+} t_token_type;	
 //---------------{ tokenization structure }-----------------
 typedef struct s_token
 {
@@ -64,6 +64,7 @@ typedef struct s_env
 	char			*content;
 	int				index;
 	int				flag;
+	int 			quot;
 	struct s_env	*next;
 } t_env ;
 
@@ -108,7 +109,7 @@ void		ft_redirections(t_cmd *head);
 int 		get_random_int(void);
 
 //---------------{ expand functions }-----------------
-char	*cher_env(char *key, t_env *env);
+char	*cher_env(char *key, t_env *env, char	quot);
 char	*expand_env_var(char *str, int *i, t_env *env, char *res);
 char	*ft_dolar(char *str);
 char	*strjoin_char(char *str, char c);

@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:07:36 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 18:37:55 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:18:21 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static t_env	*ft_lstnew_env(char *content)
 	node = ft_malloc(sizeof(t_env), MALLOC);
 	node->content = content;
 	node->flag = 0;
+	node->quot = 0;
 	node->next = NULL;
 	return (node);
 }

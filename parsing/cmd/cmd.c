@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 18:58:13 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:59:49 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 		return (NULL);
 	while (start && start->type != PIPE)
 	{
-		if (start->type == HEREDOC)
-			start = handle_heredoc_token(shell, node_to_fill, start);
-		else
-			start = handle_token_type(node_to_fill, start);
+		// if (start->type == HEREDOC)
+		// 	start = handle_heredoc_token(shell, node_to_fill, start);
+		// else
+		start = handle_token_type(node_to_fill, start);
 		if (node_to_fill->fd_statuts == 1)
 		{
 			while (start && start->type != PIPE)
@@ -34,9 +34,13 @@ t_token	*store_cmd_node(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 
 t_token	*handle_token_type(t_cmd *node, t_token *start)
 {
-	if (start->type == WORD || start->type == SI_QUOTE)
+	if (start->type == WORD || start->type == SI_QUOTE
+		|| start->type == SKIP)
 	{
-		node->cmd = ft_strjoin2d(node->cmd, start->content);
+		if (start->type == SKIP)
+			node->cmd = ft_strjoin2d(node->cmd, NULL);
+		else
+			node->cmd = ft_strjoin2d(node->cmd, start->content);
 		return (start->next);
 	}
 	else if (start->type == REDIR_IN)
@@ -99,6 +103,33 @@ void	ft_redirections(t_cmd *head)
 		current = current->next;
 	}
 }
+t_token	*heredoc_while(t_shell *shell, t_cmd *node_to_fill, t_token *start)
+{
+	
+	if (!start)
+		return (NULL);
+	while (start && start->type != PIPE)
+	{
+		if (start->type == HEREDOC)
+			start = handle_heredoc_token(shell, node_to_fill, start);
+		else 
+			start = start->next;
+	}
+	return(start);
+}
+
+void ft_cmd_2(t_shell *shell, t_token *tmp, t_cmd *cmd_tmp)
+{
+	while (tmp)
+	{
+		tmp = store_cmd_node(shell, cmd_tmp, tmp);
+		if (tmp && tmp->type == PIPE)
+		{
+			cmd_tmp = cmd_tmp->next;
+			tmp = tmp->next;
+		}
+	}
+}
 
 t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 {
@@ -106,14 +137,15 @@ t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 	t_cmd	*head;
 	t_cmd	*cmd_tmp;
 
-	// remove_empty_tokens(token);
 	tmp = *token;
 	cmd_tmp = ft_lstnew_cmd();
 	head = cmd_tmp;
 	ft_lstadd_back_cmd(cmd_list, cmd_tmp);
 	while (tmp)
 	{
-		tmp = store_cmd_node(shell, cmd_tmp, tmp);
+		tmp = heredoc_while(shell, cmd_tmp, tmp);
+		if (cmd_tmp->heredoc_statuts == 911)
+			return NULL;
 		if (tmp && tmp->type == PIPE)
 		{
 			cmd_tmp = ft_lstnew_cmd();
@@ -121,6 +153,9 @@ t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 			tmp = tmp->next;
 		}
 	}
+	cmd_tmp = head;
+	tmp = *token;
+	ft_cmd_2(shell, tmp, cmd_tmp);
 	ft_redirections(head);
 	return (head);
 }

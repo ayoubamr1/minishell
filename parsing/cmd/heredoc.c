@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:28:48 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 17:39:25 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 14:28:31 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	*expand_env_var_her(char *str, int *i, t_env *env, char *res)
 	while (str[*i] && ft_isalpha(str[*i]) && !is_special_char2(str[*i]))
 		(*i)++;
 	key = substr(str, start, *i - start);
-	val = cher_env(key, env);
+	val = cher_env(key, env, 'd');
 	if (!val)
 		return (res);
 	return (ft_strjoin(res, val));

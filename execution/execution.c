@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/08 15:48:26 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/13 14:00:19 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/18 12:01:00 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	execution(t_shell *main)
 	t_cmd *tmp;
 
 	tmp = main->cmd;
+	if (!tmp)
+		return ;
 	while (tmp)
 	{
 		if (tmp->heredoc_statuts == 911)

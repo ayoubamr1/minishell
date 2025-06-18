@@ -6,13 +6,13 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 18:17:29 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 17:59:00 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 15:55:29 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*cher_env(char *key, t_env *env)
+char	*cher_env(char *key, t_env *env, char	quot)
 {
 	t_env	*tmp;
 	size_t	name_len;
@@ -33,6 +33,8 @@ char	*cher_env(char *key, t_env *env)
 		}
 		tmp = tmp->next;
 	}
+	if (quot == 0)
+		env->quot = 1;
 	return (ft_strdup(""));
 }
 
@@ -57,7 +59,7 @@ char	*expand_env_var(char *str, int *i, t_env *env, char *res)
 	while (str[*i] && ft_isalpha(str[*i]) && !is_special_char2(str[*i]))
 		(*i)++;
 	key = substr(str, start, *i - start);
-	val = cher_env(key, env);
+	val = cher_env(key, env, quot);
 	if (!val)
 		return (res);
 	if (quot == '\'')
