@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 18:34:03 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:47:35 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,17 +80,16 @@ t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 
 t_token	*heredoc_while(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 {
-	
 	if (!start)
 		return (NULL);
 	while (start && start->type != PIPE)
 	{
 		if (start->type == HEREDOC)
 			start = handle_heredoc_token(shell, node_to_fill, start);
-		else 
+		else
 			start = start->next;
 	}
-	return(start);
+	return (start);
 }
 
 t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
@@ -107,7 +106,7 @@ t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 	{
 		tmp = heredoc_while(shell, cmd_tmp, tmp);
 		if (cmd_tmp->heredoc_statuts == 911)
-			return NULL;
+			return (NULL);
 		if (tmp && tmp->type == PIPE)
 		{
 			cmd_tmp = ft_lstnew_cmd();

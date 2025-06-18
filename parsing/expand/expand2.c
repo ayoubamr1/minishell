@@ -6,13 +6,13 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 18:17:29 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 15:55:29 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:48:20 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*cher_env(char *key, t_env *env, char	quot)
+char	*cher_env(char *key, t_env *env, char quot)
 {
 	t_env	*tmp;
 	size_t	name_len;

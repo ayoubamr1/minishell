@@ -6,13 +6,13 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:50 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 18:36:22 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:47:52 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void ft_cmd_2(t_shell *shell, t_token *tmp, t_cmd *cmd_tmp)
+void	ft_cmd_2(t_shell *shell, t_token *tmp, t_cmd *cmd_tmp)
 {
 	while (tmp)
 	{

@@ -125,6 +125,8 @@ void	ft_expand(t_shell *shell);
 int		is_special_char2(char c);
 int 	ft_quote(char c);
 t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell);
+t_token    *split_to_token_list(t_token *tok, char **spl);
+char	**ft_split_space(char *str);
 
 size_t	ft_count_2d(char **arr);
 char	*remove_quotes(char *str);

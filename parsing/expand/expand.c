@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 16:18:07 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 18:50:57 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,60 +96,12 @@ char	*ft_expand_token(char *str, t_shell *shell)
 	return (ft_dolar(res));
 }
 
-char	**ft_split_space(char *str)
-{
-	char	**new;
-	char	quote;
-	int		start;
-	int		i;
-
-	(1) && (quote = 0, new = NULL, i = 0);
-	while (str[i])
-	{
-		while (str[i] == ' ')
-			i++;
-		start = i;
-		while (str[i] && str[i] != ' ')
-		{
-			if (ft_quote(str[i]))
-			{
-				quote = str[i++];
-				while (str[i] && str[i] != quote)
-					i++;
-			}
-			i++;
-		}
-		new = ft_strjoin2d(new, remove_quotes(substr(str, start, i - start)));
-	}
-	return (new);
-}
-
-t_token    *split_token_exx(t_token *tok, char **spl)
-{
-	t_token	*last;
-	t_token	*save;
-	int		i;
-
-	if (!spl || !(*spl))
-		return(tok);
-	save = tok->next;
-	tok->content = spl[0];
-	i = 1;
-	last = tok;
-	while (spl[i])
-	{
-		tok->next = new_token(spl[i++], WORD);
-		tok = tok->next;
-	}
-	tok->next = save;
-	return (tok);
-}
-
-void    ft_expand(t_shell *shell)
+void	ft_expand(t_shell *shell)
 {
 	t_token		*tok;
 	char		*expanded;
 	char		**new;
+	char		*tmp;
 
 	tok = shell->token;
 	while (tok)
@@ -157,18 +109,15 @@ void    ft_expand(t_shell *shell)
 		if (tok->type == WORD || tok->type == SI_QUOTE)
 		{
 			expanded = ft_expand_token(tok->content, shell);
-			char *gg = remove_quotes(expanded);
-			if (gg && !gg[0] && shell->env->quot == 1)
-			{
-				tok->content = expanded;
-				tok->type = SKIP;
-			}
+			tmp = remove_quotes(expanded);
+			if (tmp && !tmp[0] && shell->env->quot == 1)
+				(1) && (tok->content = expanded, tok->type = SKIP);
 			else if (!ft_strchr(tok->content, '$'))
 				tok->content = remove_quotes(tok->content);
 			else if (!ft_strchr(expanded, ' '))
 				tok->content = remove_quotes(expanded);
 			else
-				tok = split_token_exx(tok, ft_split_space(expanded));
+				tok = split_to_token_list(tok, ft_split_space(expanded));
 		}
 		tok = tok->next;
 	}
