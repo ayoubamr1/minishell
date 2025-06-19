@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 18:40:37 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:27:19 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_token	*handle_token_type(t_cmd *node, t_token *start)
 {
 	if (start->type == WORD || start->type == SI_QUOTE)
 	{
-		printf("[%s]\n",start->content);
 		if (start->content && start->content[0])
 			node->cmd = ft_strjoin2d(node->cmd, start->content);
 		return (start->next);
@@ -90,7 +89,6 @@ t_token	*heredoc_while(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 	return (start);
 }
 
-	
 t_cmd	*ft_cmd(t_shell *shell, t_token **token, t_cmd **cmd_list)
 {
 	t_token	*tmp;

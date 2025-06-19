@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:13:18 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 17:43:52 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:30:21 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,4 +66,3 @@ char	*remove_quotes(char *str)
 	}
 	return (res[j] = '\0', res);
 }
-

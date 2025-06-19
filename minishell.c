@@ -103,7 +103,7 @@ void	minishell(t_shell *shell_list, char **env)
 		input = readline("minishell> ");
 
 		if (!input)
-			(exite_status = 1, printf("exit\n"),exit(0));
+			(exite_status = 1, printf("exit\n"),ft_malloc(0, FREE));
 		if (input)
 		{
 			ft_null(shell_list);
@@ -119,7 +119,7 @@ void	minishell(t_shell *shell_list, char **env)
 				// ft_update_token(shell_list->token);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd);
-				print_node(shell_list, env);
+				// print_node(shell_list, env);
 				execution(shell_list);
 			}
 			// while (shell_list->env)

@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 15:05:51 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 17:08:27 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:35:27 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	clear_all(t_list **head)
 		cur = tmp;
 	}
 	*head = NULL;
+	exit (0);
 }
 static void	ft_bzero(void *s, size_t n)
 {

@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 10:03:54 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 17:50:40 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:31:57 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,14 @@ char	*up_token(char *str, int i)
 	return (new);
 }
 
-t_token *token_up(t_token *token)
+t_token	*token_up(t_token *token)
 {
-	t_token *tmp;
-	int i;
-	int start;
+	t_token	*tmp;
+	int		i;
+	int		start;
 
 	tmp = token;
-	while (tmp->next)
+	while (tmp && tmp->next)
 	{
 		if (tmp->type == WORD && tmp->next->type == WORD)
 		{
@@ -122,7 +122,7 @@ t_token *token_up(t_token *token)
 				if (tmp->content[i] && tmp->content[i + 1])
 					i++;
 				if (tmp->content[i] && (!ft_strchr(tmp->content + i, '"')
-					&& ft_strchr(tmp->content + i, '$')))
+						&& ft_strchr(tmp->content + i, '$')))
 					tmp->content = up_token(tmp->content, i);
 			}
 		}

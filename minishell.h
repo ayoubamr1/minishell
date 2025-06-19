@@ -135,7 +135,7 @@ char	*remove_quotes(char *str);
 void	ft_skipe_delimiter(t_token *token);
 int	len_n(int n);
 char *heredoc_expand(char *str, t_env *env);
-
+void	delimiter_dollar(char *str, char *new, int *i, int *p);
 void pp(t_token **tok);/////// remove
 void	print_env_list(t_env *lst); /// remove it
 

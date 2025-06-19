@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:07:36 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 15:47:15 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:30:36 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ static t_env	*ft_hard_env(void)
 	return (env);
 }
 
-// PATH=/home/nbougrin/bin:/home/nbougrin/bin:/home/nbougrin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 t_env	*ft_env(t_env *env_list, char **env)
 {
 	t_env	*tmp;

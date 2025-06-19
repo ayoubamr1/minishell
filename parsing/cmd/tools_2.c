@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 18:34:50 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 18:47:52 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 21:28:53 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,32 @@ char	*heredoc_expand(char *str, t_env *env)
 			res = strjoin_char(res, str[i++]);
 	}
 	return (res);
+}
+
+void	delimiter_dollar(char *str, char *new, int *i, int *p)
+{
+	int		d;
+	int		j;
+	char	qout;
+
+	d = 0;
+	while (str[*i] == '$')
+		(1) && (d++, (*i)++);
+	if (ft_quote(str[*i]) && (d % 2 == 1))
+	{
+		qout = str[(*i)++];
+		j = 0;
+		while (j < (d - 1))
+			(1) && (new[(*p)++] = '$', j++);
+		while (str[*i] && str[*i] != qout)
+			new[(*p)++] = str[(*i)++];
+		if (str[*i] == qout)
+			(*i)++;
+	}
+	else
+	{
+		j = 0;
+		while (j < d)
+			(1) && (new[(*p)++] = '$', j++);
+	}
 }
