@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:28:48 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 20:46:21 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:48:45 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int	is_quote(char c)
 	return (c == '\'' || c == '"');
 }
 
-static void	copy_quoted_dollar(char *str, char *new, int *i, int *p)
+static void	ft_copy_dollar(char *str, char *new, int *i, int *p)
 {
 	int		dollar_count;
 	int		j;
@@ -110,7 +110,7 @@ static char	*check_delimiter(char *str)
 	while (str[i])
 	{
 		if (str[i] == '$')
-			copy_quoted_dollar(str, new, &i, &p);
+			ft_copy_dollar(str, new, &i, &p);
 		else if (is_quote(str[i]))
 		{
 			qout = str[i++];
