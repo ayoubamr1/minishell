@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 09:06:13 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 16:58:40 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/18 20:11:43 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_token	*handle_redir_in(t_cmd *node, t_token *start)
 	node->file = ft_strdup(start->content);
 	close(node->in);
 	node->in = fd;
+	exite_status = 0;
 	return (start->next);
 }
 
@@ -64,6 +65,7 @@ t_token	*handle_redir_out(t_cmd *node, t_token *start)
 	node->file = ft_strdup(start->content);
 	close(node->out);
 	node->out = fd;
+	exite_status = 1;
 	return (start->next);
 }
 
@@ -83,6 +85,7 @@ t_token	*handle_redir_append(t_cmd *node, t_token *start)
 	node->file = ft_strdup(start->content);
 	close(node->out);
 	node->out = fd;
+	exite_status = 1;
 	return (start->next);
 }
 

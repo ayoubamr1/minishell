@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 18:50:57 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 18:12:04 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ void	ft_expand(t_shell *shell)
 	char		**new;
 	char		*tmp;
 
-	tok = shell->token;
+	tok = token_up(shell->token);
 	while (tok)
 	{
 		if (tok->type == WORD || tok->type == SI_QUOTE)
@@ -111,7 +111,7 @@ void	ft_expand(t_shell *shell)
 			expanded = ft_expand_token(tok->content, shell);
 			tmp = remove_quotes(expanded);
 			if (tmp && !tmp[0] && shell->env->quot == 1)
-				(1) && (tok->content = expanded, tok->type = SKIP);
+				(1) && (tok->content = expanded);
 			else if (!ft_strchr(tok->content, '$'))
 				tok->content = remove_quotes(tok->content);
 			else if (!ft_strchr(expanded, ' '))

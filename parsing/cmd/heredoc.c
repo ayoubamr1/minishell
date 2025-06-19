@@ -6,40 +6,176 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:28:48 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 18:58:03 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 20:46:21 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static	char	*check_delimiter(char *str)
+// static	char	*check_delimiter(char *str)
+// {
+// 	char	*new;
+// 	char	qout;
+// 	int		p;
+// 	int		i;
+
+// 	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
+// 	i = 0;
+// 	p = 0;
+// 	while (str[i])
+// 	{
+// 		if (str[i] && (str[i] == '"' || str[i] == '\''))
+// 		{
+// 			(1) && (new[p++] = str[i], qout = str[i++]);
+// 			while (str[i] && str[i] != qout)
+// 				new[p++] = str[i++];
+// 			if (str[i] == qout)
+// 				new[p++] = str[i++];
+// 			new[p++] = '\0';
+// 		}
+// 		else if (str[i] == '$')
+// 		{
+// 			//  && (str[i + 1] == '"' || str[i + 1] == '\'')
+// 			int j = 0;
+// 			while (str[i] && str[i] == '$')
+// 				i++, j++;
+// 			if (str[i] && ft_quote(str[i]) && j % 2 == 1)
+// 			{
+// 				while (str[i - j] && j > 0)
+// 				{
+// 					new[p++] = str[i - j];
+// 					j--;
+// 				}
+// 			}
+// 			else
+// 			{
+
+// 				while (str[i - j] && j >= 0)
+// 				{
+// 					new[p++] = str[i - j];
+// 					j--;
+// 				}
+// 			}
+// 		}
+// 		else
+// 			new[p++] = str[i++];
+// 	}
+// 	// printf();
+// 	return (new[p] = '\0', remove_quotes (new));
+// }
+
+static int	is_quote(char c)
+{
+	return (c == '\'' || c == '"');
+}
+
+static void	copy_quoted_dollar(char *str, char *new, int *i, int *p)
+{
+	int		dollar_count;
+	int		j;
+	char	qout;
+
+	dollar_count = 0;
+	while (str[*i] == '$')
+		(dollar_count++, (*i)++);
+	if (is_quote(str[*i]) && (dollar_count % 2 == 1))
+	{
+		qout = str[(*i)++];
+		j = 0;
+		while (j < dollar_count - 1)
+			new[(*p)++] = '$', j++;
+		while (str[*i] && str[*i] != qout)
+			new[(*p)++] = str[(*i)++];
+		if (str[*i] == qout)
+			(*i)++;
+	}
+	else
+	{
+		j = 0;
+		while (j < dollar_count)
+			(new[(*p)++] = '$', j++);
+	}
+}
+
+static char	*check_delimiter(char *str)
 {
 	char	*new;
-	char	qout;
-	int		p;
 	int		i;
+	int		p;
+	char	qout;
 
 	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
 	i = 0;
 	p = 0;
 	while (str[i])
 	{
-		if (str[i] && (str[i] == '"' || str[i] == '\''))
+		if (str[i] == '$')
+			copy_quoted_dollar(str, new, &i, &p);
+		else if (is_quote(str[i]))
 		{
-			(1) && (new[p++] = str[i], qout = str[i++]);
+			qout = str[i++];
+			new[p++] = qout;
 			while (str[i] && str[i] != qout)
 				new[p++] = str[i++];
 			if (str[i] == qout)
 				new[p++] = str[i++];
-			new[p] = '\0';
 		}
-		else if (str[i] == '$' && (str[i + 1] == '"' || str[i + 1] == '\''))
-			i++;
 		else
 			new[p++] = str[i++];
 	}
-	return (new[p] = '\0', remove_quotes (new));
+	return (new[p] = '\0', remove_quotes(new));
 }
+
+
+
+// static char	*check_delimiter(char *str)
+// {
+// 	char	*new;
+// 	int		i = 0;
+// 	int		p = 0;
+// 	int		dollar_count = 0;
+// 	char	qout;
+
+// 	new = ft_malloc(ft_strlen(str) + 1, MALLOC);
+// 	while (str[i] == '$')
+// 	{
+// 		dollar_count++;
+// 		i++;
+// 	}
+// 	if ((str[i] == '"' || str[i] == '\''))
+// 	{
+// 		qout = str[i++];
+// 		if (dollar_count % 2 == 1)
+// 		{
+// 			for (int j = 0; j < dollar_count - 1; j++)
+// 				new[p++] = '$';
+// 			while (str[i] && str[i] != qout)
+// 				new[p++] = str[i++];
+// 			if (str[i] == qout)
+// 				i++; // skip closing quote
+// 		}
+// 		else
+// 		{
+// 			i = 0;
+// 			while (str[i])
+// 				new[p++] = str[i++];
+// 		}
+// 	}
+// 	else
+// 	{
+// 		i = 0;
+// 		while (str[i])
+// 			new[p++] = str[i++];
+// 	}
+// 	new[p] = '\0';
+// 	return remove_quotes(new);
+// }
+
+
+
+
+
+
 
 char	*expand_env_var_her(char *str, int *i, t_env *env, char *res)
 {
@@ -62,6 +198,7 @@ int	heredoc_p2(char *delimiter, char *line, int i, t_shell *s)
 {
 	char	*tmp;
 
+	printf(">>[%s]\n", check_delimiter(delimiter));
 	if (ft_strcmp(line, check_delimiter(delimiter)) == 0)
 	{
 		free(line);

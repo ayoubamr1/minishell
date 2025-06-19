@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:31:55 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 18:33:31 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 14:23:20 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,10 @@ int	get_random_int(void)
 	fd = open("/dev/urandom", O_RDONLY);
 	num = 0;
 	if (fd < 0)
-		return (-1);
+		return (exite_status = 1, -1);
 	read(fd, &num, sizeof(num));
 	close(fd);
+	exite_status = 0;
 	return ((int)(num % 100));
 }
 

@@ -112,3 +112,6 @@ minishell> export b=$hj
 
 
 exit status
+
+PWD must be dynamic
+remove $_

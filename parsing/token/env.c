@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:07:36 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 15:18:21 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/19 15:47:15 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,19 @@ static t_env	*ft_hard_env(void)
 	t_env	*tmp;
 	char	*s3;
 	char	*s4;
-	char	*g2;
+	char	*path;
 
 	s3 = ft_strdup("/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:");
 	s4 = ft_strdup("/usr/local/games:/snap/bin");
-	g2 = ft_strjoin(s3, s4);
-	env = ft_lstnew_env(ft_strdup("PWD=/home/nbougrin/pull"));
+	path = ft_strjoin(s3, s4);
+	env = ft_lstnew_env(getcwd(NULL, 0));
 	tmp = env;
-	tmp->next = ft_lstnew_env(ft_strjoin(ft_new(), g2));
+	tmp->next = ft_lstnew_env(ft_strjoin(ft_new(), path));
 	tmp->next->next = ft_lstnew_env(ft_strdup("SHLVL=1"));
-	tmp->next->next->next = ft_lstnew_env(ft_strdup("_=/usr/bin/env"));
 	return (env);
 }
 
+// PATH=/home/nbougrin/bin:/home/nbougrin/bin:/home/nbougrin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 t_env	*ft_env(t_env *env_list, char **env)
 {
 	t_env	*tmp;

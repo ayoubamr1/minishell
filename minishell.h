@@ -128,7 +128,8 @@ t_token	*split_token_ex(t_token *tok, char *str, t_shell *shell);
 t_token    *split_to_token_list(t_token *tok, char **spl);
 char	**ft_split_space(char *str);
 char	*expand_env_var_her(char *str, int *i, t_env *env, char *res);
-
+t_token *token_up(t_token *token);
+char	*up_token(char *str, int i);
 size_t	ft_count_2d(char **arr);
 char	*remove_quotes(char *str);
 void	ft_skipe_delimiter(t_token *token);
