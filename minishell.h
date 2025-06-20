@@ -116,7 +116,7 @@ char	*cher_env(char *key, t_env *env, char	quot);
 char	*expand_env_var(char *str, int *i, t_env *env, char *res);
 char	*ft_dolar(char *str);
 char	*strjoin_char(char *str, char c);
-char	*handle_ansi_c_quote(char *str, int *i, char *res);
+char	*join_single_quot(char *str, int *i, char *res);
 char	*handle_regular_quotes(char *str, int *i, char *res, char *quot);
 int		ft_check_sp(char *str);
 char	*handle_var_expand(char *str, int *i, t_shell *shell, char *res);

@@ -6,13 +6,13 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 18:12:04 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/20 08:38:30 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	*handle_ansi_c_quote(char *str, int *i, char *res)
+char	*join_single_quot(char *str, int *i, char *res)
 {
 	res = strjoin_char(res, str[*i]);
 	(*i)++;
@@ -55,7 +55,7 @@ char	*handle_var_expand(char *str, int *i, t_shell *shell, char *res)
 	else if (str[*i] == '$' && str[*i + 1] && str[*i + 1] == '?')
 	{
 		*i += 2;
-		res = ft_strjoin(res, "$?");
+		res = ft_strjoin(res, ft_itoa(exite_status));
 	}
 	else if (str[*i] == '$' && str[*i + 1] && ft_isalpha(str[*i + 1])
 		&& !ft_quote(str[*i + 1]))
@@ -85,7 +85,7 @@ char	*ft_expand_token(char *str, t_shell *shell)
 	while (str[i])
 	{
 		if (str[i] == '$' && str[i + 1] == '\'')
-			res = handle_ansi_c_quote(str, &i, res);
+			res = join_single_quot(str, &i, res);
 		else
 		{
 			res = handle_regular_quotes(str, &i, res, &quot);
