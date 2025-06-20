@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 11:58:16 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/14 18:09:29 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/19 22:23:22 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	my_pwd(t_shell *main)
 	char	*pwd;
 	
 	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		return (1);
 	printf("%s\n", pwd);
 	free(pwd);
 	return (0);

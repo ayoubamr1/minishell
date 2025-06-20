@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/03 17:20:33 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/14 18:56:53 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/17 16:36:01 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,24 +87,28 @@ long long	ft_atoll(char *str)
 int my_exit(t_shell *main, char **cmd)
 {
 	int		ac;
-	long	exit_status;
+	long	exit_st;
 
 	ac = len_2d(cmd);
-	printf("exit\n");
 	if (ac == 1)
+	{	
+		printf("exit\n");
 		exit(exite_status);
+	}	
 	if (!str_is_digit(cmd[1]))
 	{
 		ft_putstr_fd("numeric argument required\n", 2);
-		exit(exit_status);
+		exit(exit_st);
 	}
 	if (ac > 2)
 	{
 		ft_putstr_fd("too many arguments\n", 2);
 		return (1); 
 	}
-	exit_status = ft_atoll(cmd[1]);
-	exit((unsigned char)exit_status);
+	exit_st = ft_atoll(cmd[1]);
+	if (exit_st > INT_MAX)
+		ft_putstr_fd("error\n", 2);
+	exit((unsigned char)exit_st);
 }
 	
 void	printf_error(char *var, char* msg, int status)

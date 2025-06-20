@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:38:40 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/14 18:02:56 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/19 20:28:18 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	add_to_env(t_shell *main, char *new_var)
 	new_node->content = ft_strdup(new_var);
 	new_node->next = NULL;
 	cur = main->env;
-	if (!cur)            // if the linked liste is empty , so we add it in the first node
+	if (!cur)
 		main->env = new_node;
 	else
 	{
@@ -34,6 +34,6 @@ void	add_to_env(t_shell *main, char *new_var)
 			}
 			cur = cur->next;
 		}
-		ft_lstadd_back_env(&main->env, new_node); // we add it at the end
+		ft_lstadd_back_env(&main->env, new_node);
 	}
 }

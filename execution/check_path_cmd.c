@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 15:33:02 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/14 16:38:59 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/19 14:14:22 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,10 @@ void	get_path(t_shell *main)
 	}
 	if (path == NULL || *(path + 5) == '\0')
 	{	
-		// printf("commande not found\n");
 		main->path_splited = NULL;
 		// exit(1);
 		return ;
 	}
-	// if (*(path + 5) == '\0')
-	// {
-	// 	// exit(1);
-	// 	return ;
-	// }
-	// printf("my path = %s\n", path);
 	main->path_splited = ft_split(path, ':');
 }
 
@@ -87,7 +80,6 @@ void	ft_check_cmd_path(t_cmd *cmd, char **path)
 		if (!res)
 			return ; /// free leaks;
 		// free(tmp);
-		// printf("res = %s\n", res);
 		if (access(res, X_OK | F_OK) == 0)
 		{
 			// free(cur->cmd[0]);

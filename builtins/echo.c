@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:01:30 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/11 16:07:17 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/19 20:28:49 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,6 @@ int	if_flag_true(char *str)
 
 int	my_echo(char **av, t_cmd *cur)
 {
-	// char **av = cur->cmd;
-	// printf("==============\n");
-	// printf("%s\n", av[1]);
 	int	i;
 	int	flag;
 
@@ -57,6 +54,6 @@ int	my_echo(char **av, t_cmd *cur)
 		i++;
 	}
 	if (!flag)
-		printf("\n");	
+		printf("\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 16:30:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/14 16:38:53 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/19 15:49:39 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,13 @@ void	run_builtins(t_shell *main, char **cmd, t_cmd *cur)
 		exite_status = unset_env(main, cmd);
 	if (!ft_strcmp(cmd[0], "echo"))
 	{
-		if (cmd[1] && ft_strcmp(cmd[1], "$?") == 0)
-		{
-			printf("%d\n", exite_status);
-			exite_status = 0;
-			return ;
-		}
-		// else
+		// if (cmd[1] && ft_strcmp(cmd[1], "$?") == 0)
+		// {
+		// 	printf("%d\n", exite_status);
+		// 	exite_status = 0;
+		// 	return ;
+		// }
 		exite_status = my_echo(cmd, cur);
-		// exite_status = 0;
 	}	
 	if (!ft_strcmp(cmd[0], "exit"))
 		exite_status = my_exit(main, cmd);

@@ -6,16 +6,17 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/15 16:40:31 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/20 11:44:31 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../minishell.h"
 
-int find_equal(char *str)
+int	find_equal(char *str)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (str && str[i])
 	{
 		if (str[i] == '=')
@@ -25,16 +26,16 @@ int find_equal(char *str)
 	return (0);
 }
 
-int	is_invalide_indentifer(char **cmd)
+int	is_invalide_indentifer(char *cmd)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!is_valid_var(cmd))
-		{	
-			printf("export: `%s': not a valid identifier\n", cmd[i]);
-			return (1);
-		}
+	{
+		printf("export: `%s': not a valid identifier\n", cmd);
+		return (1);
+	}
 	return (0);
 }
 
@@ -42,7 +43,7 @@ void	plus_equal_add_new(t_shell *main, char **cmd, char *value, int i)
 {
 	int		eq;
 	char	*new_value;
-	
+
 	eq = find_equal(cmd[i]);
 	// chb3ana leaks
 	new_value = substr(cmd[i], 0, eq -1);
@@ -58,7 +59,7 @@ int	plus_equal_hundle_case(t_shell *main, char **cmd, int i)
 	char	*plus_equal;
 	t_env	*env;
 	size_t	len;
-	
+
 	plus_equal = ft_strstr(cmd[i], "+=");
 	len = plus_equal - cmd[i];
 	value = plus_equal + 2;
@@ -67,12 +68,12 @@ int	plus_equal_hundle_case(t_shell *main, char **cmd, int i)
 	env = main->env;
 	while (env)
 	{
-		if (!ft_strncmp(env->content, cmd[i], len) && 
+		if (!ft_strncmp(env->content, cmd[i], len) &&
 			(env->content[len] == '=' || env->content[len] == '\0'))
 		{
 			// flag = 1;
 			ft_plus_equal(env, cmd, len, value, i);
-			return (1) ;
+			return (1);
 		}
 		env = env->next;
 	}
@@ -132,9 +133,9 @@ void	ft_plus_equal(t_env *env, char **cmd, int len, char *value, int i)
 	// printf("new content befor = %s\n", new_content);
 	ft_strcpy(new_value, new_content + len + 1);
 	// printf("new content = %s\n", new_content);
-	free(env->content);
+	// free(env->content);
 	env->content = new_content;
-	free(new_value);         //// need to check it compared to ft_malloc
+	// free(new_value);        //// need to check it compared to ft_malloc
 }
 
 int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
@@ -149,7 +150,7 @@ int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
 		{
 			printf("dkhal hna\n");
 			flag = 1;
-			free(env->content);
+			// free(env->content);
 			env->content = ft_strdup(cmd[i]);
 			break ;
 		}
@@ -170,7 +171,7 @@ int	my_export(t_shell *main, char **cmd)
 		return(environment(main->env), 0);
 	while (cmd[i])
 	{
-		if (is_invalide_indentifer(cmd))
+		if (is_invalide_indentifer(cmd[i]))
 			return (0);
 		equal_signe = ft_strchr(cmd[i], '=');
 		plus_equal = ft_strstr(cmd[i], "+=");
@@ -211,57 +212,6 @@ char	**arrange_array(char **array)
 	}
 	return (array);
 }
-
-// void	environment(t_env *env)
-// {
-// 	int		i;
-// 	int		count;
-// 	int		equal_pos;
-// 	t_env	*tmp;
-// 	char	**array;
-	
-// 	i = 0;
-// 	count = 0;
-// 	tmp = env;
-// 	while (tmp)
-// 	{
-// 		count++;
-// 		tmp = tmp->next;
-// 	}
-// 	array = ft_malloc(sizeof (char *) * (count + 1), MALLOC);
-// 	if (!array)
-// 		return ;
-// 	tmp = env;
-// 	while (tmp)
-// 	{
-// 		array[i] = ft_strdup(tmp->content);
-// 		tmp = tmp->next;
-// 		i++;
-// 	}
-// 	array[i] = NULL; 
-// 	array =  arrange_array(array);
-// 	i = 0;
-// 	while (array[i])
-// 	{
-// 		// equal_pos = -1;
-// 		equal_pos =  search_equal(array, i);
-// 		write (1, "declare -x ", 11);
-// 		if (equal_pos != -1)
-// 		{
-// 			// printf("equal_pos = %d\n", equal_pos);
-// 			write (1, array[i], equal_pos + 1);
-// 			write (1, "\"", 1);
-// 			write (1, array[i] + equal_pos + 1, ft_strlen(array[i] + equal_pos + 1));
-// 			write (1, "\"\n", 2);	
-// 		}
-// 		else
-// 		{	
-// 			// printf("equal_pos = %d\n", equal_pos);
-// 			printf("%s\n", array[i]);
-// 		}
-// 		i++;
-// 	}
-// }
 
 char	*parse_value(char *str, size_t len)
 {
@@ -309,30 +259,24 @@ int	search_equal(char **array, int i)
 	return (equal_pos);
 }
 
-int	is_valid_var(char **str)
+int	is_valid_var(char *str)
 {
 	int i;
-	int	j;
 	
-	i = 1;
-	while (str[i])
+	i = 0;
+	if (!ft_isalpha(str[i]) && str[i] != '_')
+		return (0);
+	i++;
+	while (str[i] && str[i] != '=')
 	{
-		j = 0;
-		if (!ft_isalpha(str[i][j]) && str[i][j] != '_')
-			return (0);
-		j++;
-		while (str[i][j] && str[i][j] != '=')
+		if (str[i] == '+')
 		{
-			if (str[i][j] == '+')
-			{
-				if (str[i][j + 1] != '=')
-					return (0);
-				break ;
-			}
-			if (!ft_isalpha(str[i][j]) && str[i][j] != '_')
+			if (str[i + 1] != '=')
 				return (0);
-			j++;
+			break ;
 		}
+		if (!ft_isalpha(str[i]) && str[i] != '_')
+			return (0);
 		i++;
 	}
 	return (1);

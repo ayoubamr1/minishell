@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/17 13:45:53 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/18 14:20:58 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,8 @@ void	child_dup_out(t_shell *main ,t_cmd *cmd)
 
 void	execut_child_cmd(t_shell *main, t_cmd *cmd)
 {
-	if (access(cmd->cmd[0], F_OK))
-		ft_exit(main, cmd->cmd[0]);
+	// if (access(cmd->cmd[0], F_OK))
+	// 	ft_exit(main, cmd->cmd[0]);
 		// printf_error(cmd->cmd[0], "command not found", 127);
 	if (cmd->cmd && execve(cmd->cmd[0], cmd->cmd, env_in_2D(main)) == -1)
 	{

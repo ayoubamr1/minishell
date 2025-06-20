@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:34:59 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/17 11:31:14 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/19 14:16:01 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,35 +20,23 @@ void	wait_children(t_shell *main)
 	
 	i = 0;
 	// status = 0;
-	// printf("4*************\n");
 	while (i < main->nbr_cmd)
 	{
-		// printf("6*************\n");
 		if (waitpid(main->pid[i], &status, 0) == -1)
-		{	
-			// printf("[%d]\n", main->pid[i]);
 			ft_exit(main, main->cmd->cmd[0]);
-			// printf("7*************\n");
-			// exit(1);
-		}
 		if (WIFEXITED(status))
 			exite_status = WEXITSTATUS(status);
-			// printf("childe exited with %d\n", WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))
 		{	
-			printf("8*************\n");
 			sig = WTERMSIG(status);
 			exite_status = 128 + sig;
 			if (sig == SIGINT)
 				write (1, "\n", 1);
 			else if (sig == SIGQUIT)
 				write (1, "Quit (core dumped)\n", 19);
-			// printf("childe killed by signal %d\n", WTERMSIG(status));
 		}
 		i++;
 	}
-
-	// printf("exite_status = %d\n", exite_status);
 }
 
 void ft_creat_pipe(t_cmd *cmd)
