@@ -222,7 +222,7 @@ void	wait_children(t_shell *main);
 void	flag_builtins(t_shell *main);
 void	execution(t_shell *main);
 void	setup_signals(void);
-void	reset_signals_inshild(void);
+void	signals_child(void);
 void	hundle_shlvl(t_shell *main);
 void	cleanup(t_shell *main, int status);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update_env.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:48:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/14 16:44:12 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/20 11:04:49 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	update_env(t_shell *main, char *key, char *value)
 	{
 		if (ft_strncmp(cur->content, key, key_len) == 0 && cur->content[key_len] == '=')
 		{
-			free(cur->content);
+			// free(cur->content);
 			cur->content = new_pwd;
 			// printf("%s\n", cur->content);
 			return ;

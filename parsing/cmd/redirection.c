@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 09:06:13 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/18 20:11:43 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/20 17:43:29 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,13 @@ t_token	*handle_redir_out(t_cmd *node, t_token *start)
 	int	fd;
 
 	start = start->next;
-	if (!start ||!start->content[0] || (start->content
-			&& ft_strchr(start->content, ' ')))
+	if (start && start->index == - 13)
+	{
+		write(2, "No such file or directory\n", 27);
+		exite_status = 1;
+		return ((start)->next);
+	}
+	if (!start ||!start->content[0])
 	{
 		node->out = -1;
 		node->fd_statuts = 1;

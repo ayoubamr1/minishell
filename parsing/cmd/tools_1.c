@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 17:31:55 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 14:23:20 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:01:52 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,20 @@ void	ft_lstadd_back_cmd(t_cmd **lst, t_cmd *new)
 	return ;
 }
 
-int	get_random_int(void)
-{
-	int				fd;
-	unsigned int	num;
+// int	get_random_int(void)
+// {
+// 	int				fd;
+// 	unsigned int	num;
 
-	fd = open("/dev/urandom", O_RDONLY);
-	num = 0;
-	if (fd < 0)
-		return (exite_status = 1, -1);
-	read(fd, &num, sizeof(num));
-	close(fd);
-	exite_status = 0;
-	return ((int)(num % 100));
-}
+// 	fd = open("/dev/urandom", O_RDONLY);
+// 	num = 0;
+// 	if (fd < 0)
+// 		return (exite_status = 1, -1);
+// 	read(fd, &num, sizeof(num));
+// 	close(fd);
+// 	exite_status = 0;
+// 	return ((int)(num % 100000));
+// }
 
 void	ft_redirections(t_cmd *head)
 {

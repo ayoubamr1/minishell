@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 18:07:36 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 21:30:36 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/20 19:51:15 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_env	*ft_lstlast(t_env *lst)
 {
 	if (!lst)
 		return (NULL);
-	while (lst->next != NULL)
+	while (lst && lst->next != NULL)
 	{
 		lst = lst->next;
 	}
@@ -50,18 +50,19 @@ static	char	*ft_new(void)
 static t_env	*ft_hard_env(void)
 {
 	t_env	*env;
-	t_env	*tmp;
 	char	*s3;
 	char	*s4;
 	char	*path;
+	char	*pwd;
 
-	s3 = ft_strdup("/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:");
+	s3 = ft_strdup("PATH=/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:");
 	s4 = ft_strdup("/usr/local/games:/snap/bin");
 	path = ft_strjoin(s3, s4);
-	env = ft_lstnew_env(getcwd(NULL, 0));
-	tmp = env;
-	tmp->next = ft_lstnew_env(ft_strjoin(ft_new(), path));
-	tmp->next->next = ft_lstnew_env(ft_strdup("SHLVL=1"));
+	pwd = getcwd(NULL, 0);
+	env = NULL;
+	ft_lstadd_back_env(&env, ft_lstnew_env(ft_strjoin("PWD=", ft_strdup(pwd))));
+	ft_lstadd_back_env(&env, ft_lstnew_env(path));
+	free(pwd);
 	return (env);
 }
 

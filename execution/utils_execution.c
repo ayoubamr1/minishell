@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_execution.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:34:59 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/17 11:31:14 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/20 20:57:50 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,32 @@ void	wait_children(t_shell *main)
 			// printf("7*************\n");
 			// exit(1);
 		}
+		// printf("8*************\n");
+		// sig = ;
+		// exite_status = 128 + sig;
+		// if (sig == SIGINT){
+			// }
+			// else if (sig == SIGQUIT)
+			// 	exite_status = 131;
+			// printf("childe killed by signal %d\n", WTERMSIG(status));
+			// }
+			i++;
+	}
 		if (WIFEXITED(status))
 			exite_status = WEXITSTATUS(status);
 			// printf("childe exited with %d\n", WEXITSTATUS(status));
-		else if (WIFSIGNALED(status))
+		else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{	
-			printf("8*************\n");
-			sig = WTERMSIG(status);
-			exite_status = 128 + sig;
-			if (sig == SIGINT)
-				write (1, "\n", 1);
-			else if (sig == SIGQUIT)
-				write (1, "Quit (core dumped)\n", 19);
-			// printf("childe killed by signal %d\n", WTERMSIG(status));
+			exite_status = 130;
+			write (1, "\n", 1);
 		}
-		i++;
-	}
+		else if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+		{	
+			exite_status = 131;
+			write(2, "Quit (core dumped)\n", 19);
+		}
+		// printf("<<<<<<<<<<<<%d>>>>>>>>>>>>\n", exite_status);
+		setup_signals();
 
 	// printf("exite_status = %d\n", exite_status);
 }
@@ -86,7 +96,8 @@ void	handle_sigint(int sig)
 		write(STDOUT_FILENO, "\n", 1);      // Move to a new line
 		rl_on_new_line();                  // Notify readline about the new line
 		rl_replace_line("", 0);           // Clear the current input line
-		rl_redisplay();                  // Redisplay the prompt
+		rl_redisplay();						// Redisplay the prompt	
+		exite_status = 130;
 	}
 }
 
@@ -96,7 +107,7 @@ void	setup_signals(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void reset_signals_inshild(void)
+void signals_child(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);

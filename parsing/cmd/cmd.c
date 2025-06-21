@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:15:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/19 21:27:19 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/20 15:36:54 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ t_token	*handle_heredoc_token(t_shell *shell, t_cmd *node, t_token *start)
 	char	*filepath;
 	int		random;
 
-	random = get_random_int();
+	(filepath = malloc(0), free(filepath));
 	start = start->next;
 	if (!start || !start->content || start->content[0] == '\0')
 		start = new_token(ft_strdup(""), HEREDOC);
-	filepath = ft_strjoin("/tmp/", ft_itoa(random));
+	filepath = ft_strjoin("/tmp/", ft_itoa((size_t)filepath));
 	fd[0] = open(filepath, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	fd[1] = open(filepath, O_RDONLY);
 	if (fd[0] == -1 || fd[1] == -1 || random == -1)
@@ -82,7 +82,11 @@ t_token	*heredoc_while(t_shell *shell, t_cmd *node_to_fill, t_token *start)
 	while (start && start->type != PIPE)
 	{
 		if (start->type == HEREDOC)
+		{
 			start = handle_heredoc_token(shell, node_to_fill, start);
+			if (node_to_fill->heredoc_statuts == 911)
+				return (start); 
+		}
 		else
 			start = start->next;
 	}

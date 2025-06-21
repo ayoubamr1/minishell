@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/12 12:01:48 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/19 17:28:37 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/20 20:33:14 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	child_dup_out(t_shell *main ,t_cmd *cmd)
 
 void	execut_child_cmd(t_shell *main, t_cmd *cmd)
 {
+	signals_child();
 	if (access(cmd->cmd[0], F_OK))
 		ft_exit(main, cmd->cmd[0]);
 		// printf_error(cmd->cmd[0], "command not found", 127);
@@ -137,8 +138,10 @@ void	execute_shild(t_shell *main)
 					exit(exite_status);
 				ft_child(main, cur);
 			}
-			else
+			else{
+				
 				ft_parent(main, cur);
+			}
 			// system("lsof -p $(echo $$)");
 			cur = cur->next;
 			i++;

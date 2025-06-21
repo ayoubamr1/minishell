@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 12:30:43 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/15 16:40:31 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/20 11:02:56 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,9 +132,9 @@ void	ft_plus_equal(t_env *env, char **cmd, int len, char *value, int i)
 	// printf("new content befor = %s\n", new_content);
 	ft_strcpy(new_value, new_content + len + 1);
 	// printf("new content = %s\n", new_content);
-	free(env->content);
+	// free(env->content);
 	env->content = new_content;
-	free(new_value);         //// need to check it compared to ft_malloc
+	// free(new_value);         //// need to check it compared to ft_malloc
 }
 
 int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
@@ -149,7 +149,7 @@ int	ft_equal(t_shell *main, char **cmd, int len, int i, int flag)
 		{
 			printf("dkhal hna\n");
 			flag = 1;
-			free(env->content);
+			// free(env->content);
 			env->content = ft_strdup(cmd[i]);
 			break ;
 		}

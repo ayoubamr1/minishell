@@ -115,3 +115,53 @@ exit status
 
 PWD must be dynamic
 remove $_
+
+
+nbougrin@e1r9p12:~/pull$ ls > ""
+bash: : No such file or directory
+export a="l's"
+
+minishell> ls > $lj
+ambiguous redirect
+minishell> ls > "$lj"
+
+minishell> ls > ' '
+ambiguous redirect
+
+------------------------------
+<< a << k << l << l << l << l
+> 
+minishell> ^C
+> ^C
+minishell> 
+> 
+minishell> ^C
+> 
+minishell> ^C
+> 
+minishell> ^C
+> 
+minishell> ^C
+minishell> $?
+minishell> 0: commande not found
+---------------------
+
+ minishell> $?
+minishell> 0: commande not found 
+
+bash
+
+nbougrin@e1r9p12:~/pull$ $?
+130: command not found
+
+------------------------
+
+➜  pull git:(boughatat) ✗ env -i ./minishell 
+minishell> env
+PATH=/home/nbougrin/bin:/home/nbougrin/bin:/home/nbougrin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+SHLVL=1
+minishell> unset PATH
+minishell> env       
+env: No such file or directory
+
+--------------------------------

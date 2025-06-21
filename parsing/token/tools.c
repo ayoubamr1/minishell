@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:47:23 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/13 18:50:16 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:37:48 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	ft_lstadd_back_env(t_env **lst, t_env *new)
 		return ;
 	}
 	final = ft_lstlast(*lst);
-	final->next = new;
+	// if (final != NULL)
+		final->next = new;
 	return ;
 }

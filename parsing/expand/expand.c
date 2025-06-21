@@ -6,7 +6,7 @@
 /*   By: nbougrin <nbougrin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 12:02:09 by nbougrin          #+#    #+#             */
-/*   Updated: 2025/06/20 08:38:30 by nbougrin         ###   ########.fr       */
+/*   Updated: 2025/06/20 18:43:34 by nbougrin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,27 @@ char	*ft_expand_token(char *str, t_shell *shell)
 	return (ft_dolar(res));
 }
 
+int	gg(char *str)
+{
+	int i = 0;
+
+	// printf("[%s]\n", str);
+	while (str[i])
+	{
+		if (!ft_quote(str[i]))
+			return(1);
+		i++;
+	}
+	return 0;
+}
+
+char *up_re_case(t_token *tok, char *str)
+{
+	if (!gg(str))
+		tok->index = -13;	
+	return (remove_quotes(str));
+}
+
 void	ft_expand(t_shell *shell)
 {
 	t_token		*tok;
@@ -113,9 +134,9 @@ void	ft_expand(t_shell *shell)
 			if (tmp && !tmp[0] && shell->env->quot == 1)
 				(1) && (tok->content = expanded);
 			else if (!ft_strchr(tok->content, '$'))
-				tok->content = remove_quotes(tok->content);
+				tok->content = up_re_case(tok, tok->content);
 			else if (!ft_strchr(expanded, ' '))
-				tok->content = remove_quotes(expanded);
+				tok->content = up_re_case(tok, expanded);
 			else
 				tok = split_to_token_list(tok, ft_split_space(expanded));
 		}

@@ -61,87 +61,33 @@ void	print_node(t_shell *shell_list, char **env)
 	// printf("---------------------------------------------\n");
 }
 
-static void ft_update_token(t_token *tok)
-{
-	t_token	*tmp;
-	t_token	*save;
-	char	**spl;
-	int		i;
-
-	tmp = tok;
-	while (tmp)
-	{
-		if (tmp->type == WORD)
-		{
-			spl = ft_split(tmp->content, ' ');
-			if (spl || spl[0])
-			{
-				(1) && (i = 1, save = tmp->next);
-				tmp->content = spl[0];
-				while (spl[i])
-				{
-					tmp->next = new_token(spl[i++], WORD);
-					tmp = tmp->next;
-				}
-				tmp->next = save;
-			}
-		}
-		tmp = tmp->next;
-	}
-}
-
 void	minishell(t_shell *shell_list, char **env)
 {
 	char	*input;
 
 	shell_list = ft_malloc(sizeof(t_shell), MALLOC);
 	shell_list->env = ft_env(shell_list->env, env);
-	// hundle_shlvl(shell_list);
 	while (TRUE)
 	{
-		// reset_signals_inshild();
 		input = readline("minishell> ");
-
 		if (!input)
-			(exite_status = 1, printf("exit\n"),ft_malloc(0, FREE));
+			(exite_status = 0, printf("exit\n"),ft_malloc(0, FREE));
 		if (input)
 		{
 			ft_null(shell_list);
 			add_history(input);
 			lexer_1(input, &shell_list->token);
-
 			if (syntax_error(&shell_list->token) == TRUE)
 			{
-				// pp(&shell_list->token);
-				// exit(0);
 				ft_skipe_delimiter(shell_list->token);
 				ft_expand(shell_list);
-				// ft_update_token(shell_list->token);
 				shell_list->cmd = ft_malloc(sizeof(t_cmd), MALLOC);
 				shell_list->cmd = ft_cmd(shell_list,  &shell_list->token, &shell_list->cmd);
-				// print_node(shell_list, env);
 				execution(shell_list);
 			}
-			// while (shell_list->env)
-			// {
-			// 	printf("{%s}\n", shell_list->env->content);
-			// 	shell_list->env = shell_list->env->next;
-			// }
-			// while (shell_list->cmd->cmd)
-			// {
-				// 	printf("[%s]\n", shell_list->cmd->cmd[i]);
-				// 	i++;
-
-			// nbr_cmd(shell_list);
-			// get_path(shell_list);
-			// check_if_access(shell_list);
-			// print_node(shell_list, env);
-			// execute_commande(shell_list);
-			// builtins(shell_list);
 		}
 		free(input);
 	}
-
 }
 
 int	main(int ac, char **av, char **env)
