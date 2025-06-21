@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/24 20:34:59 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/21 11:32:51 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/21 18:04:53 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ void ft_creat_pipe(t_cmd *cmd)
 {
 	if (pipe(cmd->pipe_fd) == -1)
 	{
-		// printf("{pipe 0 = %d pipe1 = %d}\n", cmd->pipe_fd[0], cmd->pipe_fd[1]);
 		perror("pipe filled\n");
 		exit(EXIT_FAILURE);
 	}
+	// printf("{pipe 0 = %d pipe1 = %d}\n", cmd->pipe_fd[0], cmd->pipe_fd[1]);
 }
 
 void ft_fork_process(t_shell *main, int i)
