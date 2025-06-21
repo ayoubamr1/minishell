@@ -194,8 +194,10 @@ char	*parse_value(char *str, size_t len);
 int		search_equal(char **array, int i);
 void	add_to_export(t_shell *main, char *cmd);
 char	**arrange_array(char **array);
+void	update_pwd(t_shell *main, char *pwd, char *newpwd);
 
 void	handle_sigint(int sig);
+void 	signals_shild(void);
 void	printf_error(char *var, char* code, int sta);
 void	ft_exit(t_shell *main, char *cmd);
 

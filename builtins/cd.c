@@ -6,7 +6,7 @@
 /*   By: ayameur <ayameur@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:13:23 by ayameur           #+#    #+#             */
-/*   Updated: 2025/06/19 20:28:02 by ayameur          ###   ########.fr       */
+/*   Updated: 2025/06/21 11:35:29 by ayameur          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,26 +30,33 @@ char	*get_target_dir(char **str, t_shell *main)
 	return (target_dir);
 }
 
-int	change_dir(char *target_dir, char **oldpwd, char **newpwd)
+int	change_dir( t_shell *main, char *target_dir, char **oldpwd, char **newpwd)
 {
+	char	*tmp;
+	
 	*oldpwd = getcwd(NULL, 0);
-	if (!oldpwd)
+	if (!*oldpwd)
 	{
-		perror("getcwd");
-		free(oldpwd);
-		return (1);
+		// perror("getcwd");
+		*oldpwd = ft_strdup(my_getenv(main, "PWD"));
+		// free(oldpwd);
+		// return (1);
 	}
 	if (chdir(target_dir) != 0)
 	{
 		perror("cd");
-		free(oldpwd);
-		return (1);
+		// free(oldpwd);
+		// return (1);
 	}
 	*newpwd = getcwd(NULL, 0);
-	if (!newpwd)
+	if (!*newpwd)
 	{
-		perror("cwd");
-		free(oldpwd);
+		printf("cd: error retrieving current directory: \n");
+		printf("getcwd: cannot access parent directories\n");
+		*newpwd = ft_strdup(my_getenv(main, "PWD"));
+		tmp = ft_strjoin(*newpwd, "/");
+		*newpwd = ft_strjoin(tmp, target_dir);
+		update_env(main, "PWD", *newpwd);
 		return (1);
 	}
 	return (0);
@@ -70,8 +77,7 @@ int	my_cd(char **str, t_shell *main)
 	target_dir = get_target_dir(str, main);
 	if (!target_dir)
 		return (1);
-	if (change_dir(target_dir, &oldpwd, &newpwd) != 0)
-		return (1);
+	change_dir(main, target_dir, &oldpwd, &newpwd);
 	update_dir_env(main, oldpwd, newpwd);
 	free(oldpwd);
 	free(newpwd);
